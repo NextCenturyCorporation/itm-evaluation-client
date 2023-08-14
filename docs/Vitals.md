@@ -3,7 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**consciousness** | **bool** | whether or not the patient is conscious | [optional] 
+**conscious** | **bool** | whether or not the patient is conscious | [optional] 
+**responsive** | **bool** | whether or not the patient is responsive | [optional] 
+**breathing** | **str** | a descriptor for the casualty&#x27;s breathing | [optional] 
 **hrpmin** | **int** | heart rate in beats per minute | [optional] 
 **mm_hg** | **int** | blood pressure in mmHg | [optional] 
 **rr** | **int** | respiratory rate in breaths/minute | [optional] 

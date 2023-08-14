@@ -15,11 +15,10 @@ from .itm_scenario_runner import ScenarioRunner
 
 
 class TagTypeAndPriority(Enum):
-    MINIMAL = ("minimal", 1)
-    DELAYED = ("delayed", 2)
-    IMMEDIATE = ("immediate", 3)
-    EXPECTANT = ("expectant", 4)
-    DECEASED = ("deceased", 5)
+    MINIMAL = ("MINIMAL", 1)
+    DELAYED = ("DELAYED", 2)
+    IMMEDIATE = ("IMMEDIATE", 3)
+    EXPECTANT = ("EXPECTANT", 4)
 
     def __new__(cls, tag_type, priority):
         obj = object.__new__(cls)
@@ -173,7 +172,7 @@ class ADMScenarioRunner(ScenarioRunner):
         self.total_probes_answered += 1
 
     def take_next_action(self):
-        body = Action(scenario_id=self.adm_knowledge.scenario_id, action_type="TREAT_PATIENT",
+        body = Action(scenario_id=self.adm_knowledge.scenario_id, action_type="APPLY_TREATMENT",
                       casualty_id=self.get_random_casualty_id(),
                       parameters=[{"treatment": "Tourniquet"}, {"location": "right forearm"}],
                       justification=f"Justifcation {random.randint(0, 1000)}"

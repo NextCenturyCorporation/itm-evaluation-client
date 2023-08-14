@@ -37,7 +37,7 @@ from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
 
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget):
-    return Action(scenario_id=scenario.id, action_type="TREAT_PATIENT",
+    return Action(scenario_id=scenario.id, action_type="APPLY_TREATMENT",
                   casualty_id=get_random_casualty_id(state),
                   parameters=[{"treatment": "Tourniquet"}, {"location": "right forearm"}],
                   justification=f"Justifcation {random.randint(0, 1000)}"
