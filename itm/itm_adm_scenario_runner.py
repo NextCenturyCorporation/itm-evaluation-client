@@ -53,20 +53,14 @@ class ADMKnowledge:
     all_casualty_ids: List[str] = None
     treated_casualty_ids: List[str] = None
 
-    # Probes
-    current_probe = None
-    explanation: str = None
-    probes_received = None
-    probes_answered: int = 0
+    # Actions
+    scenario_actions_taken = 0
+    action_choices: List[str] = None
 
     # Supplies
     supplies: List[Supplies] = None
 
     alignment_target: AlignmentTarget = None
-
-    probe_options = None
-    probe_choices: List[str] = None
-
 
 
 class ADMScenarioRunner(ScenarioRunner):
@@ -81,7 +75,8 @@ class ADMScenarioRunner(ScenarioRunner):
         self.max_scenarios = max_scenarios
         self.eval_mode = eval_mode
         self.scenarios_run = 0
-        self.total_probes_answered = 0
+        self.total_actions_taken = 0
+
 
     def run(self):
         self.run_session()
@@ -94,24 +89,29 @@ class ADMScenarioRunner(ScenarioRunner):
             if is_empty_scenario:
                 break
             while not self.adm_knowledge.scenario_complete:
-                #self.get_probe()
-                #self.answer_probe()
-                self.take_next_action()
+                actions: List[Action] = self.itm.get_available_actions(session_id=self.session_id, scenario_id=self.adm_knowledge.scenario.id)
+                action = self.get_next_action(self.adm_knowledge.scenario, self.adm_knowledge.scenario.state, self.adm_knowledge.alignment_target, actions)
+                state = self.itm.take_action(session_id=self.session_id, body=action)
+                self.adm_knowledge.scenario_actions_taken += 1
+                self.adm_knowledge.action_choices.append(action.action_type)
+                self.total_actions_taken += 1
+                self.adm_knowledge.scenario_complete = state.scenario_complete
             self.end_scenario()
+            self.adm_knowledge.scenario_actions_taken = 0
             self.scenarios_run += 1
         self.end_session()
 
     def end_scenario(self):
         print(f"-------- Scenario {self.scenarios_run} ---------")
-        print(f"Probes Answered: {self.adm_knowledge.probes_answered}")
-        print(f"Probes Answers in Order: {self.adm_knowledge.probe_choices}\n")
+        print(f"Scenario actions taken: {self.adm_knowledge.scenario_actions_taken}")
+        print(f"Actions taken in Order: {self.adm_knowledge.action_choices}\n")
         self.adm_knowledge = ADMKnowledge()
 
     def end_session(self):
         print(f"[End Session with id: {self.session_id}]")
         print(f"Session Ended for user: {self.adm_name}")
         print(f"Scenarios run: {self.scenarios_run}")
-        print(f"Total Probes Answered: {self.total_probes_answered}\n")
+        print(f"Session actions taken: {self.total_actions_taken}")
 
     def start_session(self):
         print(f"[Start Session]: {self.session_type}")
@@ -146,39 +146,16 @@ class ADMScenarioRunner(ScenarioRunner):
         self.adm_knowledge.all_casualty_ids = [
             casualty.id for casualty in state.casualties]
         self.adm_knowledge.treated_casualty_ids = []
-        self.adm_knowledge.probes_received = []
-        self.adm_knowledge.probe_choices = []
+        self.adm_knowledge.action_choices = []
         self.adm_knowledge.supplies = state.supplies
         self.adm_knowledge.environment = state.environment
         self.adm_knowledge.description = state.mission.unstructured
 
-    def get_probe(self):
-        self.adm_knowledge.current_probe = self.itm.get_probe(
-            self.adm_knowledge.scenario_id)
-        self.adm_knowledge.probes_received.append(
-            self.adm_knowledge.current_probe)
-        self.adm_knowledge.probe_options = self.adm_knowledge.current_probe.options
-
-    def answer_probe(self):
-        self.adm_knowledge.probes_answered += 1
-        casualty_choice = random.choice(self.adm_knowledge.all_casualty_ids)
-        # self.itm.tag_casualty(casualty_id=casualty_choice,
-        #                      tag=self.assess_casualty_priority())
-        probe_choice = random.choice(self.adm_knowledge.probe_options)
-        body = None
-        response = self.itm.respond_to_probe(body=body)
-        self.adm_knowledge.probe_choices.append(probe_choice.value)
-        self.adm_knowledge.scenario_complete = response.scenario_complete
-        self.total_probes_answered += 1
-
-    def take_next_action(self):
-        body = Action(scenario_id=self.adm_knowledge.scenario_id, action_type="APPLY_TREATMENT",
-                      casualty_id=self.get_random_casualty_id(),
-                      parameters=[{"treatment": "Tourniquet"}, {"location": "right forearm"}],
-                      justification=f"Justifcation {random.randint(0, 1000)}"
-        )
-        response = self.itm.take_action(session_id=self.session_id, body=body)
-        self.adm_knowledge.scenario_complete = response.scenario_complete
+    def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                    actions: List[Action]):
+        # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
+        # TODO ITM-71: Display KDMA associations in each action, if available
+        return actions[0]
 
     def get_random_casualty_id(self):
         #id = random.choice(self.adm_knowledge.all_casualty_ids)

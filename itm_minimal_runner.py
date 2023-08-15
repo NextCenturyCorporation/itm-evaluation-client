@@ -25,7 +25,7 @@ Note: The --eval arg must be supported in the command line and called with
 api.start_session(adm_name=args.adm_name, session_type='eval')
 
 Note: The 'get_next_action' function applies a tourniquet to a random casualty's
-right forearm.The implementation of this function should be replaced with decision-making logic.
+right forearm. The implementation of this function should be replaced with decision-making logic.
 """
 
 import argparse
@@ -36,12 +36,11 @@ from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
 
-def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget):
-    return Action(scenario_id=scenario.id, action_type="APPLY_TREATMENT",
-                  casualty_id=get_random_casualty_id(state),
-                  parameters=[{"treatment": "Tourniquet"}, {"location": "right forearm"}],
-                  justification=f"Justifcation {random.randint(0, 1000)}"
-                  )
+def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                    actions: List[Action]):
+    # TODO: Enhance ADM to handle selecting incompletely specified available actions
+    # TODO ITM-71: Display KDMA associations in each action, if available
+    return actions[0]
 
 def get_random_casualty_id(state: State):
     casualties : List[Casualty] = state.casualties
@@ -100,10 +99,11 @@ def main():
         alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
         state: State = scenario.state
         while not state.scenario_complete:
-            action = get_next_action(scenario, state, alignment_target)
+            actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
+            action = get_next_action(scenario, state, alignment_target, actions)
             state = itm.take_action(session_id=session_id, body=action)
-        print(f'scenario: {scenario.id} complete')
-    print(f'Session complete')
+        print(f'Scenario: {scenario.id} complete')
+    print(f'Session {session_id} complete')
 
 
 if __name__ == "__main__":
