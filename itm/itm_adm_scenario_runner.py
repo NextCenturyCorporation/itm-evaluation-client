@@ -7,6 +7,7 @@ from swagger_client.models import (
     State,
     Casualty,
     Supplies,
+    Injury,
     Environment,
     Action,
     AlignmentTarget
@@ -32,7 +33,20 @@ class TagTypeAndPriority(Enum):
             if tag_type.priority == priority:
                 return tag_type
         raise ValueError("Invalid priority")
+    
+class ActionType(Enum):
+    APPLY_TREATMENT = "APPLY_TREATMENT"
+    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
+    CHECK_ALL_VITALS = "CHECK_ALL_VITALS"
+    CHECK_PULSE = "CHECK_PULSE"
+    CHECK_RESPIRATION = "CHECK_RESPIRATION"
+    SITREP = "SITREP"
+    TAG_CASUALTY = "TAG_CASUALTY"
 
+    def __new__(cls, type):
+        obj = object.__new__(cls)
+        obj._value_ = type
+        return obj
 
 @dataclass
 class ADMKnowledge:
@@ -153,9 +167,26 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]
+        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
         # TODO ITM-71: Display KDMA associations in each action, if available
-        return actions[0]
+        random_action = random.choice(actions)
+        if random_action.action_type is not ActionType.DIRECT_MOBILE_CASUALTIES:
+            # All but Direct Mobile Casualties requires a casualty ID
+            if random_action.casualty_id is None:
+                random_action.casualty_id = self.get_random_casualty_id(self)
+            if random_action.action_type == ActionType.APPLY_TREATMENT:
+                if random_action.parameters is None:
+                    random_action.parameters.append([{"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}])
+                else :
+                    for parameter in random_action.parameters:
+                        if parameter.location is None:
+                            parameter.location = random.choice(available_locations)
+                        if parameter.treatment is None:
+                            parameter.trreatment = random.choice(available_supplies)
+        # fill in any missing fields with random values
+        return random_action
 
     def get_random_casualty_id(self):
         #id = random.choice(self.adm_knowledge.all_casualty_ids)
