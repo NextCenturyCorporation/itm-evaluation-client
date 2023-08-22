@@ -31,16 +31,49 @@ right forearm. The implementation of this function should be replaced with decis
 import argparse
 import swagger_client
 import random
+from enum import Enum
 from typing import List
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
 
+class ActionType(Enum):
+    APPLY_TREATMENT = "APPLY_TREATMENT"
+    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
+    CHECK_ALL_VITALS = "CHECK_ALL_VITALS"
+    CHECK_PULSE = "CHECK_PULSE"
+    CHECK_RESPIRATION = "CHECK_RESPIRATION"
+    SITREP = "SITREP"
+    TAG_CASUALTY = "TAG_CASUALTY"
+
+    def __new__(cls, type):
+        obj = object.__new__(cls)
+        obj._value_ = type
+        return obj
+    
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-    # TODO: Enhance ADM to handle selecting incompletely specified available actions
-    # TODO ITM-71: Display KDMA associations in each action, if available
-    return actions[0]
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]
+        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
+        # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
+        # TODO ITM-71: Display KDMA associations in each action, if available
+        random_action = random.choice(actions)
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
+            # All but Direct Mobile Casualties requires a casualty ID
+            if random_action.casualty_id is None:
+                random_action.casualty_id = get_random_casualty_id(state)
+            if random_action.action_type == "APPLY_TREATMENT":
+                if random_action.parameters is None:
+                    random_action.parameters.append([{"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}])
+                else :
+                    for parameter in random_action.parameters:
+                        if 'location' not in parameter or parameter["location"] is None:
+                            parameter["location"] = random.choice(available_locations)
+                        if 'treatment' not in parameter or parameter["treatment"] is None:
+                            parameter["treatment"] = random.choice(available_supplies)
+        # fill in any missing fields with random values
+        print(random_action)
+        return random_action
 
 def get_random_casualty_id(state: State):
     casualties : List[Casualty] = state.casualties
@@ -95,7 +128,6 @@ def main():
         scenario: Scenario = itm.start_scenario(session_id)
         if scenario.session_complete:
             break
-
         alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
         state: State = scenario.state
         while not state.scenario_complete:

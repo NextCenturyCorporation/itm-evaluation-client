@@ -33,20 +33,6 @@ class TagTypeAndPriority(Enum):
             if tag_type.priority == priority:
                 return tag_type
         raise ValueError("Invalid priority")
-    
-class ActionType(Enum):
-    APPLY_TREATMENT = "APPLY_TREATMENT"
-    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
-    CHECK_ALL_VITALS = "CHECK_ALL_VITALS"
-    CHECK_PULSE = "CHECK_PULSE"
-    CHECK_RESPIRATION = "CHECK_RESPIRATION"
-    SITREP = "SITREP"
-    TAG_CASUALTY = "TAG_CASUALTY"
-
-    def __new__(cls, type):
-        obj = object.__new__(cls)
-        obj._value_ = type
-        return obj
 
 @dataclass
 class ADMKnowledge:
@@ -172,19 +158,19 @@ class ADMScenarioRunner(ScenarioRunner):
         # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
         # TODO ITM-71: Display KDMA associations in each action, if available
         random_action = random.choice(actions)
-        if random_action.action_type is not ActionType.DIRECT_MOBILE_CASUALTIES:
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
             # All but Direct Mobile Casualties requires a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = self.get_random_casualty_id(self)
-            if random_action.action_type == ActionType.APPLY_TREATMENT:
+            if random_action.action_type == "APPLY_TREATMENT":
                 if random_action.parameters is None:
                     random_action.parameters.append([{"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}])
                 else :
-                    for parameter in random_action.parameters:
-                        if parameter.location is None:
-                            parameter.location = random.choice(available_locations)
-                        if parameter.treatment is None:
-                            parameter.trreatment = random.choice(available_supplies)
+                   for parameter in random_action.parameters:
+                        if 'location' not in parameter or parameter["location"] is None:
+                            parameter["location"] = random.choice(available_locations)
+                        if 'treatment' not in parameter or parameter["treatment"] is None:
+                            parameter["treatment"] = random.choice(available_supplies)
         # fill in any missing fields with random values
         return random_action
 
