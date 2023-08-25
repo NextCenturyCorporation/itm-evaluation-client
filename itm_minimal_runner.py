@@ -95,8 +95,11 @@ def main():
                         help='Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. '
                         'Implies --db.')
+    parser.add_argument('--kdma_training', default=False, nargs='?',
+                        help='Sends any existing kdma_assoc data with actions.')
 
     args = parser.parse_args()
+    iskdma_training=False
     if args.session:
         if args.session[0] not in ['soartech', 'adept', 'test']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'test'.")
@@ -104,6 +107,8 @@ def main():
             session_type = args.session[0]
     else:
         session_type = 'eval'
+    if args.kdma_training:
+        iskdma_training = args.kdma_training
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
@@ -121,7 +126,8 @@ def main():
         session_id = itm.start_session(
             adm_name=args.adm_name,
             session_type=session_type,
-            max_scenarios=scenario_count
+            max_scenarios=scenario_count,
+            kdma_training=iskdma_training
         )
 
     while True:

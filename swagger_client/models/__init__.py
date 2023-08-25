@@ -22,6 +22,7 @@ from swagger_client.models.environment import Environment
 from swagger_client.models.injury import Injury
 from swagger_client.models.kdma_value import KDMAValue
 from swagger_client.models.mission import Mission
+from swagger_client.models.probe_option import ProbeOption
 from swagger_client.models.scenario import Scenario
 from swagger_client.models.state import State
 from swagger_client.models.supplies import Supplies
