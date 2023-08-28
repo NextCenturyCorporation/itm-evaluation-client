@@ -66,9 +66,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if random_action.parameters is None:
                     random_action.parameters = {"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}
                 else :
-                    if not random_action.parameters.hasattr('location') or random_action.parameters["location"] is None:
+                    if not random_action.parameters['location'] or random_action.parameters["location"] is None:
                         random_action.parameters["location"] = random.choice(available_locations)
-                    if not random_action.parameters.hasattr('treatment') or random_action.parameters["treatment"] is None:
+                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
         # fill in any missing fields with random values
         print(random_action)
