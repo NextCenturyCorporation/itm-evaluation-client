@@ -28,13 +28,13 @@ class Action(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'kdma_association': 'list[dict(str, str)]',
+        'kdma_association': 'dict(str, str)',
         'scenario_id': 'str',
         'action_type': 'str',
         'casualty_id': 'str',
         'unstructured': 'str',
         'justification': 'str',
-        'parameters': 'list[dict(str, str)]'
+        'parameters': 'dict(str, str)'
     }
 
     attribute_map = {
@@ -74,10 +74,10 @@ class Action(object):
     def kdma_association(self):
         """Gets the kdma_association of this Action.  # noqa: E501
 
-        an array of action-specific parameters  # noqa: E501
+        key-value pairs containing additional action-specific parameters  # noqa: E501
 
         :return: The kdma_association of this Action.  # noqa: E501
-        :rtype: list[dict(str, str)]
+        :rtype: dict(str, str)
         """
         return self._kdma_association
 
@@ -85,10 +85,10 @@ class Action(object):
     def kdma_association(self, kdma_association):
         """Sets the kdma_association of this Action.
 
-        an array of action-specific parameters  # noqa: E501
+        key-value pairs containing additional action-specific parameters  # noqa: E501
 
         :param kdma_association: The kdma_association of this Action.  # noqa: E501
-        :type: list[dict(str, str)]
+        :type: dict(str, str)
         """
 
         self._kdma_association = kdma_association
@@ -222,10 +222,10 @@ class Action(object):
     def parameters(self):
         """Gets the parameters of this Action.  # noqa: E501
 
-        an array of action-specific parameters  # noqa: E501
+        key-value pairs containing additional action-specific parameters  # noqa: E501
 
         :return: The parameters of this Action.  # noqa: E501
-        :rtype: list[dict(str, str)]
+        :rtype: dict(str, str)
         """
         return self._parameters
 
@@ -233,10 +233,10 @@ class Action(object):
     def parameters(self, parameters):
         """Sets the parameters of this Action.
 
-        an array of action-specific parameters  # noqa: E501
+        key-value pairs containing additional action-specific parameters  # noqa: E501
 
         :param parameters: The parameters of this Action.  # noqa: E501
-        :type: list[dict(str, str)]
+        :type: dict(str, str)
         """
 
         self._parameters = parameters
