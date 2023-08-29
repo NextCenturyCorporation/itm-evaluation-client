@@ -72,7 +72,7 @@ class Injury(object):
         """
         if name is None:
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
-        allowed_values = ["Forehead Scrape", "Ear Bleed", "Asthmatic", "Laceration", "Puncture", "Shrapnel", "Chest Collapse", "Amputation"]  # noqa: E501
+        allowed_values = ["Forehead Scrape", "Ear Bleed", "Asthmatic", "Laceration", "Puncture", "Shrapnel", "Chest Collapse", "Amputation", "Burn"]  # noqa: E501
         if name not in allowed_values:
             raise ValueError(
                 "Invalid value for `name` ({0}), must be one of {1}"  # noqa: E501
@@ -103,7 +103,7 @@ class Injury(object):
         """
         if location is None:
             raise ValueError("Invalid value for `location`, must not be `None`")  # noqa: E501
-        allowed_values = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]  # noqa: E501
+        allowed_values = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck"]  # noqa: E501
         if location not in allowed_values:
             raise ValueError(
                 "Invalid value for `location` ({0}), must be one of {1}"  # noqa: E501

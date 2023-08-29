@@ -103,11 +103,12 @@ except ApiException as e:
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
 session_type = 'session_type_example' # str | the type of session to start (`test`, `eval`, or a TA1 name)
+kdma_training = false # bool | Flag to return kdma_Association from actions when calling get_available_actions (optional) (default to false)
 max_scenarios = 56 # int | the maximum number of scenarios requested, supported only in `test` sessions (optional)
 
 try:
     # Start a new session
-    api_response = api_instance.start_session(adm_name, session_type, max_scenarios=max_scenarios)
+    api_response = api_instance.start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ItmTa2EvalApi->start_session: %s\n" % e)

@@ -452,8 +452,8 @@ class ItmTa2EvalApi(object):
         :param async_req bool
         :param str adm_name: A self-assigned ADM name.  Can add authentication later. (required)
         :param str session_type: the type of session to start (`test`, `eval`, or a TA1 name) (required)
-        :param int max_scenarios: the maximum number of scenarios requested, supported only in `test` sessions
         :param bool kdma_training: Flag to return kdma_Association from actions when calling get_available_actions
+        :param int max_scenarios: the maximum number of scenarios requested, supported only in `test` sessions
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
@@ -477,14 +477,14 @@ class ItmTa2EvalApi(object):
         :param async_req bool
         :param str adm_name: A self-assigned ADM name.  Can add authentication later. (required)
         :param str session_type: the type of session to start (`test`, `eval`, or a TA1 name) (required)
-        :param int max_scenarios: the maximum number of scenarios requested, supported only in `test` sessions
         :param bool kdma_training: Flag to return kdma_Association from actions when calling get_available_actions
+        :param int max_scenarios: the maximum number of scenarios requested, supported only in `test` sessions
         :return: str
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['adm_name', 'session_type', 'max_scenarios', 'kdma_training']  # noqa: E501
+        all_params = ['adm_name', 'session_type', 'kdma_training', 'max_scenarios']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -517,10 +517,10 @@ class ItmTa2EvalApi(object):
             query_params.append(('adm_name', params['adm_name']))  # noqa: E501
         if 'session_type' in params:
             query_params.append(('session_type', params['session_type']))  # noqa: E501
-        if 'max_scenarios' in params:
-            query_params.append(('max_scenarios', params['max_scenarios']))  # noqa: E501
         if 'kdma_training' in params:
             query_params.append(('kdma_training', params['kdma_training']))  # noqa: E501
+        if 'max_scenarios' in params:
+            query_params.append(('max_scenarios', params['max_scenarios']))  # noqa: E501
 
         header_params = {}
 
