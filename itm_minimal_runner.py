@@ -65,14 +65,13 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 random_action.casualty_id = get_random_casualty_id(state)
             if random_action.action_type == "APPLY_TREATMENT":
                 if random_action.parameters is None:
-                    random_action.parameters = {"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}
+                    random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
                 else :
                     if not random_action.parameters['location'] or random_action.parameters["location"] is None:
                         random_action.parameters["location"] = random.choice(available_locations)
                     if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
         # fill in any missing fields with random values
-        print(random_action)
         return random_action
 
 def get_random_casualty_id(state: State):
@@ -139,6 +138,7 @@ def main():
         while not state.scenario_complete:
             actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
             action = get_next_action(scenario, state, alignment_target, actions)
+            print(action)
             state = itm.take_action(session_id=session_id, body=action)
         print(f'Scenario: {scenario.id} complete')
     print(f'Session {session_id} complete')
