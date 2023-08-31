@@ -75,13 +75,15 @@ options:
 * * requires `casualty_id`
 * * requires parameter `treatment` with a value taken from type enum in `Supplies` object.
 * * requires parameter `location` with a value taken from location enum in `Injury` object.
-* `DIRECT_MOBILE_CASUALTIES`
-* * no further requirements
 * `CHECK_ALL_VITALS`
 * * requires `casualty_id`
 * `CHECK_PULSE`
 * * requires `casualty_id`
 * `CHECK_RESPIRATION`
+* * requires `casualty_id`
+* `DIRECT_MOBILE_CASUALTIES`
+* * no further requirements
+* `MOVE_TO_EVAC`
 * * requires `casualty_id`
 * `SITREP`
 * * accepts **optional** `casualty_id`

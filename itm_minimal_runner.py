@@ -39,10 +39,11 @@ from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casu
 
 class ActionType(Enum):
     APPLY_TREATMENT = "APPLY_TREATMENT"
-    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
     CHECK_ALL_VITALS = "CHECK_ALL_VITALS"
     CHECK_PULSE = "CHECK_PULSE"
     CHECK_RESPIRATION = "CHECK_RESPIRATION"
+    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
+    MOVE_TO_EVAC = "MOVE_TO_EVAC"
     SITREP = "SITREP"
     TAG_CASUALTY = "TAG_CASUALTY"
 
@@ -100,7 +101,7 @@ def main():
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'test']:
+        if args.session[0] not in ['soartech', 'adept', 'test', 'devtest']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'test'.")
         else:
             session_type = args.session[0]
