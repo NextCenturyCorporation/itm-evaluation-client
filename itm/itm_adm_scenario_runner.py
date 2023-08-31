@@ -7,7 +7,6 @@ from swagger_client.models import (
     State,
     Casualty,
     Supplies,
-    Injury,
     Environment,
     Action,
     AlignmentTarget
@@ -96,9 +95,8 @@ class ADMScenarioRunner(ScenarioRunner):
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
                 self.adm_knowledge.scenario_complete = state.scenario_complete
-            self.end_scenario()
-            self.adm_knowledge.scenario_actions_taken = 0
             self.scenarios_run += 1
+            self.end_scenario()
         self.end_session()
 
     def end_scenario(self):
@@ -153,10 +151,9 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-        # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
-        # TODO ITM-71: Display KDMA associations in each action, if available
+
         random_action = random.choice(actions)
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
             # All but Direct Mobile Casualties requires a casualty ID
@@ -164,7 +161,7 @@ class ADMScenarioRunner(ScenarioRunner):
                 random_action.casualty_id = self.get_random_casualty_id(self)
             if random_action.action_type == "APPLY_TREATMENT":
                 if random_action.parameters is None:
-                    random_action.parameters = {"location", random.choice(available_locations)},{"treatment", random.choice(available_supplies)}
+                    random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
                 else :
                    if not random_action.parameters['location'] or random_action.parameters["location"] is None:
                         random_action.parameters["location"] = random.choice(available_locations)
