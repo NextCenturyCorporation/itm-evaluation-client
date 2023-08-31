@@ -33,6 +33,7 @@ import swagger_client
 import random
 from enum import Enum
 from typing import List
+import json
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
@@ -53,12 +54,20 @@ class ActionType(Enum):
         return obj
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action]):
+                    actions: List[Action], paths, index: int):
+        random_action = random.choice(actions)
+
+        if (paths["enabled"]):
+            for action in actions:
+                if (action.action_id == paths["paths"][0]["path"][index]):
+                    random_action = action
+                   
+                
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
         # TODO ITM-71: Display KDMA associations in each action, if available
-        random_action = random.choice(actions)
+        
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
             # All but Direct Mobile Casualties requires a casualty ID
             if random_action.casualty_id is None:
@@ -97,6 +106,9 @@ def main():
     parser.add_argument('--kdma_training', default=False, nargs='?',
                         help='Sends any existing kdma_assoc data with actions.')
 
+    with open("swagger_client/config/action_path.json", 'r') as json_file:
+        paths = json.load(json_file)
+
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
@@ -128,7 +140,7 @@ def main():
             max_scenarios=scenario_count,
             kdma_training=iskdma_training
         )
-
+    action_path_index=0
     while True:
         scenario: Scenario = itm.start_scenario(session_id)
         if scenario.session_complete:
@@ -137,8 +149,9 @@ def main():
         state: State = scenario.state
         while not state.scenario_complete:
             actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-            action = get_next_action(scenario, state, alignment_target, actions)
+            action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index)
             print(action)
+            action_path_index+=1
             state = itm.take_action(session_id=session_id, body=action)
         print(f'Scenario: {scenario.id} complete')
     print(f'Session {session_id} complete')
