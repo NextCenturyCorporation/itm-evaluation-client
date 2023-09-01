@@ -111,7 +111,7 @@ def main():
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'test', 'devtest']:
+        if args.session[0] not in ['soartech', 'adept', 'test']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'test'.")
         else:
             session_type = args.session[0]
@@ -152,6 +152,7 @@ def main():
             print(action)
             action_path_index+=1
             state = itm.take_action(session_id=session_id, body=action)
+            #print(f"--> Took action {action}\nwhich resulted in state {state}.")
         print(f'Scenario: {scenario.id} complete')
     print(f'Session {session_id} complete')
 
