@@ -17,15 +17,17 @@ argument is used, then an eval session type is initiated.
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
 
+The kdma_training flag, when set to True, will put the server in training mode
+in which it shows the kdma association for each action choice.
+
 Omitting max_scenarios or setting it to 0 will run only the available scenarios.
 Any number higher than 0 (e.g. 1000) will repeat scenarios if there are not
 enough unique scenarios available, but is ignored if --eval is specified.
 
-Note: The --eval arg must be supported in the command line and called with
-api.start_session(adm_name=args.adm_name, session_type='eval')
+Note: The --eval arg must be supported in the command line.
 
-Note: The 'get_next_action' function applies a tourniquet to a random casualty's
-right forearm. The implementation of this function should be replaced with decision-making logic.
+Note: The 'get_next_action' function chooses a random action from the list.
+The implementation of this function should be replaced with decision-making logic.
 """
 
 import argparse
@@ -61,12 +63,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
             for action in actions:
                 if (action.action_id == paths["paths"][0]["path"][index]):
                     random_action = action
-                   
-                
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face"]
+
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-        # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
-        # TODO ITM-71: Display KDMA associations in each action, if available
         
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
             # All but Direct Mobile Casualties requires a casualty ID
