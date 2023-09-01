@@ -103,7 +103,8 @@ def main():
                         'Supercedes --session and is the default if nothing is specified. '
                         'Implies --db.')
     parser.add_argument('--kdma_training', default=False, nargs='?',
-                        help='Sends any existing kdma_assoc data with actions.')
+                        help='Put the server in training mode in which it shows the kdma '
+                        'association for each action choice. True or False')
 
     with open("swagger_client/config/action_path.json", 'r') as json_file:
         paths = json.load(json_file)
