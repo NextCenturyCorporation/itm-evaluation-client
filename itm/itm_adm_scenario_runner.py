@@ -33,7 +33,6 @@ class TagTypeAndPriority(Enum):
                 return tag_type
         raise ValueError("Invalid priority")
 
-
 @dataclass
 class ADMKnowledge:
     """
@@ -96,9 +95,8 @@ class ADMScenarioRunner(ScenarioRunner):
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
                 self.adm_knowledge.scenario_complete = state.scenario_complete
-            self.end_scenario()
-            self.adm_knowledge.scenario_actions_taken = 0
             self.scenarios_run += 1
+            self.end_scenario()
         self.end_session()
 
     def end_scenario(self):
@@ -153,9 +151,24 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-        # TODO ITM-68: Enhance ADM to handle selecting incompletely specified available actions
-        # TODO ITM-71: Display KDMA associations in each action, if available
-        return actions[0]
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "unspecified"]
+        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
+
+        random_action = random.choice(actions)
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
+            # All but Direct Mobile Casualties and SITREP require a casualty ID
+            if random_action.casualty_id is None:
+                random_action.casualty_id = self.get_random_casualty_id(self)
+            if random_action.action_type == "APPLY_TREATMENT":
+                if random_action.parameters is None:
+                    random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
+                else :
+                   if not random_action.parameters['location'] or random_action.parameters["location"] is None:
+                        random_action.parameters["location"] = random.choice(available_locations)
+                   if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
+                        random_action.parameters["treatment"] = random.choice(available_supplies)
+        # fill in any missing fields with random values
+        return random_action
 
     def get_random_casualty_id(self):
         #id = random.choice(self.adm_knowledge.all_casualty_ids)

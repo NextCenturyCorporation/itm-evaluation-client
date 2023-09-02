@@ -129,7 +129,7 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi()
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
-scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve status
+scenario_id = 'scenario_id_example' # str | the ID of the scenario for which to retrieve status
 
 try:
     # Retrieve scenario state
@@ -144,7 +144,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **session_id** | **str**| a unique session_id, as returned by /ta2/startSession | 
- **scenario_id** | **str**| The ID of the scenario for which to retrieve status | 
+ **scenario_id** | **str**| the ID of the scenario for which to retrieve status | 
 
 ### Return type
 
@@ -212,7 +212,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **start_session**
-> str start_session(adm_name, session_type, max_scenarios=max_scenarios)
+> str start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
 
 Start a new session
 
@@ -230,11 +230,12 @@ from pprint import pprint
 api_instance = swagger_client.ItmTa2EvalApi()
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
 session_type = 'session_type_example' # str | the type of session to start (`test`, `eval`, or a TA1 name)
+kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
 max_scenarios = 56 # int | the maximum number of scenarios requested, supported only in `test` sessions (optional)
 
 try:
     # Start a new session
-    api_response = api_instance.start_session(adm_name, session_type, max_scenarios=max_scenarios)
+    api_response = api_instance.start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ItmTa2EvalApi->start_session: %s\n" % e)
@@ -246,6 +247,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **adm_name** | **str**| A self-assigned ADM name.  Can add authentication later. | 
  **session_type** | **str**| the type of session to start (&#x60;test&#x60;, &#x60;eval&#x60;, or a TA1 name) | 
+ **kdma_training** | **bool**| whether or not this is a training session with TA2 | [optional] [default to false]
  **max_scenarios** | **int**| the maximum number of scenarios requested, supported only in &#x60;test&#x60; sessions | [optional] 
 
 ### Return type
@@ -268,7 +270,7 @@ No authorization required
 
 Take an action within a scenario
 
-Take an action with
+Take the specified Action within a scenario
 
 ### Example
 ```python
