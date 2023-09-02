@@ -67,8 +67,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         
-        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
-            # All but Direct Mobile Casualties requires a casualty ID
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
+            # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = get_random_casualty_id(state)
             if random_action.action_type == "APPLY_TREATMENT":
