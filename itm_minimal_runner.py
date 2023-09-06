@@ -20,6 +20,14 @@ session type, scenario count, and adm_name.
 The kdma_training flag, when set to True, will put the server in training mode
 in which it shows the kdma association for each action choice.
 
+The config/*_action_path.json files provide sample canned responses for ADMs.
+When these files have 'enabled' set to 'true', this script will choose the
+pre-configured action. Each entry in the 'paths' array will be executed as
+a separate session.  If a 'path' specifies an actionId that is not returned
+by get_available_actions(), then this ADM runner will choose a random action.
+This feature can be integrated into TA2 ADMs so that they may test canned
+sequences of action paths.
+
 Omitting max_scenarios or setting it to 0 will run only the available scenarios.
 Any number higher than 0 (e.g. 1000) will repeat scenarios if there are not
 enough unique scenarios available, but is ignored if --eval is specified.
@@ -36,6 +44,7 @@ import random
 from enum import Enum
 from typing import List
 import json
+import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
@@ -56,12 +65,13 @@ class ActionType(Enum):
         return obj
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action], paths, index: int):
+                    actions: List[Action], paths, index: int, path_index: int):
         random_action = random.choice(actions)
 
         if (paths["enabled"]):
             for action in actions:
-                if (action.action_id == paths["paths"][0]["path"][index]):
+                # Adding a length check, if they keep asking for action outside of index, then we will just select random ones
+                if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
@@ -106,9 +116,6 @@ def main():
                         help='Put the server in training mode in which it shows the kdma '
                         'association for each action choice. True or False')
 
-    with open("swagger_client/config/action_path.json", 'r') as json_file:
-        paths = json.load(json_file)
-
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
@@ -123,40 +130,53 @@ def main():
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
-    config.host = "http://127.0.0.1:8080"
+    HOST = os.getenv('ADM_HOSTNAME')
+    if (HOST == None or HOST == ""):
+        HOST = "127.0.0.1"
+    config.host = HOST + ":8080"
     api_client = ApiClient(configuration=config)
     itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
-    session_id = None
-
-    if args.eval:
-        session_id = itm.start_session(
-            adm_name=args.adm_name,
-            session_type='eval'
-        )
-    else:
-        session_id = itm.start_session(
-            adm_name=args.adm_name,
-            session_type=session_type,
-            max_scenarios=scenario_count,
-            kdma_training=iskdma_training
-        )
     action_path_index=0
-    while True:
-        scenario: Scenario = itm.start_scenario(session_id)
-        if scenario.session_complete:
-            break
-        alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
-        state: State = scenario.state
-        while not state.scenario_complete:
-            actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-            action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index)
-            print(action)
-            action_path_index+=1
-            state = itm.take_action(session_id=session_id, body=action)
-            #print(f"--> Took action {action}\nwhich resulted in state {state}.")
-        print(f'Scenario: {scenario.id} complete')
-    print(f'Session {session_id} complete')
+    path_index=0
 
+    with open("swagger_client/config/" + session_type + "_action_path.json", 'r') as json_file:
+        paths = json.load(json_file)
+
+    for current_path in paths["paths"]:
+        session_id = None
+
+        if args.eval:
+            session_id = itm.start_session(
+                adm_name=args.adm_name,
+                session_type='eval'
+            )
+        else:
+            session_id = itm.start_session(
+                adm_name=args.adm_name,
+                session_type=session_type,
+                max_scenarios=scenario_count,
+                kdma_training=iskdma_training
+            )
+        while True:
+            scenario: Scenario = itm.start_scenario(session_id)
+            if scenario.session_complete:
+                break
+            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
+            state: State = scenario.state
+            while not state.scenario_complete:
+                actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
+                action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
+                print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}')
+                action_path_index+=1
+                state = itm.take_action(session_id=session_id, body=action)
+            print(f'Scenario: {scenario.id} complete')
+        print(f'Session {session_id} complete')
+        path_index+=1
+        action_path_index=0
+        #If path is not enabled then we are assuming random actions and don't want to loop configs
+        if (not paths["enabled"]):
+            break
+        
 
 if __name__ == "__main__":
     main()
