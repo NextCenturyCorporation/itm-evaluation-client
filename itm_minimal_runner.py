@@ -56,12 +56,12 @@ class ActionType(Enum):
         return obj
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action], paths, index: int):
+                    actions: List[Action], paths, index: int, path_index: int):
         random_action = random.choice(actions)
 
         if (paths["enabled"]):
             for action in actions:
-                if (action.action_id == paths["paths"][0]["path"][index]):
+                if (action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
@@ -126,36 +126,39 @@ def main():
     config.host = "http://127.0.0.1:8080"
     api_client = ApiClient(configuration=config)
     itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
-    session_id = None
-
-    if args.eval:
-        session_id = itm.start_session(
-            adm_name=args.adm_name,
-            session_type='eval'
-        )
-    else:
-        session_id = itm.start_session(
-            adm_name=args.adm_name,
-            session_type=session_type,
-            max_scenarios=scenario_count,
-            kdma_training=iskdma_training
-        )
     action_path_index=0
-    while True:
-        scenario: Scenario = itm.start_scenario(session_id)
-        if scenario.session_complete:
-            break
-        alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
-        state: State = scenario.state
-        while not state.scenario_complete:
-            actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-            action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index)
-            print(action)
-            action_path_index+=1
-            state = itm.take_action(session_id=session_id, body=action)
-            #print(f"--> Took action {action}\nwhich resulted in state {state}.")
-        print(f'Scenario: {scenario.id} complete')
-    print(f'Session {session_id} complete')
+    path_index=0
+
+
+    for current_path in paths["paths"]:
+        session_id = None
+
+        if args.eval:
+            session_id = itm.start_session(
+                adm_name=args.adm_name,
+                session_type='eval'
+            )
+        else:
+            session_id = itm.start_session(
+                adm_name=args.adm_name,
+                session_type=session_type,
+                max_scenarios=scenario_count,
+                kdma_training=iskdma_training
+            )
+        while True:
+            scenario: Scenario = itm.start_scenario(session_id)
+            if scenario.session_complete:
+                break
+            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
+            state: State = scenario.state
+            while not state.scenario_complete:
+                actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
+                action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
+                action_path_index+=1
+                state = itm.take_action(session_id=session_id, body=action)
+            print(f'Scenario: {scenario.id} complete')
+        print(f'Session {session_id} complete')
+        path_index+=1
 
 
 if __name__ == "__main__":
