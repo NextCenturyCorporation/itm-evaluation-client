@@ -36,6 +36,7 @@ import random
 from enum import Enum
 from typing import List
 import json
+import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
@@ -123,7 +124,10 @@ def main():
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
-    config.host = "http://127.0.0.1:8080"
+    HOST = os.getenv('ITM_HOSTNAME')
+    if (HOST == None or HOST == ""):
+        HOST = "127.0.0.1"
+    config.host = HOST + ":8080"
     api_client = ApiClient(configuration=config)
     itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
     action_path_index=0
