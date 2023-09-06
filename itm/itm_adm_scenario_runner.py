@@ -155,8 +155,8 @@ class ADMScenarioRunner(ScenarioRunner):
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
 
         random_action = random.choice(actions)
-        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
-            # All but Direct Mobile Casualties requires a casualty ID
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
+            # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = self.get_random_casualty_id(self)
             if random_action.action_type == "APPLY_TREATMENT":

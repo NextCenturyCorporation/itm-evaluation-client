@@ -67,8 +67,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         
-        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES":
-            # All but Direct Mobile Casualties requires a casualty ID
+        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
+            # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = get_random_casualty_id(state)
             if random_action.action_type == "APPLY_TREATMENT":
@@ -103,7 +103,8 @@ def main():
                         'Supercedes --session and is the default if nothing is specified. '
                         'Implies --db.')
     parser.add_argument('--kdma_training', default=False, nargs='?',
-                        help='Sends any existing kdma_assoc data with actions.')
+                        help='Put the server in training mode in which it shows the kdma '
+                        'association for each action choice. True or False')
 
     with open("swagger_client/config/action_path.json", 'r') as json_file:
         paths = json.load(json_file)
@@ -111,7 +112,7 @@ def main():
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'test', 'devtest']:
+        if args.session[0] not in ['soartech', 'adept', 'test']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'test'.")
         else:
             session_type = args.session[0]
