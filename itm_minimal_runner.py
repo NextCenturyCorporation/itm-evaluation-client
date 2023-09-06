@@ -62,7 +62,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
 
         if (paths["enabled"]):
             for action in actions:
-                if (action.action_id == paths["paths"][path_index]["path"][index]):
+                # Adding a length check, if they keep asking for action outside of index, then we will just select random ones
+                if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
@@ -107,9 +108,6 @@ def main():
                         help='Put the server in training mode in which it shows the kdma '
                         'association for each action choice. True or False')
 
-    with open("swagger_client/config/action_path.json", 'r') as json_file:
-        paths = json.load(json_file)
-
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
@@ -133,6 +131,8 @@ def main():
     action_path_index=0
     path_index=0
 
+    with open("swagger_client/config/" + session_type + "_action_path.json", 'r') as json_file:
+        paths = json.load(json_file)
 
     for current_path in paths["paths"]:
         session_id = None
