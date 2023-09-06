@@ -159,7 +159,11 @@ def main():
             print(f'Scenario: {scenario.id} complete')
         print(f'Session {session_id} complete')
         path_index+=1
-
+        action_path_index=0
+        #If path is not enabled then we are assuming random actions and don't want to loop configs
+        if (not paths["enabled"]):
+            break
+        
 
 if __name__ == "__main__":
     main()
