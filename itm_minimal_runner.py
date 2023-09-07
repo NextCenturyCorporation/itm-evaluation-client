@@ -122,7 +122,7 @@ def main():
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
-    HOST = os.getenv('ITM_HOSTNAME')
+    HOST = os.getenv('TA3_HOSTNAME')
     if (HOST == None or HOST == ""):
         HOST = "127.0.0.1"
     config.host = HOST + ":8080"
