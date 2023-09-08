@@ -20,6 +20,14 @@ session type, scenario count, and adm_name.
 The kdma_training flag, when set to True, will put the server in training mode
 in which it shows the kdma association for each action choice.
 
+The config/*_action_path.json files provide sample canned responses for ADMs.
+When these files have 'enabled' set to 'true', this script will choose the
+pre-configured action. Each entry in the 'paths' array will be executed as
+a separate session.  If a 'path' specifies an actionId that is not returned
+by get_available_actions(), then this ADM runner will choose a random action.
+This feature can be integrated into TA2 ADMs so that they may test canned
+sequences of action paths.
+
 Omitting max_scenarios or setting it to 0 will run only the available scenarios.
 Any number higher than 0 (e.g. 1000) will repeat scenarios if there are not
 enough unique scenarios available, but is ignored if --eval is specified.
@@ -158,6 +166,7 @@ def main():
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
+                print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
             print(f'Scenario: {scenario.id} complete')

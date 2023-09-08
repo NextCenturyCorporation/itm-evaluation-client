@@ -37,7 +37,10 @@ pip3 install -r requirements.txt
 
 ### Running the ADM minimal runner
 
- To see additional details regarding modifying this minimal runner to be a TA2 client, see the comments at the top of `itm_minimal_runner.py`.  Then run `itm_minimal_runner.py` in the root directory:
+ To see additional details regarding modifying this minimal runner to be a TA2 client, see the comments at the top of `itm_minimal_runner.py`.
+ These comments also describe how to configure the ADM minimal runner to choose pre-configured action paths.
+
+ Run `itm_minimal_runner.py` in the root directory:
 
 ```
 usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval]
