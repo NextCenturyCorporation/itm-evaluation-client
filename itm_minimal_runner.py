@@ -130,10 +130,13 @@ def main():
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
+    PORT = os.getenv('TA3_PORT')
+    if (PORT == None or PORT == ""):
+        PORT = "8080"
     HOST = os.getenv('TA3_HOSTNAME')
     if (HOST == None or HOST == ""):
         HOST = "127.0.0.1"
-    config.host = HOST + ":8080"
+    config.host = HOST + ":" + PORT
     api_client = ApiClient(configuration=config)
     itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
     action_path_index=0
