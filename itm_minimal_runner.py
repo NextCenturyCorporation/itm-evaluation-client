@@ -76,7 +76,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
 
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-        
+        tag_labels = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
+
+        # Fill in any missing fields with random values
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
             # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
@@ -89,7 +91,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                         random_action.parameters["location"] = random.choice(available_locations)
                     if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-        # fill in any missing fields with random values
+            elif random_action.action_type == "TAG_CASUALTY":
+                if random_action.parameters is None:
+                    random_action.parameters = {"category": random.choice(tag_labels)}
         return random_action
 
 def get_random_casualty_id(state: State):
