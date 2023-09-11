@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "paths":[
         {
             "path":["action1","action2","action4","action5","action6"]
