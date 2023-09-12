@@ -35,8 +35,7 @@ class Casualty(object):
         'demographics': 'Demographics',
         'injuries': 'list[Injury]',
         'vitals': 'Vitals',
-        'complete_vitals': 'Vitals',
-        'assessed': 'bool',
+        'visited': 'bool',
         'tag': 'str'
     }
 
@@ -48,12 +47,11 @@ class Casualty(object):
         'demographics': 'demographics',
         'injuries': 'injuries',
         'vitals': 'vitals',
-        'complete_vitals': 'complete_vitals',
-        'assessed': 'assessed',
+        'visited': 'visited',
         'tag': 'tag'
     }
 
-    def __init__(self, id=None, unstructured=None, name=None, relationship=None, demographics=None, injuries=None, vitals=None, complete_vitals=None, assessed=False, tag=None):  # noqa: E501
+    def __init__(self, id=None, unstructured=None, name=None, relationship=None, demographics=None, injuries=None, vitals=None, visited=False, tag=None):  # noqa: E501
         """Casualty - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._unstructured = None
@@ -62,8 +60,7 @@ class Casualty(object):
         self._demographics = None
         self._injuries = None
         self._vitals = None
-        self._complete_vitals = None
-        self._assessed = None
+        self._visited = None
         self._tag = None
         self.discriminator = None
         self.id = id
@@ -78,10 +75,8 @@ class Casualty(object):
             self.injuries = injuries
         if vitals is not None:
             self.vitals = vitals
-        if complete_vitals is not None:
-            self.complete_vitals = complete_vitals
-        if assessed is not None:
-            self.assessed = assessed
+        if visited is not None:
+            self.visited = visited
         if tag is not None:
             self.tag = tag
 
@@ -253,48 +248,27 @@ class Casualty(object):
         self._vitals = vitals
 
     @property
-    def complete_vitals(self):
-        """Gets the complete_vitals of this Casualty.  # noqa: E501
+    def visited(self):
+        """Gets the visited of this Casualty.  # noqa: E501
 
+        whether or not this casualty has been visited in the current scenario  # noqa: E501
 
-        :return: The complete_vitals of this Casualty.  # noqa: E501
-        :rtype: Vitals
-        """
-        return self._complete_vitals
-
-    @complete_vitals.setter
-    def complete_vitals(self, complete_vitals):
-        """Sets the complete_vitals of this Casualty.
-
-
-        :param complete_vitals: The complete_vitals of this Casualty.  # noqa: E501
-        :type: Vitals
-        """
-
-        self._complete_vitals = complete_vitals
-
-    @property
-    def assessed(self):
-        """Gets the assessed of this Casualty.  # noqa: E501
-
-        whether or not this casualty has been assessed in the current scenario  # noqa: E501
-
-        :return: The assessed of this Casualty.  # noqa: E501
+        :return: The visited of this Casualty.  # noqa: E501
         :rtype: bool
         """
-        return self._assessed
+        return self._visited
 
-    @assessed.setter
-    def assessed(self, assessed):
-        """Sets the assessed of this Casualty.
+    @visited.setter
+    def visited(self, visited):
+        """Sets the visited of this Casualty.
 
-        whether or not this casualty has been assessed in the current scenario  # noqa: E501
+        whether or not this casualty has been visited in the current scenario  # noqa: E501
 
-        :param assessed: The assessed of this Casualty.  # noqa: E501
+        :param visited: The visited of this Casualty.  # noqa: E501
         :type: bool
         """
 
-        self._assessed = assessed
+        self._visited = visited
 
     @property
     def tag(self):
