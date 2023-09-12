@@ -56,7 +56,11 @@ options:
   --kdma_training [KDMA_TRAINING]
                         Put the server in training mode in which it shows the kdma association for each action choice.  True or False.
 ```
-
+## Hitting a remote TA3 Server
+ In order to hit a non-locally running server (localhost) set the below environment variables:
+ - TA3_PORT(Default: 8080)
+ - TA3_HOSTNAME (Default: 127.0.0.1)
+ 
 ### Running the Human input simulator (DEPRECATED)
 
 The Human input simulator has not been updated since MVP.  It may be removed entirely in a future release.
