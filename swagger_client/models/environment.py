@@ -52,7 +52,7 @@ class Environment(object):
         'flora': 'flora',
         'fauna': 'fauna',
         'soundscape': 'soundscape',
-        'aid_delay': 'aidDelay',
+        'aid_delay': 'aid_delay',
         'temperature': 'temperature',
         'humidity': 'humidity',
         'lighting': 'lighting',

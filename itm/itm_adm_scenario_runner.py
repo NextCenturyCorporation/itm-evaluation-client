@@ -159,7 +159,7 @@ class ADMScenarioRunner(ScenarioRunner):
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
             # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
-                random_action.casualty_id = self.get_random_casualty_id(self)
+                random_action.casualty_id = self.get_random_casualty_id()
             if random_action.action_type == "APPLY_TREATMENT":
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
@@ -174,8 +174,6 @@ class ADMScenarioRunner(ScenarioRunner):
         return random_action
 
     def get_random_casualty_id(self):
-        #id = random.choice(self.adm_knowledge.all_casualty_ids)
-        #casualties : List[Casualty] = self.adm_knowledge.casualties
         return random.choice(self.adm_knowledge.all_casualty_ids)
 
     def assess_casualty_priority(self):
