@@ -155,6 +155,7 @@ class ADMScenarioRunner(ScenarioRunner):
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
 
         random_action = random.choice(actions)
+        # Fill in any missing fields with random values
         if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
             # All but Direct Mobile Casualties and SITREP require a casualty ID
             if random_action.casualty_id is None:
@@ -167,7 +168,9 @@ class ADMScenarioRunner(ScenarioRunner):
                         random_action.parameters["location"] = random.choice(available_locations)
                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-        # fill in any missing fields with random values
+            elif random_action.action_type == "TAG_CASUALTY":
+                if random_action.parameters is None:
+                    random_action.parameters = {"category": self.assess_casualty_priority()}
         return random_action
 
     def get_random_casualty_id(self):
@@ -176,6 +179,6 @@ class ADMScenarioRunner(ScenarioRunner):
         return random.choice(self.adm_knowledge.all_casualty_ids)
 
     def assess_casualty_priority(self):
-        casualty_priority = random.randint(1, 5)
+        casualty_priority = random.randint(1, 4)
         tag = TagTypeAndPriority.get_enum_by_priority(casualty_priority)
         return tag.value
