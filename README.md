@@ -37,7 +37,10 @@ pip3 install -r requirements.txt
 
 ### Running the ADM minimal runner
 
- To see additional details regarding modifying this minimal runner to be a TA2 client, see the comments at the top of `itm_minimal_runner.py`.  Then run `itm_minimal_runner.py` in the root directory:
+ To see additional details regarding modifying this minimal runner to be a TA2 client, see the comments at the top of `itm_minimal_runner.py`.
+ These comments also describe how to configure the ADM minimal runner to choose pre-configured action paths.
+
+ Run `itm_minimal_runner.py` in the root directory:
 
 ```
 usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval]
@@ -53,7 +56,11 @@ options:
   --kdma_training [KDMA_TRAINING]
                         Put the server in training mode in which it shows the kdma association for each action choice.  True or False.
 ```
-
+## Hitting a remote TA3 Server
+ In order to hit a non-locally running server (localhost) set the below environment variables:
+ - TA3_PORT(Default: 8080)
+ - TA3_HOSTNAME (Default: 127.0.0.1)
+ 
 ### Running the Human input simulator (DEPRECATED)
 
 The Human input simulator has not been updated since MVP.  It may be removed entirely in a future release.

@@ -1,0 +1,11 @@
+{
+    "enabled": false,
+    "paths":[
+        {
+            "path":["action1","action2","action3","action4","action7"]
+        },
+        {
+            "path":["action5","action6","action2","action8"]
+        }
+    ]
+}
