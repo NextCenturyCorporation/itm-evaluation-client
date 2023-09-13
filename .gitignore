@@ -62,3 +62,10 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# gradle
+.gradle
+
+# generated files
+generated
+swagger_server/api
