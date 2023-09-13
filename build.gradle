@@ -19,6 +19,7 @@ defaultTasks 'clean', 'generateSwaggerCode', 'postGeneration'
 
 def generatedApiDirectory = "generated"
 def apiDirectory = "swagger"
+def outputDirectory = "swagger_client"
 
 task swaggerClean(type: Delete) {
     doFirst {
@@ -42,7 +43,7 @@ swaggerSources {
         inputFile = file(apiDirectory+'/swagger.yaml')
         code {
             language = 'python'
-            components = ['models']
+            components = ['models','apis']
             outputDir = file (generatedApiDirectory)
             configFile = file (apiDirectory+'/config.json')
             wipeOutputDir = false
@@ -52,38 +53,36 @@ swaggerSources {
 generateSwaggerCode.dependsOn(swaggerClean)
 generateSwaggerCode.mustRunAfter(swaggerClean)
 
+ext.generateInitFile = { directory, component ->
+    // Generate init file
+    def initFile = "${directory}/${component}/__init__.py"
+    exec {
+        commandLine "bash", "-c", "echo -e \"from __future__ import absolute_import \n# import ${component} into ${component} package\" > ${initFile}"
+    }
+    fileTree("${directory}/${component}/").matching{ include "**/*.py" exclude "__init__.py" }.visit{ FileVisitDetails details ->
+        def basename = details.file.name.take(details.file.name.lastIndexOf('.'))
+        exec {
+            commandLine "bash", "-c", "cat ${details.file} | grep '^class' | sed 's/class //g' | sed 's/(.*//g' | xargs echo from ${directory}.${component}.${basename} import >> ${initFile}"
+        }
+    }
+    println "generated __init__.py for ${component}"
+}
+
 task postGeneration() {
     doLast() {
         // Copy generated files into models folder
         copy {
-            from generatedApiDirectory+'/swagger_client/'
-            into 'swagger_client/'
+            from "${generatedApiDirectory}/${outputDirectory}/"
+            into outputDirectory
         }
 
         // delete generated api directory
-        // delete generatedApiDirectory
-        // println "removed ${generatedApiDirectory}"
+        delete generatedApiDirectory
+        println "removed ${generatedApiDirectory}"
 
-        // Copy basemodel file
-        // copy {
-        //     from 'swagger_server/swagger/base_model_.py'
-        //     into 'swagger_server/models/'
-        // }
-        // println 'copied base_model.py'
-
-        // Generate models init file
-        // def initFile = "swagger_server/models/__init__.py"
-        // delete initFile
-        // exec {
-        //     commandLine "bash", "-c", "echo -e \"from __future__ import absolute_import \n# import models into model package\" >> ${initFile}"
-        // }
-        // fileTree("swagger_server/models").matching{ include "**/*.py" exclude "__init__.py" }.visit{ FileVisitDetails details ->
-        //     def basename = details.file.name.take(details.file.name.lastIndexOf('.'))
-        //     exec {
-        //         commandLine "bash", "-c", "cat ${details.file} | grep '^class' | sed 's/class //g' | sed 's/(.*//g' | xargs echo from swagger_server.models.${basename} import >> ${initFile}"
-        //     }
-        // }
-        // println 'generated __init__.py for models'
+        // Generate init files
+        project.generateInitFile(outputDirectory, 'models')
+        project.generateInitFile(outputDirectory, 'api')
     }
 }
 postGeneration.mustRunAfter('generateSwaggerCode')
