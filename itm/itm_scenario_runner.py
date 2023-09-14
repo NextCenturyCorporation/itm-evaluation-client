@@ -20,7 +20,7 @@ class ScenarioRunner(ABC):
         PORT = os.getenv('TA3_PORT')
         if (PORT == None or PORT == ""):
             PORT = "8080"
-        config.host = "http://{HOST}:{PORT}"
+        config.host = f"http://{HOST}:{PORT}"
         api_client = ApiClient(configuration=config)
         return swagger_client.ItmTa2EvalApi(api_client=api_client)
 
