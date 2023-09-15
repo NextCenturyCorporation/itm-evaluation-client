@@ -156,8 +156,8 @@ class ADMScenarioRunner(ScenarioRunner):
 
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
-            # All but Direct Mobile Casualties and SITREP require a casualty ID
+        if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:
+            # Most actions require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = self.get_random_casualty_id()
             if random_action.action_type == "APPLY_TREATMENT":
