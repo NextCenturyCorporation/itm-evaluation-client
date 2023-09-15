@@ -94,6 +94,8 @@ options:
 * * requires `casualty_id`
 * `DIRECT_MOBILE_CASUALTIES`
 * * no further requirements
+* `END_SCENARIO`
+* * no further requirements
 * `MOVE_TO_EVAC`
 * * requires `casualty_id`
 * `SITREP`
