@@ -29,16 +29,6 @@ task swaggerClean(type: Delete) {
 swaggerClean.mustRunAfter(clean)
 
 swaggerSources {
-    mvp {
-        inputFile = file(apiDirectory+'/ta1.yaml')
-        code {
-            language = 'python'
-            components = ['models']
-            outputDir = file (generatedApiDirectory)
-            configFile = file (apiDirectory+'/config.json')
-            wipeOutputDir = false
-        }
-    }
     server {
         inputFile = file(apiDirectory+'/swagger.yaml')
         code {
