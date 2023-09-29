@@ -55,6 +55,7 @@ class ActionType(Enum):
     CHECK_PULSE = "CHECK_PULSE"
     CHECK_RESPIRATION = "CHECK_RESPIRATION"
     DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
+    END_SCENARIO = "END_SCENARIO"
     MOVE_TO_EVAC = "MOVE_TO_EVAC"
     SITREP = "SITREP"
     TAG_CASUALTY = "TAG_CASUALTY"
@@ -79,8 +80,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         tag_labels = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
 
         # Fill in any missing fields with random values
-        if random_action.action_type != "DIRECT_MOBILE_CASUALTIES" and random_action.action_type != "SITREP":
-            # All but Direct Mobile Casualties and SITREP require a casualty ID
+        if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:
+            # Most actions require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = get_random_casualty_id(state)
             if random_action.action_type == "APPLY_TREATMENT":
