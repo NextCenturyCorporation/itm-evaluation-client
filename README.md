@@ -104,3 +104,9 @@ options:
 * * requires `casualty_id`
 * * requires parameter `category` with a value taken from `tagLabel` enum in `TriageCategory` object.
 
+## Updating models
+This requires JDK 8 or higher to run the gradle tool.
+
+The models in swagger_server/models are generated from swagger_server/swagger/swagger.yaml
+If this file is updated the models will need to be re-generated and checked in.
+Run `./gradlew` to do this.
