@@ -12,7 +12,7 @@ The script starts a session and then enters a loop:
 4. Checks if the scenario state's 'scenario_complete' property is True.
    If it is, then it ends the scenario.
 
-Session types can be 'test', 'adept', or 'soartech'. If the 'eval' 
+Session types can be 'eval', 'adept', or 'soartech'. If the 'eval'
 argument is used, then an eval session type is initiated. 
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
@@ -109,7 +109,7 @@ def main():
     parser.add_argument('--session', nargs='*', default=[], 
                         metavar=('session_type', 'scenario_count'), 
                         help='Specify session type and scenario count. '
-                        'Session type can be test, adept, or soartech. '
+                        'Session type can be eval, adept, or soartech. '
                         'If you want to run through all available scenarios '
                         'without repeating do not use the scenario_count '
                         'argument')
@@ -124,8 +124,8 @@ def main():
     args = parser.parse_args()
     iskdma_training=False
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'test']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'test'.")
+        if args.session[0] not in ['soartech', 'adept', 'eval']:
+            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
         else:
             session_type = args.session[0]
     else:
@@ -167,6 +167,7 @@ def main():
             )
         while True:
             scenario: Scenario = itm.start_scenario(session_id)
+            #scenario: Scenario = itm.start_scenario(session_id=session_id, scenario_id='st-september-2023-mvp2')
             if scenario.session_complete:
                 break
             alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)

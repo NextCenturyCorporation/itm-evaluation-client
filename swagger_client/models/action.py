@@ -29,7 +29,6 @@ class Action(object):
     """
     swagger_types = {
         'action_id': 'str',
-        'scenario_id': 'str',
         'action_type': 'str',
         'casualty_id': 'str',
         'unstructured': 'str',
@@ -40,7 +39,6 @@ class Action(object):
 
     attribute_map = {
         'action_id': 'action_id',
-        'scenario_id': 'scenario_id',
         'action_type': 'action_type',
         'casualty_id': 'casualty_id',
         'unstructured': 'unstructured',
@@ -49,10 +47,9 @@ class Action(object):
         'parameters': 'parameters'
     }
 
-    def __init__(self, action_id=None, scenario_id=None, action_type=None, casualty_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, casualty_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
         """Action - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
-        self._scenario_id = None
         self._action_type = None
         self._casualty_id = None
         self._unstructured = None
@@ -61,7 +58,6 @@ class Action(object):
         self._parameters = None
         self.discriminator = None
         self.action_id = action_id
-        self.scenario_id = scenario_id
         self.action_type = action_type
         if casualty_id is not None:
             self.casualty_id = casualty_id
@@ -98,31 +94,6 @@ class Action(object):
             raise ValueError("Invalid value for `action_id`, must not be `None`")  # noqa: E501
 
         self._action_id = action_id
-
-    @property
-    def scenario_id(self):
-        """Gets the scenario_id of this Action.  # noqa: E501
-
-        scenario ID this probe is for  # noqa: E501
-
-        :return: The scenario_id of this Action.  # noqa: E501
-        :rtype: str
-        """
-        return self._scenario_id
-
-    @scenario_id.setter
-    def scenario_id(self, scenario_id):
-        """Sets the scenario_id of this Action.
-
-        scenario ID this probe is for  # noqa: E501
-
-        :param scenario_id: The scenario_id of this Action.  # noqa: E501
-        :type: str
-        """
-        if scenario_id is None:
-            raise ValueError("Invalid value for `scenario_id`, must not be `None`")  # noqa: E501
-
-        self._scenario_id = scenario_id
 
     @property
     def action_type(self):

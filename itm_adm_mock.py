@@ -9,7 +9,7 @@ def main():
     parser.add_argument('-y', action='store_true', default=False, help='Use a premade yaml scene')
     parser.add_argument('--session', nargs='*', default=[], metavar=('session_type', 'scenario_count'), help=\
                         'Specify session type and scenario count. '
-                        'Session type can be test, adept, or soartech. '
+                        'Session type can be eval, adept, or soartech. '
                         'If you want to run through all available scenarios without repeating do not use the scenario_count argument')
     parser.add_argument('--eval', action='store_true', default=False, help=\
                         'Run an eval session')
