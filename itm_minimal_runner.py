@@ -167,7 +167,6 @@ def main():
             )
         while True:
             scenario: Scenario = itm.start_scenario(session_id)
-            #scenario: Scenario = itm.start_scenario(session_id=session_id, scenario_id='st-september-2023-mvp2')
             if scenario.session_complete:
                 break
             alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
