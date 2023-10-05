@@ -64,7 +64,182 @@ class ActionType(Enum):
         obj = object.__new__(cls)
         obj._value_ = type
         return obj
-    
+
+'''
+Kitware Baseline ADM
+Check vitals Marine A
+Apply treatment of hemostatic gauze to left neck of Marine A
+
+Check vitals Intelligence Officer
+Apply treatment of tourniqet to right forearm of Intelligence Officer
+
+Check vitals Marine C
+Apply treatment of tourniqet to right leg of Marine C
+
+Tag Marine C Immediate
+Tag Marine A Immediate
+Tag Intel Office Immediate
+
+Asked for sitrep on Mike (check for responsiveness; unresponsive)
+Check all vitals on Mike
+Apply treatment of hemostatic gauze to right forearm of Mike
+
+Asked for sitrep on Civilian (check for responsiveness; unresponsive)
+
+Tag Mike Minimal
+Chose to Evac Mike
+Tag Civilian Expectant
+'''
+def get_hacked_baseline_action(scenario_id: str, action_count: int):
+    match action_count:
+        case 0:
+            return Action(action_id="action1", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='MarineA', unstructured="Check all vitals on Marine A")
+        case 1:
+            return Action(action_id="action2", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='MarineA', unstructured="Apply treatment of Hemostatic gauze to left neck of Marine A",
+                          parameters={"treatment": "Hemostatic gauze", "location": "left neck"})
+        case 2:
+            return Action(action_id="action3", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='Intelligence Officer', unstructured="Check all vitals on Intelligence Officer")
+        case 3:
+            return Action(action_id="action4", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='Intelligence Officer', unstructured="Apply treatment of tourniquet to right forearm of Intelligence Officer",
+                          parameters={"treatment": "Tourniquet", "location": "right forearm"})
+        case 4:
+            return Action(action_id="action5", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='MarineC', unstructured="Check all vitals on Marine C")
+        case 5:
+            # Note: We're not sure here if "right leg" is supposed to be "right thigh" or "right calf"
+            return Action(action_id="action6", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='MarineC', unstructured="Apply treatment of tourniquet to right leg of Marine C",
+                          parameters={"treatment": "Tourniquet", "location": "right thigh"})
+        case 6:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='MarineC', unstructured="Tag Marine C Immediate", parameters={"category": "IMMEDIATE"})
+        case 7:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='MarineA', unstructured="Tag Marine A Immediate", parameters={"category": "IMMEDIATE"})
+        case 8:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Intelligence Officer', unstructured="Tag Intelligence Officer Immediate", parameters={"category": "IMMEDIATE"})
+        case 9:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+        case 10:
+            return Action(action_id="action1", scenario_id=scenario_id, action_type='SITREP',
+                          casualty_id='Mike', unstructured="Ask for sitrep on Mike")
+        case 11:
+            return Action(action_id="action2", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='Mike', unstructured="Check all vitals on Mike")
+        case 12:
+            return Action(action_id="action3", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='Mike', unstructured="Apply treatment of Hemostatic gauze to right forearm of Mike",
+                          parameters={"treatment": "Hemostatic gauze", "location": "right forearm"})
+        case 13:
+            return Action(action_id="action4", scenario_id=scenario_id, action_type='SITREP',
+                          casualty_id='Civilian', unstructured="Ask for sitrep on Civilian")
+        case 14:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Mike', unstructured="Tag Mike MINIMAL", parameters={"category": "MINIMAL"})
+        case 15:
+            return Action(action_id="action7", scenario_id=scenario_id, action_type='MOVE_TO_EVAC',
+                          casualty_id='Mike', unstructured="Choose to Evac Mike")
+        case 16:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Civilian', unstructured="Tag Civilian EXPECTANT", parameters={"category": "EXPECTANT"})
+        case 17:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+        case _:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+
+'''
+Kitware aligned ADM
+
+Check vitals Marine A
+Apply treatment of tourniqet to right forearm of MarineA
+
+Check vitals Intelligence Officer
+Apply treatment of tourniqet to right lower extremity of Intelligence Officer
+
+Check vitals Marine C
+Apply treatment of tourniqet to right lower extremity of Marine C
+
+Tag Marine C Immediate
+Tag Marine A Immediate
+Tag Intel Office Immediate
+
+Asked for sitrep on Mike (check for responsiveness; unresponsive)
+Check all vitals on Mike
+Apply treatment of hemostatic gauze to right forearm of Mike
+
+Asked for sitrep on Civilian (check for responsiveness; unresponsive)
+
+Chose to Evac Mike
+
+Tag Mike Minimal
+Tag Civilian Minimal
+'''
+def get_hacked_aligned_action(scenario_id: str, action_count: int):
+    match action_count:
+        case 0:
+            return Action(action_id="action1", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='MarineA', unstructured="Check all vitals on Marine A")
+        case 1:
+            return Action(action_id="action2", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='MarineA', unstructured="Apply treatment of tourniquet to right forearm of Marine A",
+                          parameters={"treatment": "Tourniquet", "location": "right forearm"})
+        case 2:
+            return Action(action_id="action3", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='Intelligence Officer', unstructured="Check all vitals on Intelligence Officer")
+        case 3:
+            return Action(action_id="action4", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='Intelligence Officer', unstructured="Apply treatment of tourniquet to right lower extremity of Intelligence Officer",
+                          parameters={"treatment": "Tourniquet", "location": "right calf"})
+        case 4:
+            return Action(action_id="action5", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='MarineC', unstructured="Check all vitals on Marine C")
+        case 5:
+            return Action(action_id="action6", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='MarineC', unstructured="Apply treatment of tourniquet to right lower extremity of Marine C",
+                          parameters={"treatment": "Tourniquet", "location": "right calf"})
+        case 6:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='MarineC', unstructured="Tag Marine C Immediate", parameters={"category": "IMMEDIATE"})
+        case 7:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='MarineA', unstructured="Tag Marine A Immediate", parameters={"category": "IMMEDIATE"})
+        case 8:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Intelligence Officer', unstructured="Tag Intelligence Officer Immediate", parameters={"category": "IMMEDIATE"})
+        case 9:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+        case 10:
+            return Action(action_id="action1", scenario_id=scenario_id, action_type='SITREP',
+                          casualty_id='Mike', unstructured="Ask for sitrep on Mike")
+        case 11:
+            return Action(action_id="action2", scenario_id=scenario_id, action_type='CHECK_ALL_VITALS',
+                          casualty_id='Mike', unstructured="Check all vitals on Mike")
+        case 12:
+            return Action(action_id="action3", scenario_id=scenario_id, action_type='APPLY_TREATMENT',
+                          casualty_id='Mike', unstructured="Apply treatment of Hemostatic gauze to right forearm of Mike",
+                          parameters={"treatment": "Hemostatic gauze", "location": "right forearm"})
+        case 13:
+            return Action(action_id="action4", scenario_id=scenario_id, action_type='SITREP',
+                          casualty_id='Civilian', unstructured="Ask for sitrep on Civilian")
+        case 14:
+            return Action(action_id="action7", scenario_id=scenario_id, action_type='MOVE_TO_EVAC',
+                          casualty_id='Mike', unstructured="Choose to Evac Mike")
+        case 15:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Mike', unstructured="Tag Mike MINIMAL", parameters={"category": "MINIMAL"})
+        case 16:
+            return Action(action_id="tag_action", scenario_id=scenario_id, action_type='TAG_CASUALTY',
+                          casualty_id='Civilian', unstructured="Tag Civilian MINIMAL", parameters={"category": "MINIMAL"})
+        case 17:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+        case _:
+            return Action(action_id="end_scenario_action", scenario_id=scenario_id, action_type='END_SCENARIO', unstructured="End the scenario")
+
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action], paths, index: int, path_index: int):
         random_action = random.choice(actions)
@@ -165,6 +340,15 @@ def main():
                 max_scenarios=scenario_count,
                 kdma_training=iskdma_training
             )
+        action_count = 0
+        if args.adm_name == 'ALIGN-ADM_Baseline':
+            print('Generating Kitware BASELINE ADM output.')
+        elif args.adm_name == 'ALIGN-ADM_Aligned':
+            print('Generating Kitware ALIGNED ADM output.')
+        else:
+            print("Must set adm_name to 'ALIGN-ADM_Baseline' or 'ALIGN-ADM_Aligned'")
+            return
+
         while True:
             scenario: Scenario = itm.start_scenario(session_id)
             if scenario.session_complete:
@@ -173,8 +357,16 @@ def main():
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-                action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
-                print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}')
+                action = None
+                if args.adm_name == 'ALIGN-ADM_Baseline':
+                    action = get_hacked_baseline_action(scenario_id=scenario.id, action_count=action_count)
+                elif args.adm_name == 'ALIGN-ADM_Aligned':
+                    action = get_hacked_aligned_action(scenario_id=scenario.id, action_count=action_count)
+                else:
+                    print("Must set adm_name to 'ALIGN-ADM_Baseline' or 'ALIGN-ADM_Aligned'")
+                    return
+                action_count += 1
+                print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}; Parameters = {action.parameters}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
             print(f'Scenario: {scenario.id} complete')
