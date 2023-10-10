@@ -173,7 +173,7 @@ class Casualty(object):
         :param relationship: The relationship of this Casualty.  # noqa: E501
         :type: str
         """
-        allowed_values = ["NONE", "ALLY", "FRIEND", "HOSTILE", "EXPECTANT"]  # noqa: E501
+        allowed_values = ["NONE", "ALLY", "FRIEND", "HOSTILE"]  # noqa: E501
         if relationship not in allowed_values:
             raise ValueError(
                 "Invalid value for `relationship` ({0}), must be one of {1}"  # noqa: E501

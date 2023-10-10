@@ -146,7 +146,7 @@ class ItmTa2EvalApi(object):
 
         :param async_req bool
         :param str session_id: a unique session_id, as returned by /ta2/startSession (required)
-        :param str scenario_id: The ID of the scenario for which to retrieve avaialble actions (required)
+        :param str scenario_id: The ID of the scenario for which to retrieve available actions (required)
         :return: list[Action]
                  If the method is called asynchronously,
                  returns the request thread.
@@ -169,7 +169,7 @@ class ItmTa2EvalApi(object):
 
         :param async_req bool
         :param str session_id: a unique session_id, as returned by /ta2/startSession (required)
-        :param str scenario_id: The ID of the scenario for which to retrieve avaialble actions (required)
+        :param str scenario_id: The ID of the scenario for which to retrieve available actions (required)
         :return: list[Action]
                  If the method is called asynchronously,
                  returns the request thread.
@@ -443,7 +443,7 @@ class ItmTa2EvalApi(object):
     def start_session(self, adm_name, session_type, **kwargs):  # noqa: E501
         """Start a new session  # noqa: E501
 
-        Get unique session id for grouping answers from a collection of scenarios/probes together  # noqa: E501
+        Get unique session id for grouping answers from a collection of scenarios together  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.start_session(adm_name, session_type, async_req=True)
@@ -468,7 +468,7 @@ class ItmTa2EvalApi(object):
     def start_session_with_http_info(self, adm_name, session_type, **kwargs):  # noqa: E501
         """Start a new session  # noqa: E501
 
-        Get unique session id for grouping answers from a collection of scenarios/probes together  # noqa: E501
+        Get unique session id for grouping answers from a collection of scenarios together  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.start_session_with_http_info(adm_name, session_type, async_req=True)

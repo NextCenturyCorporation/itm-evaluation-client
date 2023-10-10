@@ -128,7 +128,7 @@ class State(object):
     def scenario_complete(self):
         """Gets the scenario_complete of this State.  # noqa: E501
 
-        set to true if the scenario is complete; subsequent calls to /scenario/probe will return an error code  # noqa: E501
+        set to true if the scenario is complete; subsequent calls involving that scenario will return an error code  # noqa: E501
 
         :return: The scenario_complete of this State.  # noqa: E501
         :rtype: bool
@@ -139,7 +139,7 @@ class State(object):
     def scenario_complete(self, scenario_complete):
         """Sets the scenario_complete of this State.
 
-        set to true if the scenario is complete; subsequent calls to /scenario/probe will return an error code  # noqa: E501
+        set to true if the scenario is complete; subsequent calls involving that scenario will return an error code  # noqa: E501
 
         :param scenario_complete: The scenario_complete of this State.  # noqa: E501
         :type: bool
