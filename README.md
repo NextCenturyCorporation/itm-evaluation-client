@@ -61,9 +61,9 @@ options:
  - TA3_PORT(Default: 8080)
  - TA3_HOSTNAME (Default: 127.0.0.1)
  
-### Running the Human input simulator (DEPRECATED)
+### Running the Human input simulator
 
-The Human input simulator has not been updated since MVP.  It may be removed entirely in a future release.
+The Human input simulator is used for testing specific action/parameter sequences or for otherwise simulating a human DM.
 
 Inside the root directory, run `itm_human_input.py`:
 
@@ -76,7 +76,7 @@ options:
   -h, --help            show this help message and exit
   --db                  Put the output in the MongoDB (ensure that the itm_dashboard docker container is running) and save a json output file locally inside itm_server/itm_mvp_local_output/
   --session [session_type [scenario_count ...]]
-                        Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
+                        Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
   --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified. Implies --db.
 ```
 
