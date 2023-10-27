@@ -13,7 +13,6 @@ class CommandOption(Enum):
     GET_AVAILABLE_ACTIONS = "get_available_actions (v)"
     TAKE_ACTION = "take_action (t)"
     GET_SCENARIO_STATE = "get_scenario_state (u)"
-    END_SCENARIO = "end_scenario (e)"
     QUIT = "quit (q)"
 
 
@@ -55,11 +54,20 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         shortcut = [parts[1][1]]
         return [full] + shortcut
 
-    def prompt_casualty_id(self):
-        casualty_id = input(
-            f"Enter Casualty Number from the list:\n"
-            f"{[f'({i + 1}, {casualty.id})' for i, casualty in enumerate(self.casualties)]}: "
-        )
+    def prompt_casualty_id(self, none_allowed=False):
+        if none_allowed:
+            casualty_id = input(
+                f"Enter Casualty Number from the list, or <Enter> for none:\n"
+                f"  {[f'({i + 1}, {casualty.id})' for i, casualty in enumerate(self.casualties)]}: "
+            )
+            if not casualty_id:
+                return ''
+        else:
+            casualty_id = input(
+                f"Enter Casualty Number from the list:\n"
+                f"  {[f'({i + 1}, {casualty.id})' for i, casualty in enumerate(self.casualties)]}: "
+            )
+
         try:
             casualty_index = int(casualty_id) - 1
             if casualty_index < 0:
@@ -77,8 +85,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                                "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", \
                                "right face", "left neck", "right neck", "unspecified"]
         location = input(
-            f"Enter injury location from the list:\n"
-            f"{[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "
+            f"Enter injury location by number from the list:\n"
+            f"  {[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "
         )
         try:
             location_index = int(location) - 1
@@ -93,8 +101,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
     def prompt_treatment(self):
         medical_supply = input(
-            f"Enter Medical Supply Number or Name from the list:\n"
-            f"{[f'({i + 1}, {medical_supply.type})' for i, medical_supply in enumerate(self.medical_supplies)]}: "
+            f"Enter Medical Supply Number from the list:\n"
+            f"  {[f'({i + 1}, {medical_supply.type})' for i, medical_supply in enumerate(self.medical_supplies)]}: "
         )
         try:
             medical_supply_index = int(medical_supply) - 1
@@ -102,7 +110,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 raise ValueError()
             medical_supply = self.medical_supplies[medical_supply_index].type
         except ValueError:
-            pass
+            return self.prompt_treatment()
         return medical_supply
 
     def prompt_justification(self):
@@ -130,6 +138,20 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 return self.prompt_tagType()
         else:
             return self.prompt_tagType()
+
+    def prompt_action(self) -> Action:
+        action_id = input(
+            f"Enter Action Number from the list:\n"
+            f"  {[f'({i + 1}, {action.action_id})' for i, action in enumerate(self.available_actions)]}: "
+        )
+        try:
+            action_index = int(action_id) - 1
+            action = self.available_actions[action_index]
+        except ValueError:
+            return self.prompt_action()
+        except IndexError:
+            return self.prompt_action()
+        return action
 
     def start_scenario_operation(self):
         if self.session_id == None:
@@ -186,20 +208,6 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         self.actions_are_current = True
         return self.available_actions
 
-    def get_action(self) -> Action:
-        action_id = input(
-            f"Enter Action Number from the list:\n"
-            f"{[f'({i + 1}, {action.action_id})' for i, action in enumerate(self.available_actions)]}: "
-        )
-        try:
-            action_index = int(action_id) - 1
-            action = self.available_actions[action_index]
-        except ValueError:
-            return self.get_action()
-        except IndexError:
-            return self.get_action()
-        return action
-
     def take_action_operation(self):
         if self.session_id == None:
             return "No active session; please start a session first."
@@ -209,7 +217,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return f"Call {self.get_full_string_and_shortcut(CommandOption.GET_AVAILABLE_ACTIONS)[0]} first."
         if not self.available_actions:
             return "Please get available actions first."
-        action:Action = self.get_action()
+        action:Action = self.prompt_action()
 
         # Prompt to fill in any missing fields.  Note similarity with ADMScenarioRunner.get_next_action().
         if action.action_type not in ACTIONS_WITHOUT_CASUALTIES:
@@ -219,11 +227,14 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if action.action_type == "APPLY_TREATMENT":
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
-            else :
+            else:
                 if not action.parameters['location'] or action.parameters["location"] is None:
                     action.parameters["location"] = self.prompt_location()
                 if not action.parameters['treatment'] or action.parameters["treatment"] is None:
                     action.parameters["treatment"] = self.prompt_treatment()
+        elif action.action_type == "SITREP":
+            if action.casualty_id is None:
+                action.casualty_id = self.prompt_casualty_id(none_allowed=True)
         elif action.action_type == "TAG_CASUALTY":
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
@@ -232,6 +243,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         action.justification = self.prompt_justification()
 
         print(action)
+        self.actions_are_current = False
         return self.itm.take_action(session_id=self.session_id, body=action)
 
     def run(self):
@@ -270,14 +282,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         if command in self.get_full_string_and_shortcut(CommandOption.QUIT):
             self.session_complete = True # if there are no more scenarios, then the session is over
-            print("Quitting session...")
-        elif command in self.get_full_string_and_shortcut(CommandOption.END_SCENARIO):
-            if self.scenario_complete:
-                print("No active scenario.  Please start the next scenario.")
-            else:
-                self.scenario_complete = True
-                self.scenario_id = None
-                print("Scenario ended.")
+            print("Quitting session-- server will not save output for current scenario to DB.")
         elif isinstance(response, State):
             self.medical_supplies = response.supplies
             if response.scenario_complete == True:
