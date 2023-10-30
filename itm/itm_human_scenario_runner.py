@@ -1,7 +1,5 @@
-from json import loads
 from enum import Enum
 from swagger_client.models import Scenario, State, Action
-from swagger_client.rest import ApiException
 from .itm_scenario_runner import ScenarioRunner
 import traceback
 
@@ -270,11 +268,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.get_available_actions_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.TAKE_ACTION):
                 response = self.take_action_operation()
-        except ApiException as e:
-            exception_body = loads(e.body.decode('utf-8')) # Parse the string as a JSON object
-            print("ApiException: ", e.status, e.reason, f"Detail: \"{exception_body['detail']}\"")
-        except Exception as e:
-            print("Exception: ", e)
+        except Exception:
             traceback.print_exc()
 
         if response != None:
