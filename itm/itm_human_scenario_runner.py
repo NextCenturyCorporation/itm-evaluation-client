@@ -81,7 +81,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", \
                                "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", \
                                "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", \
-                               "right face", "left neck", "right neck", "unspecified"]
+                               "right face", "left neck", "right neck", "internal", "unspecified"]
         location = input(
             f"Enter injury location by number from the list:\n"
             f"  {[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "
