@@ -39,6 +39,7 @@ The implementation of this function should be replaced with decision-making logi
 """
 
 import argparse
+from itm.itm_scenario_runner import get_swagger_class_enum_values
 import swagger_client
 import random
 from enum import Enum
@@ -48,6 +49,9 @@ import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
+from swagger_client.models.injury_location import InjuryLocation
+from swagger_client.models.supply_type import SupplyType
+from swagger_client.models.tag_label import TagLabel
 
 class ActionType(Enum):
     APPLY_TREATMENT = "APPLY_TREATMENT"
@@ -75,9 +79,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "internal", "unspecified"]
-        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-        tag_labels = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
+        available_locations = get_swagger_class_enum_values(InjuryLocation)
+        available_supplies = get_swagger_class_enum_values(SupplyType)
+        tag_labels = get_swagger_class_enum_values(TagLabel) #["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
 
         # Fill in any missing fields with random values
         if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:

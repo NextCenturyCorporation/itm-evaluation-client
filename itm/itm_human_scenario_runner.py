@@ -1,6 +1,8 @@
 from enum import Enum
+import inspect
 from swagger_client.models import Scenario, State, Action
-from .itm_scenario_runner import ScenarioRunner
+from swagger_client.models.injury_location import InjuryLocation
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 import traceback
 
 
@@ -78,10 +80,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return casualty_id
 
     def prompt_location(self):
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", \
-                               "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", \
-                               "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", \
-                               "right face", "left neck", "right neck", "internal", "unspecified"]
+        available_locations = get_swagger_class_enum_values(InjuryLocation)
         location = input(
             f"Enter injury location by number from the list:\n"
             f"  {[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "

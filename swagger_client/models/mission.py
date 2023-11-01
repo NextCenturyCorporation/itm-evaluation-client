@@ -29,7 +29,7 @@ class Mission(object):
     """
     swagger_types = {
         'unstructured': 'str',
-        'mission_type': 'str'
+        'mission_type': 'MissionType'
     }
 
     attribute_map = {
@@ -74,10 +74,9 @@ class Mission(object):
     def mission_type(self):
         """Gets the mission_type of this Mission.  # noqa: E501
 
-        enumeration of possible mission types  # noqa: E501
 
         :return: The mission_type of this Mission.  # noqa: E501
-        :rtype: str
+        :rtype: MissionType
         """
         return self._mission_type
 
@@ -85,19 +84,12 @@ class Mission(object):
     def mission_type(self, mission_type):
         """Sets the mission_type of this Mission.
 
-        enumeration of possible mission types  # noqa: E501
 
         :param mission_type: The mission_type of this Mission.  # noqa: E501
-        :type: str
+        :type: MissionType
         """
         if mission_type is None:
             raise ValueError("Invalid value for `mission_type`, must not be `None`")  # noqa: E501
-        allowed_values = ["Listening/Observation", "Direct Action", "Hostage rescue", "Asset transport", "Sensor emplacement", "Intelligence gathering", "Civil affairs", "Training", "Sabotage", "Security patrol", "Fire support", "Nuclear deterrence", "Extraction", "Unknown"]  # noqa: E501
-        if mission_type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `mission_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(mission_type, allowed_values)
-            )
 
         self._mission_type = mission_type
 

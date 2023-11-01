@@ -28,7 +28,7 @@ class TriageCategory(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'tag_label': 'str',
+        'tag_label': 'TagLabel',
         'description': 'str',
         'criteria': 'str'
     }
@@ -58,7 +58,7 @@ class TriageCategory(object):
 
 
         :return: The tag_label of this TriageCategory.  # noqa: E501
-        :rtype: str
+        :rtype: TagLabel
         """
         return self._tag_label
 
@@ -68,14 +68,8 @@ class TriageCategory(object):
 
 
         :param tag_label: The tag_label of this TriageCategory.  # noqa: E501
-        :type: str
+        :type: TagLabel
         """
-        allowed_values = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]  # noqa: E501
-        if tag_label not in allowed_values:
-            raise ValueError(
-                "Invalid value for `tag_label` ({0}), must be one of {1}"  # noqa: E501
-                .format(tag_label, allowed_values)
-            )
 
         self._tag_label = tag_label
 
