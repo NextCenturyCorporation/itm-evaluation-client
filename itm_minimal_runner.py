@@ -75,7 +75,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "unspecified"]
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right calf", "left calf", "right wrist", "left wrist", "left face", "right face", "internal", "unspecified"]
         available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         tag_labels = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
 
