@@ -154,8 +154,13 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
+<<<<<<< HEAD
         available_locations = get_swagger_class_enum_values(InjuryLocation)
         available_supplies = get_swagger_class_enum_values(SupplyType)   #["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
+=======
+        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "internal", "unspecified"]
+        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
+>>>>>>> development
 
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
