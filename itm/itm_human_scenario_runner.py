@@ -1,6 +1,7 @@
 from enum import Enum
 import inspect
 from swagger_client.models import Scenario, State, Action
+from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
 from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 import traceback
@@ -221,7 +222,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             # Most actions require a casualty ID
             if action.casualty_id is None:
                 action.casualty_id = self.prompt_casualty_id()
-        if action.action_type == "APPLY_TREATMENT":
+        if action.action_type == ActionType.APPLY_TREATMENT:
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
@@ -229,10 +230,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                     action.parameters["location"] = self.prompt_location()
                 if not action.parameters['treatment'] or action.parameters["treatment"] is None:
                     action.parameters["treatment"] = self.prompt_treatment()
-        elif action.action_type == "SITREP":
+        elif action.action_type == ActionType.SITREP:
             if action.casualty_id is None:
                 action.casualty_id = self.prompt_casualty_id(none_allowed=True)
-        elif action.action_type == "TAG_CASUALTY":
+        elif action.action_type == ActionType.TAG_CASUALTY:
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
 

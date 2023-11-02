@@ -992,19 +992,7 @@ components:
           type: string
           description: action ID
         action_type:
-          type: string
-          description: The action type taken from a controlled vocabulary
-          example: APPLY_TREATMENT
-          enum:
-          - APPLY_TREATMENT
-          - CHECK_ALL_VITALS
-          - CHECK_PULSE
-          - CHECK_RESPIRATION
-          - DIRECT_MOBILE_CASUALTIES
-          - END_SCENARIO
-          - MOVE_TO_EVAC
-          - SITREP
-          - TAG_CASUALTY
+          $ref: '#/components/schemas/ActionType'
         casualty_id:
           type: string
           description: The ID of the casualty being acted upon
@@ -1043,6 +1031,20 @@ components:
         parameters:
         - treatment: Tourniquet
         - location: right forearm
+    ActionType:
+      type: string
+      description: The action type taken from a controlled vocabulary
+      example: APPLY_TREATMENT
+      enum:
+      - APPLY_TREATMENT
+      - CHECK_ALL_VITALS
+      - CHECK_PULSE
+      - CHECK_RESPIRATION
+      - DIRECT_MOBILE_CASUALTIES
+      - END_SCENARIO
+      - MOVE_TO_EVAC
+      - SITREP
+      - TAG_CASUALTY
   responses:
     server_error:
       description: An exception occurred on the server; see returned error string.

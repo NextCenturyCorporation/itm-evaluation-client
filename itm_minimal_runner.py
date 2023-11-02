@@ -49,25 +49,10 @@ import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
+from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
 from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.tag_label import TagLabel
-
-class ActionType(Enum):
-    APPLY_TREATMENT = "APPLY_TREATMENT"
-    CHECK_ALL_VITALS = "CHECK_ALL_VITALS"
-    CHECK_PULSE = "CHECK_PULSE"
-    CHECK_RESPIRATION = "CHECK_RESPIRATION"
-    DIRECT_MOBILE_CASUALTIES = "DIRECT_MOBILE_CASUALTIES"
-    END_SCENARIO = "END_SCENARIO"
-    MOVE_TO_EVAC = "MOVE_TO_EVAC"
-    SITREP = "SITREP"
-    TAG_CASUALTY = "TAG_CASUALTY"
-
-    def __new__(cls, type):
-        obj = object.__new__(cls)
-        obj._value_ = type
-        return obj
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action], paths, index: int, path_index: int):
@@ -84,11 +69,11 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         tag_labels = get_swagger_class_enum_values(TagLabel) #["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:
+        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CASUALTIES, ActionType.END_SCENARIO, ActionType.SITREP]:
             # Most actions require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = get_random_casualty_id(state)
-            if random_action.action_type == "APPLY_TREATMENT":
+            if random_action.action_type == ActionType.APPLY_TREATMENT:
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
                 else :
@@ -96,7 +81,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                         random_action.parameters["location"] = random.choice(available_locations)
                     if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == "TAG_CASUALTY":
+            elif random_action.action_type == ActionType.TAG_CASUALTY:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": random.choice(tag_labels)}
         return random_action
