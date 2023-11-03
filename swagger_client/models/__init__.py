@@ -23,7 +23,6 @@ from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.tag_label import TagLabel
 from swagger_client.models.threat import Threat
 from swagger_client.models.threat_state import ThreatState
-from swagger_client.models.triage_category import TriageCategory
 from swagger_client.models.vitals import Vitals
 from swagger_client.models.vitals_breathing import VitalsBreathing
 from swagger_client.models.vitals_mental_status import VitalsMentalStatus

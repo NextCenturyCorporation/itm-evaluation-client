@@ -66,7 +66,7 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
-scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve avaialble actions
+scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve available actions
 
 try:
     # Get a list of currently available ADM actions
@@ -102,9 +102,9 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
-session_type = 'session_type_example' # str | the type of session to start (`test`, `eval`, or a TA1 name)
+session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
-max_scenarios = 56 # int | the maximum number of scenarios requested, supported only in `test` sessions (optional)
+max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session
@@ -142,20 +142,30 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [Action](docs/Action.md)
+ - [ActionType](docs/ActionType.md)
  - [AlignmentTarget](docs/AlignmentTarget.md)
  - [Casualty](docs/Casualty.md)
+ - [CasualtyRelationship](docs/CasualtyRelationship.md)
+ - [CasualtyTag](docs/CasualtyTag.md)
  - [Demographics](docs/Demographics.md)
+ - [DemographicsRank](docs/DemographicsRank.md)
+ - [DemographicsSex](docs/DemographicsSex.md)
  - [Environment](docs/Environment.md)
  - [Injury](docs/Injury.md)
+ - [InjuryLocation](docs/InjuryLocation.md)
+ - [InjuryType](docs/InjuryType.md)
  - [KDMAValue](docs/KDMAValue.md)
  - [Mission](docs/Mission.md)
+ - [MissionType](docs/MissionType.md)
  - [Scenario](docs/Scenario.md)
  - [State](docs/State.md)
  - [Supplies](docs/Supplies.md)
+ - [SupplyType](docs/SupplyType.md)
  - [Threat](docs/Threat.md)
  - [ThreatState](docs/ThreatState.md)
- - [TriageCategory](docs/TriageCategory.md)
  - [Vitals](docs/Vitals.md)
+ - [VitalsBreathing](docs/VitalsBreathing.md)
+ - [VitalsMentalStatus](docs/VitalsMentalStatus.md)
 
 ## Documentation For Authorization
 
