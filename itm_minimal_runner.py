@@ -42,7 +42,6 @@ import argparse
 from itm.itm_scenario_runner import get_swagger_class_enum_values
 import swagger_client
 import random
-from enum import Enum
 from typing import List
 import json
 import os
@@ -66,7 +65,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
 
         available_locations = get_swagger_class_enum_values(InjuryLocation)
         available_supplies = get_swagger_class_enum_values(SupplyType)
-        tag_labels = get_swagger_class_enum_values(TagLabel) #["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]
+        tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionType.DIRECT_MOBILE_CASUALTIES, ActionType.END_SCENARIO, ActionType.SITREP]:

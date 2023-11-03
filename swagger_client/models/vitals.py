@@ -29,8 +29,8 @@ class Vitals(object):
     """
     swagger_types = {
         'conscious': 'bool',
-        'mental_status': 'str',
-        'breathing': 'str',
+        'mental_status': 'VitalsMentalStatus',
+        'breathing': 'VitalsBreathing',
         'hrpmin': 'int'
     }
 
@@ -84,10 +84,9 @@ class Vitals(object):
     def mental_status(self):
         """Gets the mental_status of this Vitals.  # noqa: E501
 
-        description of the casualty's overall demeanor  # noqa: E501
 
         :return: The mental_status of this Vitals.  # noqa: E501
-        :rtype: str
+        :rtype: VitalsMentalStatus
         """
         return self._mental_status
 
@@ -95,17 +94,10 @@ class Vitals(object):
     def mental_status(self, mental_status):
         """Sets the mental_status of this Vitals.
 
-        description of the casualty's overall demeanor  # noqa: E501
 
         :param mental_status: The mental_status of this Vitals.  # noqa: E501
-        :type: str
+        :type: VitalsMentalStatus
         """
-        allowed_values = ["AGONY", "CALM", "CONFUSED", "UPSET", "UNRESPONSIVE"]  # noqa: E501
-        if mental_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `mental_status` ({0}), must be one of {1}"  # noqa: E501
-                .format(mental_status, allowed_values)
-            )
 
         self._mental_status = mental_status
 
@@ -113,10 +105,9 @@ class Vitals(object):
     def breathing(self):
         """Gets the breathing of this Vitals.  # noqa: E501
 
-        a descriptor for the casualty's breathing  # noqa: E501
 
         :return: The breathing of this Vitals.  # noqa: E501
-        :rtype: str
+        :rtype: VitalsBreathing
         """
         return self._breathing
 
@@ -124,17 +115,10 @@ class Vitals(object):
     def breathing(self, breathing):
         """Sets the breathing of this Vitals.
 
-        a descriptor for the casualty's breathing  # noqa: E501
 
         :param breathing: The breathing of this Vitals.  # noqa: E501
-        :type: str
+        :type: VitalsBreathing
         """
-        allowed_values = ["NORMAL", "FAST", "RESTRICTED", "NONE"]  # noqa: E501
-        if breathing not in allowed_values:
-            raise ValueError(
-                "Invalid value for `breathing` ({0}), must be one of {1}"  # noqa: E501
-                .format(breathing, allowed_values)
-            )
 
         self._breathing = breathing
 

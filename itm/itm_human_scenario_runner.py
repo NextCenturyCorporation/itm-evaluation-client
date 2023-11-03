@@ -1,5 +1,4 @@
 from enum import Enum
-import inspect
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
