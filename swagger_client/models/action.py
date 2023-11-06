@@ -29,7 +29,7 @@ class Action(object):
     """
     swagger_types = {
         'action_id': 'str',
-        'action_type': 'str',
+        'action_type': 'ActionType',
         'casualty_id': 'str',
         'unstructured': 'str',
         'justification': 'str',
@@ -99,10 +99,9 @@ class Action(object):
     def action_type(self):
         """Gets the action_type of this Action.  # noqa: E501
 
-        The action type taken from a controlled vocabulary  # noqa: E501
 
         :return: The action_type of this Action.  # noqa: E501
-        :rtype: str
+        :rtype: ActionType
         """
         return self._action_type
 
@@ -110,19 +109,12 @@ class Action(object):
     def action_type(self, action_type):
         """Sets the action_type of this Action.
 
-        The action type taken from a controlled vocabulary  # noqa: E501
 
         :param action_type: The action_type of this Action.  # noqa: E501
-        :type: str
+        :type: ActionType
         """
         if action_type is None:
             raise ValueError("Invalid value for `action_type`, must not be `None`")  # noqa: E501
-        allowed_values = ["APPLY_TREATMENT", "CHECK_ALL_VITALS", "CHECK_PULSE", "CHECK_RESPIRATION", "DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "MOVE_TO_EVAC", "SITREP", "TAG_CASUALTY"]  # noqa: E501
-        if action_type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `action_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(action_type, allowed_values)
-            )
 
         self._action_type = action_type
 

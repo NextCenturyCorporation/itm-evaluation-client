@@ -31,12 +31,12 @@ class Casualty(object):
         'id': 'str',
         'unstructured': 'str',
         'name': 'str',
-        'relationship': 'str',
+        'relationship': 'CasualtyRelationship',
         'demographics': 'Demographics',
         'injuries': 'list[Injury]',
         'vitals': 'Vitals',
         'visited': 'bool',
-        'tag': 'str'
+        'tag': 'CasualtyTag'
     }
 
     attribute_map = {
@@ -157,10 +157,9 @@ class Casualty(object):
     def relationship(self):
         """Gets the relationship of this Casualty.  # noqa: E501
 
-        the relationship between the medic and the casualty  # noqa: E501
 
         :return: The relationship of this Casualty.  # noqa: E501
-        :rtype: str
+        :rtype: CasualtyRelationship
         """
         return self._relationship
 
@@ -168,17 +167,10 @@ class Casualty(object):
     def relationship(self, relationship):
         """Sets the relationship of this Casualty.
 
-        the relationship between the medic and the casualty  # noqa: E501
 
         :param relationship: The relationship of this Casualty.  # noqa: E501
-        :type: str
+        :type: CasualtyRelationship
         """
-        allowed_values = ["NONE", "ALLY", "FRIEND", "HOSTILE"]  # noqa: E501
-        if relationship not in allowed_values:
-            raise ValueError(
-                "Invalid value for `relationship` ({0}), must be one of {1}"  # noqa: E501
-                .format(relationship, allowed_values)
-            )
 
         self._relationship = relationship
 
@@ -274,10 +266,9 @@ class Casualty(object):
     def tag(self):
         """Gets the tag of this Casualty.  # noqa: E501
 
-        the tag assigned to this casualty, omit if untagged  # noqa: E501
 
         :return: The tag of this Casualty.  # noqa: E501
-        :rtype: str
+        :rtype: CasualtyTag
         """
         return self._tag
 
@@ -285,17 +276,10 @@ class Casualty(object):
     def tag(self, tag):
         """Sets the tag of this Casualty.
 
-        the tag assigned to this casualty, omit if untagged  # noqa: E501
 
         :param tag: The tag of this Casualty.  # noqa: E501
-        :type: str
+        :type: CasualtyTag
         """
-        allowed_values = ["MINIMAL", "DELAYED", "IMMEDIATE", "EXPECTANT"]  # noqa: E501
-        if tag not in allowed_values:
-            raise ValueError(
-                "Invalid value for `tag` ({0}), must be one of {1}"  # noqa: E501
-                .format(tag, allowed_values)
-            )
 
         self._tag = tag
 

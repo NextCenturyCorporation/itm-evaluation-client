@@ -84,8 +84,8 @@ options:
 
 * `APPLY_TREATMENT`
 * * requires `casualty_id`
-* * requires parameter `treatment` with a value taken from type enum in `Supplies` object.
-* * requires parameter `location` with a value taken from location enum in `Injury` object.
+* * requires parameter `treatment` with a value taken from the `SupplyType` enum object.
+* * requires parameter `location` with a value taken from the `InjuryLocation` enum object.
 * `CHECK_ALL_VITALS`
 * * requires `casualty_id`
 * `CHECK_PULSE`
@@ -102,7 +102,7 @@ options:
 * * accepts **optional** `casualty_id`
 * `TAG_CASUALTY`
 * * requires `casualty_id`
-* * requires parameter `category` with a value taken from `tagLabel` enum in `TriageCategory` object.
+* * requires parameter `category` with a value taken from the `TagLabel` enum object.
 
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.

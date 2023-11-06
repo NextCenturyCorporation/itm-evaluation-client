@@ -33,5 +33,4 @@ from swagger_client.models.state import State
 from swagger_client.models.supplies import Supplies
 from swagger_client.models.threat import Threat
 from swagger_client.models.threat_state import ThreatState
-from swagger_client.models.triage_category import TriageCategory
 from swagger_client.models.vitals import Vitals

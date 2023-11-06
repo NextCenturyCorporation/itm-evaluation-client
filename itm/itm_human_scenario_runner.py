@@ -1,6 +1,8 @@
 from enum import Enum
 from swagger_client.models import Scenario, State, Action
-from .itm_scenario_runner import ScenarioRunner
+from swagger_client.models.action_type import ActionType
+from swagger_client.models.injury_location import InjuryLocation
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 import traceback
 
 
@@ -78,10 +80,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return casualty_id
 
     def prompt_location(self):
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", \
-                               "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", \
-                               "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", \
-                               "right face", "left neck", "right neck", "internal", "unspecified"]
+        available_locations = get_swagger_class_enum_values(InjuryLocation)
         location = input(
             f"Enter injury location by number from the list:\n"
             f"  {[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "
@@ -222,7 +221,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             # Most actions require a casualty ID
             if action.casualty_id is None:
                 action.casualty_id = self.prompt_casualty_id()
-        if action.action_type == "APPLY_TREATMENT":
+        if action.action_type == ActionType.APPLY_TREATMENT:
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
@@ -230,10 +229,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                     action.parameters["location"] = self.prompt_location()
                 if not action.parameters['treatment'] or action.parameters["treatment"] is None:
                     action.parameters["treatment"] = self.prompt_treatment()
-        elif action.action_type == "SITREP":
+        elif action.action_type == ActionType.SITREP:
             if action.casualty_id is None:
                 action.casualty_id = self.prompt_casualty_id(none_allowed=True)
-        elif action.action_type == "TAG_CASUALTY":
+        elif action.action_type == ActionType.TAG_CASUALTY:
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
 

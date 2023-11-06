@@ -4,8 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **action_id** | **str** | action ID | 
-**scenario_id** | **str** | scenario ID this probe is for | 
-**action_type** | **str** | The action type taken from a controlled vocabulary | 
+**action_type** | [**ActionType**](ActionType.md) |  | 
 **casualty_id** | **str** | The ID of the casualty being acted upon | [optional] 
 **unstructured** | **str** | a plain text unstructured description of the action | [optional] 
 **justification** | **str** | A justification of the action taken | [optional] 

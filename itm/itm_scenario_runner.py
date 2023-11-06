@@ -5,6 +5,8 @@ from swagger_client.models import Scenario
 from abc import ABC, abstractmethod
 import os
 
+def get_swagger_class_enum_values(klass):
+    return [getattr(klass,i) for i in dir(klass) if not i.startswith("_") and isinstance(getattr(klass,i), str)]
 
 class ScenarioRunner(ABC):
     def __init__(self):

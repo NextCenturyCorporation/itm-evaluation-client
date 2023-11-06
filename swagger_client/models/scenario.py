@@ -32,8 +32,7 @@ class Scenario(object):
         'name': 'str',
         'session_complete': 'bool',
         'start_time': 'str',
-        'state': 'State',
-        'triage_categories': 'list[TriageCategory]'
+        'state': 'State'
     }
 
     attribute_map = {
@@ -41,18 +40,16 @@ class Scenario(object):
         'name': 'name',
         'session_complete': 'session_complete',
         'start_time': 'start_time',
-        'state': 'state',
-        'triage_categories': 'triage_categories'
+        'state': 'state'
     }
 
-    def __init__(self, id='1234', name=None, session_complete=None, start_time=None, state=None, triage_categories=None):  # noqa: E501
+    def __init__(self, id='1234', name=None, session_complete=None, start_time=None, state=None):  # noqa: E501
         """Scenario - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
         self._session_complete = None
         self._start_time = None
         self._state = None
-        self._triage_categories = None
         self.discriminator = None
         self.id = id
         self.name = name
@@ -62,8 +59,6 @@ class Scenario(object):
             self.start_time = start_time
         if state is not None:
             self.state = state
-        if triage_categories is not None:
-            self.triage_categories = triage_categories
 
     @property
     def id(self):
@@ -181,27 +176,6 @@ class Scenario(object):
         """
 
         self._state = state
-
-    @property
-    def triage_categories(self):
-        """Gets the triage_categories of this Scenario.  # noqa: E501
-
-
-        :return: The triage_categories of this Scenario.  # noqa: E501
-        :rtype: list[TriageCategory]
-        """
-        return self._triage_categories
-
-    @triage_categories.setter
-    def triage_categories(self, triage_categories):
-        """Sets the triage_categories of this Scenario.
-
-
-        :param triage_categories: The triage_categories of this Scenario.  # noqa: E501
-        :type: list[TriageCategory]
-        """
-
-        self._triage_categories = triage_categories
 
     def to_dict(self):
         """Returns the model properties as a dict"""

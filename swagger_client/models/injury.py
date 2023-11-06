@@ -28,8 +28,8 @@ class Injury(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'name': 'str',
-        'location': 'str',
+        'name': 'InjuryType',
+        'location': 'InjuryLocation',
         'severity': 'float'
     }
 
@@ -54,10 +54,9 @@ class Injury(object):
     def name(self):
         """Gets the name of this Injury.  # noqa: E501
 
-        a brief label for the type of injury  # noqa: E501
 
         :return: The name of this Injury.  # noqa: E501
-        :rtype: str
+        :rtype: InjuryType
         """
         return self._name
 
@@ -65,19 +64,12 @@ class Injury(object):
     def name(self, name):
         """Sets the name of this Injury.
 
-        a brief label for the type of injury  # noqa: E501
 
         :param name: The name of this Injury.  # noqa: E501
-        :type: str
+        :type: InjuryType
         """
         if name is None:
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
-        allowed_values = ["Forehead Scrape", "Ear Bleed", "Asthmatic", "Laceration", "Puncture", "Shrapnel", "Chest Collapse", "Amputation", "Burn"]  # noqa: E501
-        if name not in allowed_values:
-            raise ValueError(
-                "Invalid value for `name` ({0}), must be one of {1}"  # noqa: E501
-                .format(name, allowed_values)
-            )
 
         self._name = name
 
@@ -85,10 +77,9 @@ class Injury(object):
     def location(self):
         """Gets the location of this Injury.  # noqa: E501
 
-        the injury location on the casualty's body  # noqa: E501
 
         :return: The location of this Injury.  # noqa: E501
-        :rtype: str
+        :rtype: InjuryLocation
         """
         return self._location
 
@@ -96,19 +87,12 @@ class Injury(object):
     def location(self, location):
         """Sets the location of this Injury.
 
-        the injury location on the casualty's body  # noqa: E501
 
         :param location: The location of this Injury.  # noqa: E501
-        :type: str
+        :type: InjuryLocation
         """
         if location is None:
             raise ValueError("Invalid value for `location`, must not be `None`")  # noqa: E501
-        allowed_values = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "internal", "unspecified"]  # noqa: E501
-        if location not in allowed_values:
-            raise ValueError(
-                "Invalid value for `location` ({0}), must be one of {1}"  # noqa: E501
-                .format(location, allowed_values)
-            )
 
         self._location = location
 
