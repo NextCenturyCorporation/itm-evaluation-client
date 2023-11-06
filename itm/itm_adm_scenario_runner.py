@@ -11,7 +11,10 @@ from swagger_client.models import (
     Action,
     AlignmentTarget
 )
-from .itm_scenario_runner import ScenarioRunner
+from swagger_client.models.action_type import ActionType
+from swagger_client.models.injury_location import InjuryLocation
+from swagger_client.models.supply_type import SupplyType
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 
 
 class TagTypeAndPriority(Enum):
@@ -151,16 +154,15 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "internal", "unspecified"]
-        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-
+        available_locations = get_swagger_class_enum_values(InjuryLocation)
+        available_supplies = get_swagger_class_enum_values(SupplyType)   #["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:
+        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CASUALTIES, ActionType.END_SCENARIO, ActionType.SITREP]:
             # Most actions require a casualty ID
             if random_action.casualty_id is None:
                 random_action.casualty_id = self.get_random_casualty_id()
-            if random_action.action_type == "APPLY_TREATMENT":
+            if random_action.action_type == ActionType.APPLY_TREATMENT:
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
                 else :
@@ -168,7 +170,7 @@ class ADMScenarioRunner(ScenarioRunner):
                         random_action.parameters["location"] = random.choice(available_locations)
                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == "TAG_CASUALTY":
+            elif random_action.action_type == ActionType.TAG_CASUALTY:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": self.assess_casualty_priority()}
         return random_action

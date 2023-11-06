@@ -142,20 +142,30 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [Action](docs/Action.md)
+ - [ActionType](docs/ActionType.md)
  - [AlignmentTarget](docs/AlignmentTarget.md)
  - [Casualty](docs/Casualty.md)
+ - [CasualtyRelationship](docs/CasualtyRelationship.md)
+ - [CasualtyTag](docs/CasualtyTag.md)
  - [Demographics](docs/Demographics.md)
+ - [DemographicsRank](docs/DemographicsRank.md)
+ - [DemographicsSex](docs/DemographicsSex.md)
  - [Environment](docs/Environment.md)
  - [Injury](docs/Injury.md)
+ - [InjuryLocation](docs/InjuryLocation.md)
+ - [InjuryType](docs/InjuryType.md)
  - [KDMAValue](docs/KDMAValue.md)
  - [Mission](docs/Mission.md)
+ - [MissionType](docs/MissionType.md)
  - [Scenario](docs/Scenario.md)
  - [State](docs/State.md)
  - [Supplies](docs/Supplies.md)
+ - [SupplyType](docs/SupplyType.md)
  - [Threat](docs/Threat.md)
  - [ThreatState](docs/ThreatState.md)
- - [TriageCategory](docs/TriageCategory.md)
  - [Vitals](docs/Vitals.md)
+ - [VitalsBreathing](docs/VitalsBreathing.md)
+ - [VitalsMentalStatus](docs/VitalsMentalStatus.md)
 
 ## Documentation For Authorization
 
