@@ -66,7 +66,7 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
-scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve avaialble actions
+scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve available actions
 
 try:
     # Get a list of currently available ADM actions
@@ -102,9 +102,9 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
-session_type = 'session_type_example' # str | the type of session to start (`test`, `eval`, or a TA1 name)
+session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
-max_scenarios = 56 # int | the maximum number of scenarios requested, supported only in `test` sessions (optional)
+max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session

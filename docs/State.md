@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **unstructured** | **str** | text description of current state | 
 **elapsed_time** | **float** | the elapsed time (in minutes) since the scenario started | [optional] 
-**scenario_complete** | **bool** | set to true if the scenario is complete; subsequent calls to /scenario/probe will return an error code | [optional] 
+**scenario_complete** | **bool** | set to true if the scenario is complete; subsequent calls involving that scenario will return an error code | [optional] 
 **mission** | [**Mission**](Mission.md) |  | [optional] 
 **environment** | [**Environment**](Environment.md) |  | [optional] 
 **threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 

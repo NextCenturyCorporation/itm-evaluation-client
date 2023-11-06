@@ -79,7 +79,7 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi()
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
-scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve avaialble actions
+scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve available actions
 
 try:
     # Get a list of currently available ADM actions
@@ -94,7 +94,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **session_id** | **str**| a unique session_id, as returned by /ta2/startSession | 
- **scenario_id** | **str**| The ID of the scenario for which to retrieve avaialble actions | 
+ **scenario_id** | **str**| The ID of the scenario for which to retrieve available actions | 
 
 ### Return type
 
@@ -216,7 +216,7 @@ No authorization required
 
 Start a new session
 
-Get unique session id for grouping answers from a collection of scenarios/probes together
+Get unique session id for grouping answers from a collection of scenarios together
 
 ### Example
 ```python
@@ -229,9 +229,9 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi()
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
-session_type = 'session_type_example' # str | the type of session to start (`test`, `eval`, or a TA1 name)
+session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
-max_scenarios = 56 # int | the maximum number of scenarios requested, supported only in `test` sessions (optional)
+max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session
@@ -246,9 +246,9 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **adm_name** | **str**| A self-assigned ADM name.  Can add authentication later. | 
- **session_type** | **str**| the type of session to start (&#x60;test&#x60;, &#x60;eval&#x60;, or a TA1 name) | 
+ **session_type** | **str**| the type of session to start (&#x60;eval&#x60; or a TA1 name) | 
  **kdma_training** | **bool**| whether or not this is a training session with TA2 | [optional] [default to false]
- **max_scenarios** | **int**| the maximum number of scenarios requested, supported only in &#x60;test&#x60; sessions | [optional] 
+ **max_scenarios** | **int**| the maximum number of scenarios requested, not supported in &#x60;eval&#x60; sessions | [optional] 
 
 ### Return type
 
