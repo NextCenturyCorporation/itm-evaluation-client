@@ -20,6 +20,9 @@ defaultTasks 'clean', 'generateSwaggerCode', 'postGeneration'
 def generatedApiDirectory = "generated"
 def apiDirectory = "swagger"
 def outputDirectory = "swagger_client"
+def testDirectory = "test"
+def docsDirectory = "docs"
+def readmeDest = "${projectDir}"
 
 task swaggerClean(type: Delete) {
     doFirst {
@@ -33,7 +36,6 @@ swaggerSources {
         inputFile = file(apiDirectory+'/swagger.yaml')
         code {
             language = 'python'
-            components = ['models','apis']
             outputDir = file (generatedApiDirectory)
             configFile = file (apiDirectory+'/config.json')
             wipeOutputDir = false
@@ -70,6 +72,24 @@ task postGeneration() {
         copy {
             from "${generatedApiDirectory}/${outputDirectory}/"
             into outputDirectory
+        }
+
+        copy {
+            from "${generatedApiDirectory}/${testDirectory}/"
+            into testDirectory
+        }
+
+        copy {
+            from "${generatedApiDirectory}/${docsDirectory}/"
+            into docsDirectory
+        }
+
+        copy {
+             from "${generatedApiDirectory}/README.md"
+             into readmeDest
+             rename { String filename ->
+                "README-API.md"
+             } 
         }
 
         // delete generated api directory
