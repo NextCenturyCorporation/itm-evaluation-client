@@ -19,7 +19,9 @@ session type, scenario count, and adm_name.
 
 The kdma_training flag, when present, will put the server in training mode
 in which it shows the kdma association for each action choice.  When this
-flag is not set, the get_session_alignment operation is disabled.
+flag is not set, the get_session_alignment operation is disabled.  Please note
+that you will receive an error if you request session alignment before any
+TA1 probes have been answered.
 
 The config/*_action_path.json files provide sample canned responses for ADMs.
 When these files have 'enabled' set to 'true', this script will choose the
@@ -118,6 +120,8 @@ def main():
             session_type = args.session[0]
     else:
         session_type = 'eval'
+    if args.eval:
+        session_type = 'eval'
     if args.kdma_training and session_type == 'eval':
             parser.error("Training mode is not supported in eval sessions.")
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
@@ -166,9 +170,13 @@ def main():
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
                 if args.kdma_training:
-                    # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                    target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
-                    print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+                    try:
+                        # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
+                        target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
+                        print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+                    except:
+                        # An exception will occur if no probes have been answered yet, so just ignore.
+                        pass
             print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1

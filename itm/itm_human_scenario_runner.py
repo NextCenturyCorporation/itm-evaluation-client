@@ -194,10 +194,15 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return "No active session; please start a session first."
         if self.scenario_id == None:
             return "No active scenario; please start a scenario first."
-        if self.kdma_training:
+        if self.kdma_training == False:
             return "Session alignment can only be requested during a training session."
-        target_id = SOARTECH_ALIGNMENT if self.session_type == 'soartech' else ADEPT_ALIGNMENT
-        return self.itm.get_session_alignment(self.session_id, target_id)
+        try:
+            target_id = SOARTECH_ALIGNMENT if self.session_type == 'soartech' else ADEPT_ALIGNMENT
+            return self.itm.get_session_alignment(self.session_id, target_id)
+        except:
+            # An exception will occur if no probes have been answered yet.
+            print("Error getting session alignment-- perhaps actions have not answered any TA1 probes.")
+            return None
 
     def get_scenario_state_operation(self):
         if self.session_id == None:
@@ -295,7 +300,6 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None
-                print(response.unstructured)
         elif isinstance(response, Scenario):
             if response.session_complete == True:
                 self.session_complete = True # if there are no more scenarios, then the session is over
