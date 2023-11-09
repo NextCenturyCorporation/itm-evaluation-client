@@ -98,12 +98,15 @@ class ADMScenarioRunner(ScenarioRunner):
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
                 self.adm_knowledge.scenario_complete = state.scenario_complete
+                if state.scenario_complete:
+                    self.adm_knowledge.scenario.state.unstructured = state.unstructured
             self.scenarios_run += 1
             self.end_scenario()
         self.end_session()
 
     def end_scenario(self):
         print(f"-------- Scenario {self.scenarios_run} ---------")
+        print(f"{self.adm_knowledge.scenario.state.unstructured}")
         print(f"Scenario actions taken: {self.adm_knowledge.scenario_actions_taken}")
         print(f"Actions taken in Order: {self.adm_knowledge.action_choices}\n")
         self.adm_knowledge = ADMKnowledge()

@@ -17,8 +17,9 @@ argument is used, then an eval session type is initiated.
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
 
-The kdma_training flag, when set to True, will put the server in training mode
-in which it shows the kdma association for each action choice.
+The kdma_training flag, when present, will put the server in training mode
+in which it shows the kdma association for each action choice.  When this
+flag is not set, the get_session_alignment operation is disabled.
 
 The config/*_action_path.json files provide sample canned responses for ADMs.
 When these files have 'enabled' set to 'true', this script will choose the
@@ -39,7 +40,7 @@ The implementation of this function should be replaced with decision-making logi
 """
 
 import argparse
-from itm.itm_scenario_runner import get_swagger_class_enum_values
+from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
 import swagger_client
 import random
 from typing import List
@@ -105,12 +106,11 @@ def main():
                         help='Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. '
                         'Implies --db.')
-    parser.add_argument('--kdma_training', default=False, nargs='?',
+    parser.add_argument('--kdma_training', action='store_true', default=False,
                         help='Put the server in training mode in which it shows the kdma '
-                        'association for each action choice. True or False')
+                        'association for each action choice. Not supported in eval sessions.')
 
     args = parser.parse_args()
-    iskdma_training=False
     if args.session:
         if args.session[0] not in ['soartech', 'adept', 'eval']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
@@ -118,8 +118,8 @@ def main():
             session_type = args.session[0]
     else:
         session_type = 'eval'
-    if args.kdma_training:
-        iskdma_training = args.kdma_training
+    if args.kdma_training and session_type == 'eval':
+            parser.error("Training mode is not supported in eval sessions.")
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
     config = Configuration()
@@ -151,7 +151,7 @@ def main():
                 adm_name=args.adm_name,
                 session_type=session_type,
                 max_scenarios=scenario_count,
-                kdma_training=iskdma_training
+                kdma_training=args.kdma_training
             )
         while True:
             scenario: Scenario = itm.start_scenario(session_id)
@@ -165,14 +165,18 @@ def main():
                 print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
-            print(f'Scenario: {scenario.id} complete')
+                if args.kdma_training:
+                    # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
+                    target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
+                    print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+            print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
         action_path_index=0
         #If path is not enabled then we are assuming random actions and don't want to loop configs
         if (not paths["enabled"]):
             break
-        
+
 
 if __name__ == "__main__":
     main()

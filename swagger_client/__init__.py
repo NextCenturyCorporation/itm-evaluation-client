@@ -22,6 +22,8 @@ from swagger_client.configuration import Configuration
 # import models into sdk package
 from swagger_client.models.action import Action
 from swagger_client.models.action_type import ActionType
+from swagger_client.models.alignment_results import AlignmentResults
+from swagger_client.models.alignment_source import AlignmentSource
 from swagger_client.models.alignment_target import AlignmentTarget
 from swagger_client.models.casualty import Casualty
 from swagger_client.models.casualty_relationship import CasualtyRelationship

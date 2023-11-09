@@ -49,6 +49,13 @@ class TestItmTa2EvalApi(unittest.TestCase):
         """
         pass
 
+    def test_get_session_alignment(self):
+        """Test case for get_session_alignment
+
+        Retrieve session alignment from TA1  # noqa: E501
+        """
+        pass
+
     def test_start_scenario(self):
         """Test case for start_scenario
 
