@@ -2,7 +2,7 @@ from enum import Enum
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
-from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
 import traceback
 
 
@@ -13,6 +13,7 @@ class CommandOption(Enum):
     GET_AVAILABLE_ACTIONS = "get_available_actions (v)"
     TAKE_ACTION = "take_action (t)"
     GET_SCENARIO_STATE = "get_scenario_state (u)"
+    GET_SESSION_ALIGNMENT = "get_session_alignment (g)"
     QUIT = "quit (q)"
 
 
@@ -25,10 +26,11 @@ class TagTypes(Enum):
 ACTIONS_WITHOUT_CASUALTIES = ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, save_to_db, session_type, max_scenarios=-1):
+    def __init__(self, save_to_db, session_type, kdma_training=False, max_scenarios=-1):
         super().__init__()
         self.username = session_type + "ITM Human" + save_to_db
         self.session_type = session_type
+        self.kdma_training = kdma_training
         if max_scenarios > 0:
             self.max_scenarios = max_scenarios
         else:
@@ -172,9 +174,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, temp_username):
         if self.session_id == None:
             if self.max_scenarios == None:
-                self.session_id = self.itm.start_session(temp_username, self.session_type)
+                self.session_id = self.itm.start_session(temp_username, self.session_type, kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(temp_username, self.session_type, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(temp_username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
@@ -186,6 +188,21 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.scenario_id == None:
             return "No active scenario; please start a scenario first."
         return self.itm.get_alignment_target(self.session_id, self.scenario_id)
+
+    def get_session_alignment_operation(self):
+        if self.session_id == None:
+            return "No active session; please start a session first."
+        if self.scenario_id == None:
+            return "No active scenario; please start a scenario first."
+        if self.kdma_training == False:
+            return "Session alignment can only be requested during a training session."
+        try:
+            target_id = SOARTECH_ALIGNMENT if self.session_type == 'soartech' else ADEPT_ALIGNMENT
+            return self.itm.get_session_alignment(self.session_id, target_id)
+        except:
+            # An exception will occur if no probes have been answered yet.
+            print("Error getting session alignment-- perhaps actions have not answered any TA1 probes.")
+            return None
 
     def get_scenario_state_operation(self):
         if self.session_id == None:
@@ -267,6 +284,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.get_available_actions_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.TAKE_ACTION):
                 response = self.take_action_operation()
+            elif command in self.get_full_string_and_shortcut(CommandOption.GET_SESSION_ALIGNMENT):
+                response = self.get_session_alignment_operation()
         except Exception:
             traceback.print_exc()
 
@@ -281,7 +300,6 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None
-                print("Scenario ended.")
         elif isinstance(response, Scenario):
             if response.session_complete == True:
                 self.session_complete = True # if there are no more scenarios, then the session is over

@@ -15,6 +15,9 @@ def main():
                         'Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. '
                         'Implies --db.')
+    parser.add_argument('--kdma_training', action='store_true', default=False,
+                        help='Put the server in training mode in which it shows the kdma '
+                        'association for each action choice. Not supported in eval sessions.')
 
     args = parser.parse_args()
     use_db = "_db_" if args.db else ""
@@ -25,10 +28,12 @@ def main():
             session_type = args.session[0]
     else:
         session_type = 'eval'
-    scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
     if args.eval:
         session_type = 'eval'
-    runner = ITMHumanScenarioRunner(use_db, session_type, scenario_count)
+    if args.kdma_training and session_type == 'eval':
+            parser.error("Training mode is not supported in eval sessions.")
+    scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
+    runner = ITMHumanScenarioRunner(use_db, session_type, args.kdma_training, scenario_count)
     runner.run()
 
 if __name__ == "__main__":
