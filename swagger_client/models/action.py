@@ -30,7 +30,7 @@ class Action(object):
     swagger_types = {
         'action_id': 'str',
         'action_type': 'ActionType',
-        'casualty_id': 'str',
+        'character_id': 'str',
         'unstructured': 'str',
         'justification': 'str',
         'kdma_association': 'dict(str, str)',
@@ -40,18 +40,18 @@ class Action(object):
     attribute_map = {
         'action_id': 'action_id',
         'action_type': 'action_type',
-        'casualty_id': 'casualty_id',
+        'character_id': 'character_id',
         'unstructured': 'unstructured',
         'justification': 'justification',
         'kdma_association': 'kdma_association',
         'parameters': 'parameters'
     }
 
-    def __init__(self, action_id=None, action_type=None, casualty_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, character_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
         """Action - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
         self._action_type = None
-        self._casualty_id = None
+        self._character_id = None
         self._unstructured = None
         self._justification = None
         self._kdma_association = None
@@ -59,8 +59,8 @@ class Action(object):
         self.discriminator = None
         self.action_id = action_id
         self.action_type = action_type
-        if casualty_id is not None:
-            self.casualty_id = casualty_id
+        if character_id is not None:
+            self.character_id = character_id
         if unstructured is not None:
             self.unstructured = unstructured
         if justification is not None:
@@ -119,27 +119,27 @@ class Action(object):
         self._action_type = action_type
 
     @property
-    def casualty_id(self):
-        """Gets the casualty_id of this Action.  # noqa: E501
+    def character_id(self):
+        """Gets the character_id of this Action.  # noqa: E501
 
-        The ID of the casualty being acted upon  # noqa: E501
+        The ID of the character being acted upon  # noqa: E501
 
-        :return: The casualty_id of this Action.  # noqa: E501
+        :return: The character_id of this Action.  # noqa: E501
         :rtype: str
         """
-        return self._casualty_id
+        return self._character_id
 
-    @casualty_id.setter
-    def casualty_id(self, casualty_id):
-        """Sets the casualty_id of this Action.
+    @character_id.setter
+    def character_id(self, character_id):
+        """Sets the character_id of this Action.
 
-        The ID of the casualty being acted upon  # noqa: E501
+        The ID of the character being acted upon  # noqa: E501
 
-        :param casualty_id: The casualty_id of this Action.  # noqa: E501
+        :param character_id: The character_id of this Action.  # noqa: E501
         :type: str
         """
 
-        self._casualty_id = casualty_id
+        self._character_id = character_id
 
     @property
     def unstructured(self):
@@ -191,7 +191,7 @@ class Action(object):
     def kdma_association(self):
         """Gets the kdma_association of this Action.  # noqa: E501
 
-        KDML associations with this action used in training  # noqa: E501
+        KDMA associations with this action used in training  # noqa: E501
 
         :return: The kdma_association of this Action.  # noqa: E501
         :rtype: dict(str, str)
@@ -202,7 +202,7 @@ class Action(object):
     def kdma_association(self, kdma_association):
         """Sets the kdma_association of this Action.
 
-        KDML associations with this action used in training  # noqa: E501
+        KDMA associations with this action used in training  # noqa: E501
 
         :param kdma_association: The kdma_association of this Action.  # noqa: E501
         :type: dict(str, str)

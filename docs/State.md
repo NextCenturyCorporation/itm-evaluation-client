@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **environment** | [**Environment**](Environment.md) |  | [optional] 
 **threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 
 **supplies** | [**list[Supplies]**](Supplies.md) | a list of medical supplies available to the DM | [optional] 
-**casualties** | [**list[Casualty]**](Casualty.md) | the list of casualties in the scenario | [optional] 
+**characters** | [**list[Character]**](Character.md) | the list of characters in the scenario | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

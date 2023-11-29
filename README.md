@@ -83,25 +83,25 @@ options:
 ### Available Actions
 
 * `APPLY_TREATMENT`
-* * requires `casualty_id`
+* * requires `character_id`
 * * requires parameter `treatment` with a value taken from the `SupplyType` enum object.
 * * requires parameter `location` with a value taken from the `InjuryLocation` enum object.
 * `CHECK_ALL_VITALS`
-* * requires `casualty_id`
+* * requires `character_id`
 * `CHECK_PULSE`
-* * requires `casualty_id`
+* * requires `character_id`
 * `CHECK_RESPIRATION`
-* * requires `casualty_id`
-* `DIRECT_MOBILE_CASUALTIES`
+* * requires `character_id`
+* `DIRECT_MOBILE_CHARACTERS`
 * * no further requirements
 * `END_SCENARIO`
 * * no further requirements
 * `MOVE_TO_EVAC`
-* * requires `casualty_id`
+* * requires `character_id`
 * `SITREP`
-* * accepts **optional** `casualty_id`
-* `TAG_CASUALTY`
-* * requires `casualty_id`
+* * accepts **optional** `character_id`
+* `TAG_CHARACTER`
+* * requires `character_id`
 * * requires parameter `category` with a value taken from the `TagLabel` enum object.
 
 ## Updating models

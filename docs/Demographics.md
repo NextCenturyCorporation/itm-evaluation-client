@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**age** | **int** | the age of the casualty, omit if unknown | [optional] 
+**age** | **int** | the age of the character, omit if unknown | [optional] 
 **sex** | [**DemographicsSex**](DemographicsSex.md) |  | [optional] 
 **rank** | [**DemographicsRank**](DemographicsRank.md) |  | [optional] 
 

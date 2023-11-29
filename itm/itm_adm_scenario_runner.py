@@ -5,7 +5,7 @@ from typing import List
 from swagger_client.models import (
     Scenario,
     State,
-    Casualty,
+    Character,
     Supplies,
     Environment,
     Action,
@@ -50,10 +50,10 @@ class ADMKnowledge:
     description: str = None
     environment: Environment = None
 
-    # casualties
-    casualties: List[Casualty] = None
-    all_casualty_ids: List[str] = None
-    treated_casualty_ids: List[str] = None
+    # characters
+    characters: List[Character] = None
+    all_character_ids: List[str] = None
+    treated_character_ids: List[str] = None
 
     # Actions
     scenario_actions_taken = 0
@@ -146,10 +146,10 @@ class ADMScenarioRunner(ScenarioRunner):
         self.adm_knowledge.scenario = scenario
         state: State = scenario.state
         self.adm_knowledge.scenario_id = scenario.id
-        self.adm_knowledge.casualties = state.casualties
-        self.adm_knowledge.all_casualty_ids = [
-            casualty.id for casualty in state.casualties]
-        self.adm_knowledge.treated_casualty_ids = []
+        self.adm_knowledge.characters = state.characters
+        self.adm_knowledge.all_character_ids = [
+            character.id for character in state.characters]
+        self.adm_knowledge.treated_character_ids = []
         self.adm_knowledge.action_choices = []
         self.adm_knowledge.supplies = state.supplies
         self.adm_knowledge.environment = state.environment
@@ -161,10 +161,10 @@ class ADMScenarioRunner(ScenarioRunner):
         available_supplies = get_swagger_class_enum_values(SupplyType)   #["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CASUALTIES, ActionType.END_SCENARIO, ActionType.SITREP]:
-            # Most actions require a casualty ID
-            if random_action.casualty_id is None:
-                random_action.casualty_id = self.get_random_casualty_id()
+        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CHARACTERS, ActionType.END_SCENARIO, ActionType.SITREP]:
+            # Most actions require a character ID
+            if random_action.character_id is None:
+                random_action.character_id = self.get_random_character_id()
             if random_action.action_type == ActionType.APPLY_TREATMENT:
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
@@ -173,15 +173,15 @@ class ADMScenarioRunner(ScenarioRunner):
                         random_action.parameters["location"] = random.choice(available_locations)
                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == ActionType.TAG_CASUALTY:
+            elif random_action.action_type == ActionType.TAG_CHARACTER:
                 if random_action.parameters is None:
-                    random_action.parameters = {"category": self.assess_casualty_priority()}
+                    random_action.parameters = {"category": self.assess_character_priority()}
         return random_action
 
-    def get_random_casualty_id(self):
-        return random.choice(self.adm_knowledge.all_casualty_ids)
+    def get_random_character_id(self):
+        return random.choice(self.adm_knowledge.all_character_ids)
 
-    def assess_casualty_priority(self):
-        casualty_priority = random.randint(1, 4)
-        tag = TagTypeAndPriority.get_enum_by_priority(casualty_priority)
+    def assess_character_priority(self):
+        character_priority = random.randint(1, 4)
+        tag = TagTypeAndPriority.get_enum_by_priority(character_priority)
         return tag.value

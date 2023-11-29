@@ -25,9 +25,9 @@ from swagger_client.models.action_type import ActionType
 from swagger_client.models.alignment_results import AlignmentResults
 from swagger_client.models.alignment_source import AlignmentSource
 from swagger_client.models.alignment_target import AlignmentTarget
-from swagger_client.models.casualty import Casualty
-from swagger_client.models.casualty_relationship import CasualtyRelationship
-from swagger_client.models.casualty_tag import CasualtyTag
+from swagger_client.models.character import Character
+from swagger_client.models.character_relationship import CharacterRelationship
+from swagger_client.models.character_tag import CharacterTag
 from swagger_client.models.demographics import Demographics
 from swagger_client.models.demographics_rank import DemographicsRank
 from swagger_client.models.demographics_sex import DemographicsSex
