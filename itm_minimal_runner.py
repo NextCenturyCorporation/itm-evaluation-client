@@ -50,7 +50,7 @@ import json
 import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
-from swagger_client.models import Scenario, State, AlignmentTarget, Action, Casualty
+from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
 from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
 from swagger_client.models.supply_type import SupplyType
@@ -71,10 +71,10 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CASUALTIES, ActionType.END_SCENARIO, ActionType.SITREP]:
-            # Most actions require a casualty ID
-            if random_action.casualty_id is None:
-                random_action.casualty_id = get_random_casualty_id(state)
+        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CHARACTERS, ActionType.END_SCENARIO, ActionType.SITREP]:
+            # Most actions require a character ID
+            if random_action.character_id is None:
+                random_action.character_id = get_random_character_id(state)
             if random_action.action_type == ActionType.APPLY_TREATMENT:
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
@@ -83,15 +83,15 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                         random_action.parameters["location"] = random.choice(available_locations)
                     if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == ActionType.TAG_CASUALTY:
+            elif random_action.action_type == ActionType.TAG_CHARACTER:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": random.choice(tag_labels)}
         return random_action
 
-def get_random_casualty_id(state: State):
-    casualties : List[Casualty] = state.casualties
-    index = random.randint(0, len(casualties) - 1)
-    return casualties[index].id
+def get_random_character_id(state: State):
+    characters : List[Character] = state.characters
+    index = random.randint(0, len(characters) - 1)
+    return characters[index].id
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
@@ -166,7 +166,7 @@ def main():
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
-                print(f'Action type: {action.action_type}; Casualty ID: {action.casualty_id}')
+                print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
                 if args.kdma_training:

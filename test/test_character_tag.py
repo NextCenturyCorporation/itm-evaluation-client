@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.casualty_tag import CasualtyTag  # noqa: E501
+from swagger_client.models.character_tag import CharacterTag  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestCasualtyTag(unittest.TestCase):
-    """CasualtyTag unit test stubs"""
+class TestCharacterTag(unittest.TestCase):
+    """CharacterTag unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestCasualtyTag(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testCasualtyTag(self):
-        """Test CasualtyTag"""
+    def testCharacterTag(self):
+        """Test CharacterTag"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.casualty_tag.CasualtyTag()  # noqa: E501
+        # model = swagger_client.models.character_tag.CharacterTag()  # noqa: E501
         pass
 
 

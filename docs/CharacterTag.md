@@ -1,4 +1,4 @@
-# CasualtyRelationship
+# CharacterTag
 
 ## Properties
 Name | Type | Description | Notes

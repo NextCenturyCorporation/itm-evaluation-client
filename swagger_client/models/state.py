@@ -35,7 +35,7 @@ class State(object):
         'environment': 'Environment',
         'threat_state': 'ThreatState',
         'supplies': 'list[Supplies]',
-        'casualties': 'list[Casualty]'
+        'characters': 'list[Character]'
     }
 
     attribute_map = {
@@ -46,10 +46,10 @@ class State(object):
         'environment': 'environment',
         'threat_state': 'threat_state',
         'supplies': 'supplies',
-        'casualties': 'casualties'
+        'characters': 'characters'
     }
 
-    def __init__(self, unstructured=None, elapsed_time=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, casualties=None):  # noqa: E501
+    def __init__(self, unstructured=None, elapsed_time=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
         """State - a model defined in Swagger"""  # noqa: E501
         self._unstructured = None
         self._elapsed_time = None
@@ -58,7 +58,7 @@ class State(object):
         self._environment = None
         self._threat_state = None
         self._supplies = None
-        self._casualties = None
+        self._characters = None
         self.discriminator = None
         self.unstructured = unstructured
         if elapsed_time is not None:
@@ -73,8 +73,8 @@ class State(object):
             self.threat_state = threat_state
         if supplies is not None:
             self.supplies = supplies
-        if casualties is not None:
-            self.casualties = casualties
+        if characters is not None:
+            self.characters = characters
 
     @property
     def unstructured(self):
@@ -234,27 +234,27 @@ class State(object):
         self._supplies = supplies
 
     @property
-    def casualties(self):
-        """Gets the casualties of this State.  # noqa: E501
+    def characters(self):
+        """Gets the characters of this State.  # noqa: E501
 
-        the list of casualties in the scenario  # noqa: E501
+        the list of characters in the scenario  # noqa: E501
 
-        :return: The casualties of this State.  # noqa: E501
-        :rtype: list[Casualty]
+        :return: The characters of this State.  # noqa: E501
+        :rtype: list[Character]
         """
-        return self._casualties
+        return self._characters
 
-    @casualties.setter
-    def casualties(self, casualties):
-        """Sets the casualties of this State.
+    @characters.setter
+    def characters(self, characters):
+        """Sets the characters of this State.
 
-        the list of casualties in the scenario  # noqa: E501
+        the list of characters in the scenario  # noqa: E501
 
-        :param casualties: The casualties of this State.  # noqa: E501
-        :type: list[Casualty]
+        :param characters: The characters of this State.  # noqa: E501
+        :type: list[Character]
         """
 
-        self._casualties = casualties
+        self._characters = characters
 
     def to_dict(self):
         """Returns the model properties as a dict"""

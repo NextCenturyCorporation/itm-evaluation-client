@@ -23,7 +23,7 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CASUALTIES = ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]
+ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENARIO", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
     def __init__(self, save_to_db, session_type, kdma_training=False, max_scenarios=-1):
@@ -39,7 +39,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         self.session_complete = False
         self.session_id = None
         self.scenario_id = None
-        self.casualties = {}
+        self.characters = {}
         self.medical_supplies = {}
         self.available_actions = None
         self.actions_are_current = False
@@ -56,30 +56,30 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         shortcut = [parts[1][1]]
         return [full] + shortcut
 
-    def prompt_casualty_id(self, none_allowed=False):
+    def prompt_character_id(self, none_allowed=False):
         if none_allowed:
-            casualty_id = input(
-                f"Enter Casualty Number from the list, or <Enter> for none:\n"
-                f"  {[f'({i + 1}, {casualty.id})' for i, casualty in enumerate(self.casualties)]}: "
+            character_id = input(
+                f"Enter Character Number from the list, or <Enter> for none:\n"
+                f"  {[f'({i + 1}, {character.id})' for i, character in enumerate(self.characters)]}: "
             )
-            if not casualty_id:
+            if not character_id:
                 return ''
         else:
-            casualty_id = input(
-                f"Enter Casualty Number from the list:\n"
-                f"  {[f'({i + 1}, {casualty.id})' for i, casualty in enumerate(self.casualties)]}: "
+            character_id = input(
+                f"Enter Character Number from the list:\n"
+                f"  {[f'({i + 1}, {character.id})' for i, character in enumerate(self.characters)]}: "
             )
 
         try:
-            casualty_index = int(casualty_id) - 1
-            if casualty_index < 0:
+            character_index = int(character_id) - 1
+            if character_index < 0:
                 raise ValueError()
-            casualty_id = self.casualties[casualty_index].id
+            character_id = self.characters[character_index].id
         except ValueError:
-            return self.prompt_casualty_id()
+            return self.prompt_character_id()
         except IndexError:
-            return self.prompt_casualty_id()
-        return casualty_id
+            return self.prompt_character_id()
+        return character_id
 
     def prompt_location(self):
         available_locations = get_swagger_class_enum_values(InjuryLocation)
@@ -163,7 +163,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 self.scenario_id = response.id
                 self.scenario = response
                 state: State = response.state
-                self.casualties = state.casualties
+                self.characters = state.characters
                 self.medical_supplies = response.state.supplies
             else:
                 self.session_complete = True
@@ -234,10 +234,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         action:Action = self.prompt_action()
 
         # Prompt to fill in any missing fields.  Note similarity with ADMScenarioRunner.get_next_action().
-        if action.action_type not in ACTIONS_WITHOUT_CASUALTIES:
-            # Most actions require a casualty ID
-            if action.casualty_id is None:
-                action.casualty_id = self.prompt_casualty_id()
+        if action.action_type not in ACTIONS_WITHOUT_CHARACTERS:
+            # Most actions require a character ID
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id()
         if action.action_type == ActionType.APPLY_TREATMENT:
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
@@ -247,9 +247,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 if not action.parameters['treatment'] or action.parameters["treatment"] is None:
                     action.parameters["treatment"] = self.prompt_treatment()
         elif action.action_type == ActionType.SITREP:
-            if action.casualty_id is None:
-                action.casualty_id = self.prompt_casualty_id(none_allowed=True)
-        elif action.action_type == ActionType.TAG_CASUALTY:
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id(none_allowed=True)
+        elif action.action_type == ActionType.TAG_CHARACTER:
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
 
