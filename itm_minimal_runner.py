@@ -97,6 +97,8 @@ def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
     parser.add_argument('--adm_name', type=str, required=True, 
                         help='Specify the ADM name')
+    parser.add_argument('--save', action='store_true', default=False, help=\
+                        'Tell the ADM server to save session history. Enabled if --eval is set.')
     parser.add_argument('--session', nargs='*', default=[], 
                         metavar=('session_type', 'scenario_count'), 
                         help='Specify session type and scenario count. '
@@ -107,7 +109,7 @@ def main():
     parser.add_argument('--eval', action='store_true', default=False, 
                         help='Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. '
-                        'Implies --db.')
+                        'Implies --save.')
     parser.add_argument('--kdma_training', action='store_true', default=False,
                         help='Put the server in training mode in which it shows the kdma '
                         'association for each action choice. Not supported in eval sessions.')
@@ -152,7 +154,7 @@ def main():
             )
         else:
             session_id = itm.start_session(
-                adm_name=args.adm_name,
+                adm_name=args.adm_name + ("_save_" if args.save else ""),
                 session_type=session_type,
                 max_scenarios=scenario_count,
                 kdma_training=args.kdma_training
