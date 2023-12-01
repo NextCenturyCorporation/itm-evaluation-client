@@ -26,11 +26,9 @@ class TagTypes(Enum):
 ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENARIO", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, save_history=False, kdma_training=False, max_scenarios=-1):
+    def __init__(self, session_type, kdma_training=False, max_scenarios=-1):
         super().__init__()
         self.username = session_type + " ITM Human"
-        if save_history and not session_type == 'eval':
-            self.username += "_save_"
         self.session_type = session_type
         self.kdma_training = kdma_training
         if max_scenarios > 0:

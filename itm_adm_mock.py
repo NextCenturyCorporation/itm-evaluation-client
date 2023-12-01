@@ -3,8 +3,6 @@ from itm import ADMScenarioRunner
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
-    parser.add_argument('--save', action='store_true', default=False, help=\
-                        'Tell the ADM server to save session history.')
     parser.add_argument('--session', nargs='*', default=[], metavar=('session_type', 'scenario_count'), help=\
                         'Specify session type and scenario count. '
                         'Session type can be eval, adept, or soartech. '
@@ -25,7 +23,7 @@ def main():
         session_type = 'eval'
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
 
-    adm = ADMScenarioRunner(session_type, args.save, scenario_count)
+    adm = ADMScenarioRunner(session_type, scenario_count)
     adm.run()
 
 if __name__ == "__main__":

@@ -47,17 +47,16 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] [--save] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
+usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
 
 Runs ADM scenarios.
 
 options:
   -h, --help            show this help message and exit
   --adm_name ADM_NAME   Specify the ADM name
-  --save                Tell the ADM server to save session history.  Enabled if --eval is set.
   --session [session_type [scenario_count ...]]
                         Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified. Implies --save.
+  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
   --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
                         Not supported in eval sessions.
 ```
@@ -69,16 +68,15 @@ The Human input simulator is used for testing specific action/parameter sequence
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] [--save] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
+usage: itm_human_input.py [-h] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
 
 Runs Human input simulator.
 
 options:
   -h, --help            show this help message and exit
-  --save                Tell the ADM server to save session history.  Enabled if --eval is set.
   --session [session_type [scenario_count ...]]
                         Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified. Implies --save.
+  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
   --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
                         Not supported in eval sessions.
 ```
