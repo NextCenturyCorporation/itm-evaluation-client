@@ -106,8 +106,7 @@ def main():
                         'argument')
     parser.add_argument('--eval', action='store_true', default=False, 
                         help='Run an evaluation session. '
-                        'Supercedes --session and is the default if nothing is specified. '
-                        'Implies --db.')
+                        'Supercedes --session and is the default if nothing is specified. ')
     parser.add_argument('--kdma_training', action='store_true', default=False,
                         help='Put the server in training mode in which it shows the kdma '
                         'association for each action choice. Not supported in eval sessions.')

@@ -67,15 +67,14 @@ class ADMKnowledge:
 
 class ADMScenarioRunner(ScenarioRunner):
 
-    def __init__(self, save_to_db, scene_type, session_type=None,
-                 max_scenarios=0, eval_mode=False):
+    def __init__(self, session_type, max_scenarios=0):
         super().__init__()
         self.session_id = None
-        self.adm_name = scene_type + "ITM ADM4" + save_to_db
+        self.adm_name = "ITM ADM"
+        self.eval_mode = session_type == 'eval'
         self.adm_knowledge: ADMKnowledge = None
         self.session_type = session_type
         self.max_scenarios = max_scenarios
-        self.eval_mode = eval_mode
         self.scenarios_run = 0
         self.total_actions_taken = 0
 

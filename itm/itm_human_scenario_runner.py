@@ -26,9 +26,9 @@ class TagTypes(Enum):
 ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENARIO", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, save_to_db, session_type, kdma_training=False, max_scenarios=-1):
+    def __init__(self, session_type, kdma_training=False, max_scenarios=-1):
         super().__init__()
-        self.username = session_type + "ITM Human" + save_to_db
+        self.username = session_type + " ITM Human"
         self.session_type = session_type
         self.kdma_training = kdma_training
         if max_scenarios > 0:
@@ -171,12 +171,12 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             response = "Scenario is already started."
         return response
 
-    def start_session_operation(self, temp_username):
+    def start_session_operation(self, username):
         if self.session_id == None:
             if self.max_scenarios == None:
-                self.session_id = self.itm.start_session(temp_username, self.session_type, kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(temp_username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
@@ -294,7 +294,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         if command in self.get_full_string_and_shortcut(CommandOption.QUIT):
             self.session_complete = True # if there are no more scenarios, then the session is over
-            print("Quitting session-- server will not save output for current scenario to DB.")
+            print("Quitting session-- server will not save history for current scenario if it was enabled.")
         elif isinstance(response, State):
             self.medical_supplies = response.supplies
             if response.scenario_complete == True:
