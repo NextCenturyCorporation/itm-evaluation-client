@@ -97,6 +97,8 @@ options:
 * * no further requirements
 * `END_SCENARIO`
 * * no further requirements
+* `END_SCENARIO`
+* * no further requirements
 * `MOVE_TO_EVAC`
 * * requires `character_id`
 * `SITREP`

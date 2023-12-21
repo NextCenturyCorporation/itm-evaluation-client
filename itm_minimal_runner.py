@@ -55,6 +55,7 @@ from swagger_client.models.action_type import ActionType
 from swagger_client.models.injury_location import InjuryLocation
 from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.tag_label import TagLabel
+
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action], paths, index: int, path_index: int):
@@ -76,6 +77,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
             if random_action.character_id is None:
                 random_action.character_id = get_random_character_id(state)
             if random_action.action_type == ActionType.APPLY_TREATMENT:
+
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
                 else :

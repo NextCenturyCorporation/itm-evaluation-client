@@ -165,6 +165,7 @@ class ADMScenarioRunner(ScenarioRunner):
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id()
             if random_action.action_type == ActionType.APPLY_TREATMENT:
+
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
                 else :
