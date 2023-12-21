@@ -35,6 +35,10 @@ pip3 install -r requirements.txt
 
 ```
 
+ In order to hit a non-locally running server (localhost) set the below environment variables:
+ - TA3_PORT (Default: 8080)
+ - TA3_HOSTNAME (Default: 127.0.0.1)
+
 ### Running the ADM minimal runner
 
  To see additional details regarding modifying this minimal runner to be a TA2 client, see the comments at the top of `itm_minimal_runner.py`.
@@ -43,7 +47,7 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval]
+usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
 
 Runs ADM scenarios.
 
@@ -52,55 +56,58 @@ options:
   --adm_name ADM_NAME   Specify the ADM name
   --session [session_type [scenario_count ...]]
                         Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified. Implies --db.
-  --kdma_training [KDMA_TRAINING]
-                        Put the server in training mode in which it shows the kdma association for each action choice.  True or False.
+  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
+  --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
+                        Not supported in eval sessions.
 ```
-## Hitting a remote TA3 Server
- In order to hit a non-locally running server (localhost) set the below environment variables:
- - TA3_PORT(Default: 8080)
- - TA3_HOSTNAME (Default: 127.0.0.1)
  
-### Running the Human input simulator (DEPRECATED)
+### Running the Human input simulator
 
-The Human input simulator has not been updated since MVP.  It may be removed entirely in a future release.
+The Human input simulator is used for testing specific action/parameter sequences or for otherwise simulating a human DM.
 
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] [--db] [--session [session_type [scenario_count ...]]] [--eval]
+usage: itm_human_input.py [-h] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
 
 Runs Human input simulator.
 
 options:
   -h, --help            show this help message and exit
-  --db                  Put the output in the MongoDB (ensure that the itm_dashboard docker container is running) and save a json output file locally inside itm_server/itm_mvp_local_output/
   --session [session_type [scenario_count ...]]
-                        Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified. Implies --db.
+                        Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
+  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
+  --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
+                        Not supported in eval sessions.
 ```
 
 ### Available Actions
 
 * `APPLY_TREATMENT`
-* * requires `casualty_id`
-* * requires parameter `treatment` with a value taken from type enum in `Supplies` object.
-* * requires parameter `location` with a value taken from location enum in `Injury` object.
+* * requires `character_id`
+* * requires parameter `treatment` with a value taken from the `SupplyType` enum object.
+* * requires parameter `location` with a value taken from the `InjuryLocation` enum object.
 * `CHECK_ALL_VITALS`
-* * requires `casualty_id`
+* * requires `character_id`
 * `CHECK_PULSE`
-* * requires `casualty_id`
+* * requires `character_id`
 * `CHECK_RESPIRATION`
-* * requires `casualty_id`
-* `DIRECT_MOBILE_CASUALTIES`
+* * requires `character_id`
+* `DIRECT_MOBILE_CHARACTERS`
 * * no further requirements
 * `END_SCENARIO`
 * * no further requirements
 * `MOVE_TO_EVAC`
-* * requires `casualty_id`
+* * requires `character_id`
 * `SITREP`
-* * accepts **optional** `casualty_id`
-* `TAG_CASUALTY`
-* * requires `casualty_id`
-* * requires parameter `category` with a value taken from `tagLabel` enum in `TriageCategory` object.
+* * accepts **optional** `character_id`
+* `TAG_CHARACTER`
+* * requires `character_id`
+* * requires parameter `category` with a value taken from the `TagLabel` enum object.
 
+## Updating models
+This requires JDK 8 or higher to run the gradle tool.
+
+The models in swagger_server/models are generated from swagger_server/swagger/swagger.yaml
+If this file is updated the models will need to be re-generated and checked in.
+Run `./gradlew` to do this.

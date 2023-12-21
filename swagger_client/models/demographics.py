@@ -29,8 +29,8 @@ class Demographics(object):
     """
     swagger_types = {
         'age': 'int',
-        'sex': 'str',
-        'rank': 'str'
+        'sex': 'DemographicsSex',
+        'rank': 'DemographicsRank'
     }
 
     attribute_map = {
@@ -56,7 +56,7 @@ class Demographics(object):
     def age(self):
         """Gets the age of this Demographics.  # noqa: E501
 
-        the age of the casualty, omit if unknown  # noqa: E501
+        the age of the character, omit if unknown  # noqa: E501
 
         :return: The age of this Demographics.  # noqa: E501
         :rtype: int
@@ -67,7 +67,7 @@ class Demographics(object):
     def age(self, age):
         """Sets the age of this Demographics.
 
-        the age of the casualty, omit if unknown  # noqa: E501
+        the age of the character, omit if unknown  # noqa: E501
 
         :param age: The age of this Demographics.  # noqa: E501
         :type: int
@@ -79,10 +79,9 @@ class Demographics(object):
     def sex(self):
         """Gets the sex of this Demographics.  # noqa: E501
 
-        the sex of the casualty, omit if unknown/indeterminate  # noqa: E501
 
         :return: The sex of this Demographics.  # noqa: E501
-        :rtype: str
+        :rtype: DemographicsSex
         """
         return self._sex
 
@@ -90,17 +89,10 @@ class Demographics(object):
     def sex(self, sex):
         """Sets the sex of this Demographics.
 
-        the sex of the casualty, omit if unknown/indeterminate  # noqa: E501
 
         :param sex: The sex of this Demographics.  # noqa: E501
-        :type: str
+        :type: DemographicsSex
         """
-        allowed_values = ["M", "F"]  # noqa: E501
-        if sex not in allowed_values:
-            raise ValueError(
-                "Invalid value for `sex` ({0}), must be one of {1}"  # noqa: E501
-                .format(sex, allowed_values)
-            )
 
         self._sex = sex
 
@@ -108,10 +100,9 @@ class Demographics(object):
     def rank(self):
         """Gets the rank of this Demographics.  # noqa: E501
 
-        The military status of the casualty, omit if unknown  # noqa: E501
 
         :return: The rank of this Demographics.  # noqa: E501
-        :rtype: str
+        :rtype: DemographicsRank
         """
         return self._rank
 
@@ -119,17 +110,10 @@ class Demographics(object):
     def rank(self, rank):
         """Sets the rank of this Demographics.
 
-        The military status of the casualty, omit if unknown  # noqa: E501
 
         :param rank: The rank of this Demographics.  # noqa: E501
-        :type: str
+        :type: DemographicsRank
         """
-        allowed_values = ["Marine", "FMF Corpsman", "Sailor", "Civilian", "SEAL", "Intel Officer"]  # noqa: E501
-        if rank not in allowed_values:
-            raise ValueError(
-                "Invalid value for `rank` ({0}), must be one of {1}"  # noqa: E501
-                .format(rank, allowed_values)
-            )
 
         self._rank = rank
 

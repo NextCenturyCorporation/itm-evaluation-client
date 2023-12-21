@@ -5,13 +5,16 @@ from typing import List
 from swagger_client.models import (
     Scenario,
     State,
-    Casualty,
+    Character,
     Supplies,
     Environment,
     Action,
     AlignmentTarget
 )
-from .itm_scenario_runner import ScenarioRunner
+from swagger_client.models.action_type import ActionType
+from swagger_client.models.injury_location import InjuryLocation
+from swagger_client.models.supply_type import SupplyType
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 
 
 class TagTypeAndPriority(Enum):
@@ -47,10 +50,10 @@ class ADMKnowledge:
     description: str = None
     environment: Environment = None
 
-    # casualties
-    casualties: List[Casualty] = None
-    all_casualty_ids: List[str] = None
-    treated_casualty_ids: List[str] = None
+    # characters
+    characters: List[Character] = None
+    all_character_ids: List[str] = None
+    treated_character_ids: List[str] = None
 
     # Actions
     scenario_actions_taken = 0
@@ -64,15 +67,14 @@ class ADMKnowledge:
 
 class ADMScenarioRunner(ScenarioRunner):
 
-    def __init__(self, save_to_db, scene_type, session_type=None,
-                 max_scenarios=0, eval_mode=False):
+    def __init__(self, session_type, max_scenarios=0):
         super().__init__()
         self.session_id = None
-        self.adm_name = scene_type + "ITM ADM4" + save_to_db
+        self.adm_name = "ITM ADM"
+        self.eval_mode = session_type == 'eval'
         self.adm_knowledge: ADMKnowledge = None
         self.session_type = session_type
         self.max_scenarios = max_scenarios
-        self.eval_mode = eval_mode
         self.scenarios_run = 0
         self.total_actions_taken = 0
 
@@ -95,12 +97,15 @@ class ADMScenarioRunner(ScenarioRunner):
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
                 self.adm_knowledge.scenario_complete = state.scenario_complete
+                if state.scenario_complete:
+                    self.adm_knowledge.scenario.state.unstructured = state.unstructured
             self.scenarios_run += 1
             self.end_scenario()
         self.end_session()
 
     def end_scenario(self):
         print(f"-------- Scenario {self.scenarios_run} ---------")
+        print(f"{self.adm_knowledge.scenario.state.unstructured}")
         print(f"Scenario actions taken: {self.adm_knowledge.scenario_actions_taken}")
         print(f"Actions taken in Order: {self.adm_knowledge.action_choices}\n")
         self.adm_knowledge = ADMKnowledge()
@@ -140,10 +145,10 @@ class ADMScenarioRunner(ScenarioRunner):
         self.adm_knowledge.scenario = scenario
         state: State = scenario.state
         self.adm_knowledge.scenario_id = scenario.id
-        self.adm_knowledge.casualties = state.casualties
-        self.adm_knowledge.all_casualty_ids = [
-            casualty.id for casualty in state.casualties]
-        self.adm_knowledge.treated_casualty_ids = []
+        self.adm_knowledge.characters = state.characters
+        self.adm_knowledge.all_character_ids = [
+            character.id for character in state.characters]
+        self.adm_knowledge.treated_character_ids = []
         self.adm_knowledge.action_choices = []
         self.adm_knowledge.supplies = state.supplies
         self.adm_knowledge.environment = state.environment
@@ -151,16 +156,16 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-        available_locations = ["right forearm", "left forearm", "right calf", "left calf", "right thigh", "left thigh", "right stomach", "left stomach", "right bicep", "left bicep", "right shoulder", "left shoulder", "right side", "left side", "right chest", "left chest", "right wrist", "left wrist", "left face", "right face", "left neck", "right neck", "unspecified"]
-        available_supplies = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
-
+        available_locations = get_swagger_class_enum_values(InjuryLocation)
+        available_supplies = get_swagger_class_enum_values(SupplyType)   #["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in ["DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "SITREP"]:
-            # Most actions require a casualty ID
-            if random_action.casualty_id is None:
-                random_action.casualty_id = self.get_random_casualty_id()
-            if random_action.action_type == "APPLY_TREATMENT":
+        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CHARACTERS, ActionType.END_SCENARIO, ActionType.SITREP]:
+            # Most actions require a character ID
+            if random_action.character_id is None:
+                random_action.character_id = self.get_random_character_id()
+            if random_action.action_type == ActionType.APPLY_TREATMENT:
+
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
                 else :
@@ -168,15 +173,15 @@ class ADMScenarioRunner(ScenarioRunner):
                         random_action.parameters["location"] = random.choice(available_locations)
                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
                         random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == "TAG_CASUALTY":
+            elif random_action.action_type == ActionType.TAG_CHARACTER:
                 if random_action.parameters is None:
-                    random_action.parameters = {"category": self.assess_casualty_priority()}
+                    random_action.parameters = {"category": self.assess_character_priority()}
         return random_action
 
-    def get_random_casualty_id(self):
-        return random.choice(self.adm_knowledge.all_casualty_ids)
+    def get_random_character_id(self):
+        return random.choice(self.adm_knowledge.all_character_ids)
 
-    def assess_casualty_priority(self):
-        casualty_priority = random.randint(1, 4)
-        tag = TagTypeAndPriority.get_enum_by_priority(casualty_priority)
+    def assess_character_priority(self):
+        character_priority = random.randint(1, 4)
+        tag = TagTypeAndPriority.get_enum_by_priority(character_priority)
         return tag.value

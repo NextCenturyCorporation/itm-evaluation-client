@@ -8,7 +8,6 @@ Name | Type | Description | Notes
 **session_complete** | **bool** | set to true if the session is complete; that is, there are no more scenarios | [optional] 
 **start_time** | **str** | the wall clock local start time of the scenario, expressed as hh:mm | [optional] 
 **state** | [**State**](State.md) |  | [optional] 
-**triage_categories** | [**list[TriageCategory]**](TriageCategory.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

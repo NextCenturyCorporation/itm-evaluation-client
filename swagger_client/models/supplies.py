@@ -28,7 +28,7 @@ class Supplies(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'type': 'str',
+        'type': 'SupplyType',
         'quantity': 'int'
     }
 
@@ -49,10 +49,9 @@ class Supplies(object):
     def type(self):
         """Gets the type of this Supplies.  # noqa: E501
 
-        an enumeration of available supply types  # noqa: E501
 
         :return: The type of this Supplies.  # noqa: E501
-        :rtype: str
+        :rtype: SupplyType
         """
         return self._type
 
@@ -60,19 +59,12 @@ class Supplies(object):
     def type(self, type):
         """Sets the type of this Supplies.
 
-        an enumeration of available supply types  # noqa: E501
 
         :param type: The type of this Supplies.  # noqa: E501
-        :type: str
+        :type: SupplyType
         """
         if type is None:
             raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
-        allowed_values = ["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]  # noqa: E501
-        if type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `type` ({0}), must be one of {1}"  # noqa: E501
-                .format(type, allowed_values)
-            )
 
         self._type = type
 

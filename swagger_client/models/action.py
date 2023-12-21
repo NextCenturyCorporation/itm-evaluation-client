@@ -29,9 +29,8 @@ class Action(object):
     """
     swagger_types = {
         'action_id': 'str',
-        'scenario_id': 'str',
-        'action_type': 'str',
-        'casualty_id': 'str',
+        'action_type': 'ActionType',
+        'character_id': 'str',
         'unstructured': 'str',
         'justification': 'str',
         'kdma_association': 'dict(str, str)',
@@ -40,31 +39,28 @@ class Action(object):
 
     attribute_map = {
         'action_id': 'action_id',
-        'scenario_id': 'scenario_id',
         'action_type': 'action_type',
-        'casualty_id': 'casualty_id',
+        'character_id': 'character_id',
         'unstructured': 'unstructured',
         'justification': 'justification',
         'kdma_association': 'kdma_association',
         'parameters': 'parameters'
     }
 
-    def __init__(self, action_id=None, scenario_id=None, action_type=None, casualty_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, character_id=None, unstructured=None, justification=None, kdma_association=None, parameters=None):  # noqa: E501
         """Action - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
-        self._scenario_id = None
         self._action_type = None
-        self._casualty_id = None
+        self._character_id = None
         self._unstructured = None
         self._justification = None
         self._kdma_association = None
         self._parameters = None
         self.discriminator = None
         self.action_id = action_id
-        self.scenario_id = scenario_id
         self.action_type = action_type
-        if casualty_id is not None:
-            self.casualty_id = casualty_id
+        if character_id is not None:
+            self.character_id = character_id
         if unstructured is not None:
             self.unstructured = unstructured
         if justification is not None:
@@ -100,38 +96,12 @@ class Action(object):
         self._action_id = action_id
 
     @property
-    def scenario_id(self):
-        """Gets the scenario_id of this Action.  # noqa: E501
-
-        scenario ID this probe is for  # noqa: E501
-
-        :return: The scenario_id of this Action.  # noqa: E501
-        :rtype: str
-        """
-        return self._scenario_id
-
-    @scenario_id.setter
-    def scenario_id(self, scenario_id):
-        """Sets the scenario_id of this Action.
-
-        scenario ID this probe is for  # noqa: E501
-
-        :param scenario_id: The scenario_id of this Action.  # noqa: E501
-        :type: str
-        """
-        if scenario_id is None:
-            raise ValueError("Invalid value for `scenario_id`, must not be `None`")  # noqa: E501
-
-        self._scenario_id = scenario_id
-
-    @property
     def action_type(self):
         """Gets the action_type of this Action.  # noqa: E501
 
-        The action type taken from a controlled vocabulary  # noqa: E501
 
         :return: The action_type of this Action.  # noqa: E501
-        :rtype: str
+        :rtype: ActionType
         """
         return self._action_type
 
@@ -139,44 +109,37 @@ class Action(object):
     def action_type(self, action_type):
         """Sets the action_type of this Action.
 
-        The action type taken from a controlled vocabulary  # noqa: E501
 
         :param action_type: The action_type of this Action.  # noqa: E501
-        :type: str
+        :type: ActionType
         """
         if action_type is None:
             raise ValueError("Invalid value for `action_type`, must not be `None`")  # noqa: E501
-        allowed_values = ["APPLY_TREATMENT", "CHECK_ALL_VITALS", "CHECK_PULSE", "CHECK_RESPIRATION", "DIRECT_MOBILE_CASUALTIES", "END_SCENARIO", "MOVE_TO_EVAC", "SITREP", "TAG_CASUALTY"]  # noqa: E501
-        if action_type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `action_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(action_type, allowed_values)
-            )
 
         self._action_type = action_type
 
     @property
-    def casualty_id(self):
-        """Gets the casualty_id of this Action.  # noqa: E501
+    def character_id(self):
+        """Gets the character_id of this Action.  # noqa: E501
 
-        The ID of the casualty being acted upon  # noqa: E501
+        The ID of the character being acted upon  # noqa: E501
 
-        :return: The casualty_id of this Action.  # noqa: E501
+        :return: The character_id of this Action.  # noqa: E501
         :rtype: str
         """
-        return self._casualty_id
+        return self._character_id
 
-    @casualty_id.setter
-    def casualty_id(self, casualty_id):
-        """Sets the casualty_id of this Action.
+    @character_id.setter
+    def character_id(self, character_id):
+        """Sets the character_id of this Action.
 
-        The ID of the casualty being acted upon  # noqa: E501
+        The ID of the character being acted upon  # noqa: E501
 
-        :param casualty_id: The casualty_id of this Action.  # noqa: E501
+        :param character_id: The character_id of this Action.  # noqa: E501
         :type: str
         """
 
-        self._casualty_id = casualty_id
+        self._character_id = character_id
 
     @property
     def unstructured(self):
@@ -228,7 +191,7 @@ class Action(object):
     def kdma_association(self):
         """Gets the kdma_association of this Action.  # noqa: E501
 
-        KDML associations with this action used in training  # noqa: E501
+        KDMA associations with this action used in training  # noqa: E501
 
         :return: The kdma_association of this Action.  # noqa: E501
         :rtype: dict(str, str)
@@ -239,7 +202,7 @@ class Action(object):
     def kdma_association(self, kdma_association):
         """Sets the kdma_association of this Action.
 
-        KDML associations with this action used in training  # noqa: E501
+        KDMA associations with this action used in training  # noqa: E501
 
         :param kdma_association: The kdma_association of this Action.  # noqa: E501
         :type: dict(str, str)
