@@ -183,6 +183,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return response
 
     def get_alignment_target_operation(self):
+        if self.kdma_training:
+            return "Getting alignment target is not supported in training mode."
         if self.session_id == None:
             return "No active session; please start a session first."
         if self.scenario_id == None:
