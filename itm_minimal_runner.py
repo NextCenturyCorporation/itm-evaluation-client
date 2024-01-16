@@ -162,7 +162,8 @@ def main():
             scenario: Scenario = itm.start_scenario(session_id)
             if scenario.session_complete:
                 break
-            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
+            print(f'Scenario name: {scenario.name}')
+            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
