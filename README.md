@@ -95,10 +95,12 @@ options:
 * * requires `character_id`
 * `DIRECT_MOBILE_CHARACTERS`
 * * no further requirements
-* `END_SCENARIO`
+* `END_SCENE`
 * * no further requirements
 * `MOVE_TO_EVAC`
 * * requires `character_id`
+* `SEARCH`
+* * no further requirements
 * `SITREP`
 * * accepts **optional** `character_id`
 * `TAG_CHARACTER`

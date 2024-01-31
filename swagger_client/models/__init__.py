@@ -1,7 +1,6 @@
 from __future__ import absolute_import 
 # import models into models package
 from swagger_client.models.action import Action
-from swagger_client.models.action_type import ActionType
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.aid_delay import AidDelay
 from swagger_client.models.aid_type_enum import AidTypeEnum
@@ -12,7 +11,6 @@ from swagger_client.models.ambient_noise_enum import AmbientNoiseEnum
 from swagger_client.models.avpu_level_enum import AvpuLevelEnum
 from swagger_client.models.breathing_level_enum import BreathingLevelEnum
 from swagger_client.models.character import Character
-from swagger_client.models.character_relationship import CharacterRelationship
 from swagger_client.models.character_role_enum import CharacterRoleEnum
 from swagger_client.models.character_tag import CharacterTag
 from swagger_client.models.character_tag_enum import CharacterTagEnum
@@ -46,7 +44,6 @@ from swagger_client.models.military_rank_enum import MilitaryRankEnum
 from swagger_client.models.military_rank_title_enum import MilitaryRankTitleEnum
 from swagger_client.models.mission import Mission
 from swagger_client.models.mission_importance_enum import MissionImportanceEnum
-from swagger_client.models.mission_type import MissionType
 from swagger_client.models.mission_type_enum import MissionTypeEnum
 from swagger_client.models.movement_restriction_enum import MovementRestrictionEnum
 from swagger_client.models.oxygen_levels_enum import OxygenLevelsEnum
@@ -76,6 +73,4 @@ from swagger_client.models.threat_state import ThreatState
 from swagger_client.models.threat_type_enum import ThreatTypeEnum
 from swagger_client.models.visibility_type_enum import VisibilityTypeEnum
 from swagger_client.models.vitals import Vitals
-from swagger_client.models.vitals_breathing import VitalsBreathing
-from swagger_client.models.vitals_mental_status import VitalsMentalStatus
 from swagger_client.models.weather_type_enum import WeatherTypeEnum
