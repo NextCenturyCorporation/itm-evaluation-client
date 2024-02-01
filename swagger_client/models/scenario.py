@@ -55,7 +55,8 @@ class Scenario(object):
         self.name = name
         if session_complete is not None:
             self.session_complete = session_complete
-        self.state = state
+        if state is not None:
+            self.state = state
         if scenes is not None:
             self.scenes = scenes
 
@@ -150,8 +151,6 @@ class Scenario(object):
         :param state: The state of this Scenario.  # noqa: E501
         :type: State
         """
-        if state is None:
-            raise ValueError("Invalid value for `state`, must not be `None`")  # noqa: E501
 
         self._state = state
 

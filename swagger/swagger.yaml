@@ -353,7 +353,6 @@ components:
       required:
         - id
         - name
-        - state
       type: object
       description: a triage scenario requiring decisions by a medic
       properties:
