@@ -11,7 +11,7 @@ from swagger_client.models import (
     Action,
     AlignmentTarget
 )
-from swagger_client.models.action_type import ActionType
+from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
 from swagger_client.models.supply_type import SupplyType
 from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
@@ -160,20 +160,20 @@ class ADMScenarioRunner(ScenarioRunner):
         available_supplies = get_swagger_class_enum_values(SupplyType)   #["Tourniquet", "Pressure bandage", "Hemostatic gauze", "Decompression Needle", "Nasopharyngeal airway"]
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CHARACTERS, ActionType.END_SCENARIO, ActionType.SITREP]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SEARCH, ActionTypeEnum.SITREP]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id()
-            if random_action.action_type == ActionType.APPLY_TREATMENT:
+            if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": random.choice(available_supplies)}
-                else :
-                   if not random_action.parameters['location'] or random_action.parameters["location"] is None:
-                        random_action.parameters["location"] = random.choice(available_locations)
-                   if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
-                        random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == ActionType.TAG_CHARACTER:
+                else:
+                    if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
+                        random_action.parameters['location'] = random.choice(available_locations)
+                    if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
+                        random_action.parameters['treatment'] = random.choice(available_supplies)
+            elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": self.assess_character_priority()}
         return random_action

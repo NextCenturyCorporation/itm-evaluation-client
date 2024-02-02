@@ -3,9 +3,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | [**InjuryType**](InjuryType.md) |  | 
-**location** | [**InjuryLocation**](InjuryLocation.md) |  | 
-**severity** | **float** | the apparent severity of the injury from 0 (low) to 1.0 (high) | [optional] 
+**name** | [**InjuryTypeEnum**](InjuryTypeEnum.md) |  | 
+**location** | [**InjuryLocationEnum**](InjuryLocationEnum.md) |  | 
+**severity** | [**InjurySeverityEnum**](InjurySeverityEnum.md) |  | [optional] 
+**status** | [**InjuryStatusEnum**](InjuryStatusEnum.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

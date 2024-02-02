@@ -1,6 +1,6 @@
 from enum import Enum
 from swagger_client.models import Scenario, State, Action
-from swagger_client.models.action_type import ActionType
+from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
 from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
 import traceback
@@ -23,7 +23,7 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENARIO", "SITREP"]
+ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
     def __init__(self, session_type, kdma_training=False, max_scenarios=-1):
@@ -240,7 +240,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             # Most actions require a character ID
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
-        if action.action_type == ActionType.APPLY_TREATMENT:
+        if action.action_type == ActionTypeEnum.APPLY_TREATMENT:
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
@@ -248,10 +248,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                     action.parameters["location"] = self.prompt_location()
                 if not action.parameters['treatment'] or action.parameters["treatment"] is None:
                     action.parameters["treatment"] = self.prompt_treatment()
-        elif action.action_type == ActionType.SITREP:
+        elif action.action_type == ActionTypeEnum.SITREP:
             if action.character_id is None:
                 action.character_id = self.prompt_character_id(none_allowed=True)
-        elif action.action_type == ActionType.TAG_CHARACTER:
+        elif action.action_type == ActionTypeEnum.TAG_CHARACTER:
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
 
