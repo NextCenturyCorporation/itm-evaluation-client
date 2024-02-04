@@ -99,6 +99,7 @@ options:
 * * no further requirements
 * `MOVE_TO_EVAC`
 * * requires `character_id`
+* * requires `evac_id`
 * `SEARCH`
 * * no further requirements
 * `SITREP`

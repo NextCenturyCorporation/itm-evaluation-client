@@ -24,11 +24,10 @@ class CommunicationCapabilityEnum(object):
     """
     allowed enum values
     """
-    ALL = "all"
-    SATELLITE = "satellite"
-    RADIO = "radio"
-    VOICE = "voice"
-    VISUAL = "visual"
+    INTERNAL = "internal"
+    EXTERNAL = "external"
+    BOTH = "both"
+    NEITHER = "neither"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

@@ -33,7 +33,7 @@ class Scene(object):
         'end_scene_allowed': 'bool',
         'probe_config': 'list[ProbeConfig]',
         'tagging': 'Tagging',
-        'action_mapping': 'list[Action]',
+        'action_mapping': 'list[ActionMapping]',
         'restricted_actions': 'list[ActionTypeEnum]',
         'transition_semantics': 'SemanticTypeEnum',
         'transitions': 'Conditions'
@@ -201,7 +201,7 @@ class Scene(object):
         List of actions with details of how those actions map to probe responses  # noqa: E501
 
         :return: The action_mapping of this Scene.  # noqa: E501
-        :rtype: list[Action]
+        :rtype: list[ActionMapping]
         """
         return self._action_mapping
 
@@ -212,7 +212,7 @@ class Scene(object):
         List of actions with details of how those actions map to probe responses  # noqa: E501
 
         :param action_mapping: The action_mapping of this Scene.  # noqa: E501
-        :type: list[Action]
+        :type: list[ActionMapping]
         """
         if action_mapping is None:
             raise ValueError("Invalid value for `action_mapping`, must not be `None`")  # noqa: E501

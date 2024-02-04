@@ -29,7 +29,7 @@ class State(object):
     """
     swagger_types = {
         'unstructured': 'str',
-        'elapsed_time': 'float',
+        'elapsed_time': 'int',
         'scenario_complete': 'bool',
         'mission': 'Mission',
         'environment': 'Environment',
@@ -102,10 +102,10 @@ class State(object):
     def elapsed_time(self):
         """Gets the elapsed_time of this State.  # noqa: E501
 
-        the elapsed time (in minutes) since the scenario started  # noqa: E501
+        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
 
         :return: The elapsed_time of this State.  # noqa: E501
-        :rtype: float
+        :rtype: int
         """
         return self._elapsed_time
 
@@ -113,10 +113,10 @@ class State(object):
     def elapsed_time(self, elapsed_time):
         """Sets the elapsed_time of this State.
 
-        the elapsed time (in minutes) since the scenario started  # noqa: E501
+        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
 
         :param elapsed_time: The elapsed_time of this State.  # noqa: E501
-        :type: float
+        :type: int
         """
 
         self._elapsed_time = elapsed_time

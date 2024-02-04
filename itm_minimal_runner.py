@@ -88,6 +88,9 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": random.choice(tag_labels)}
+            elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+                if random_action.parameters is None:
+                    random_action.parameters = {"evac_id": action.parameters.get('evac_id', "unknown")}
         return random_action
 
 def get_random_character_id(state: State):

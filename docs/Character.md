@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 **name** | **str** | display name, as in a dashboard | 
 **unstructured** | **str** | Natural language, plain text description of the character | 
 **unstructured_postassess** | **str** | unstructured description updated after character assessment | [optional] 
+**intent** | [**IntentEnum**](IntentEnum.md) |  | [optional] 
+**directness_of_causality** | [**DirectnessEnum**](DirectnessEnum.md) |  | [optional] 
 **rapport** | [**RapportEnum**](RapportEnum.md) |  | [optional] 
 **demographics** | [**Demographics**](Demographics.md) |  | 
 **injuries** | [**list[Injury]**](Injury.md) | A list of Injuries for the character | [optional] 

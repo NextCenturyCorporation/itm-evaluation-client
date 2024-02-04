@@ -29,13 +29,13 @@ class DecisionEnvironment(object):
     """
     swagger_types = {
         'unstructured': 'str',
-        'aid_delay': 'AidDelay',
+        'aid_delay': 'list[AidDelay]',
         'movement_restriction': 'MovementRestrictionEnum',
         'sound_restriction': 'SoundRestrictionEnum',
         'oxygen_levels': 'OxygenLevelsEnum',
-        'population_density': 'float',
+        'population_density': 'PopulationDensityEnum',
         'injury_triggers': 'InjuryTriggerEnum',
-        'air_quality': 'int',
+        'air_quality': 'AirQualityEnum',
         'city_infrastructure': 'str'
     }
 
@@ -110,9 +110,10 @@ class DecisionEnvironment(object):
     def aid_delay(self):
         """Gets the aid_delay of this DecisionEnvironment.  # noqa: E501
 
+        A list of evacuation opportunities  # noqa: E501
 
         :return: The aid_delay of this DecisionEnvironment.  # noqa: E501
-        :rtype: AidDelay
+        :rtype: list[AidDelay]
         """
         return self._aid_delay
 
@@ -120,9 +121,10 @@ class DecisionEnvironment(object):
     def aid_delay(self, aid_delay):
         """Sets the aid_delay of this DecisionEnvironment.
 
+        A list of evacuation opportunities  # noqa: E501
 
         :param aid_delay: The aid_delay of this DecisionEnvironment.  # noqa: E501
-        :type: AidDelay
+        :type: list[AidDelay]
         """
 
         self._aid_delay = aid_delay
@@ -194,10 +196,9 @@ class DecisionEnvironment(object):
     def population_density(self):
         """Gets the population_density of this DecisionEnvironment.  # noqa: E501
 
-        Population per square mile  # noqa: E501
 
         :return: The population_density of this DecisionEnvironment.  # noqa: E501
-        :rtype: float
+        :rtype: PopulationDensityEnum
         """
         return self._population_density
 
@@ -205,10 +206,9 @@ class DecisionEnvironment(object):
     def population_density(self, population_density):
         """Sets the population_density of this DecisionEnvironment.
 
-        Population per square mile  # noqa: E501
 
         :param population_density: The population_density of this DecisionEnvironment.  # noqa: E501
-        :type: float
+        :type: PopulationDensityEnum
         """
 
         self._population_density = population_density
@@ -238,10 +238,9 @@ class DecisionEnvironment(object):
     def air_quality(self):
         """Gets the air_quality of this DecisionEnvironment.  # noqa: E501
 
-        Air Quality Index (AQI); see [airnow.gov](https://www.airnow.gov/aqi/aqi-basics/)  # noqa: E501
 
         :return: The air_quality of this DecisionEnvironment.  # noqa: E501
-        :rtype: int
+        :rtype: AirQualityEnum
         """
         return self._air_quality
 
@@ -249,10 +248,9 @@ class DecisionEnvironment(object):
     def air_quality(self, air_quality):
         """Sets the air_quality of this DecisionEnvironment.
 
-        Air Quality Index (AQI); see [airnow.gov](https://www.airnow.gov/aqi/aqi-basics/)  # noqa: E501
 
         :param air_quality: The air_quality of this DecisionEnvironment.  # noqa: E501
-        :type: int
+        :type: AirQualityEnum
         """
 
         self._air_quality = air_quality

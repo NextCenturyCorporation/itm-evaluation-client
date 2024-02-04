@@ -30,7 +30,7 @@ class Demographics(object):
     swagger_types = {
         'age': 'int',
         'sex': 'DemographicSexEnum',
-        'race': 'str',
+        'race': 'RaceEnum',
         'military_disposition': 'MilitaryDispositionEnum',
         'military_branch': 'MilitaryBranchEnum',
         'rank': 'MilitaryRankEnum',
@@ -135,10 +135,9 @@ class Demographics(object):
     def race(self):
         """Gets the race of this Demographics.  # noqa: E501
 
-        Race or ethnicity  # noqa: E501
 
         :return: The race of this Demographics.  # noqa: E501
-        :rtype: str
+        :rtype: RaceEnum
         """
         return self._race
 
@@ -146,10 +145,9 @@ class Demographics(object):
     def race(self, race):
         """Sets the race of this Demographics.
 
-        Race or ethnicity  # noqa: E501
 
         :param race: The race of this Demographics.  # noqa: E501
-        :type: str
+        :type: RaceEnum
         """
         if race is None:
             raise ValueError("Invalid value for `race`, must not be `None`")  # noqa: E501
@@ -244,7 +242,7 @@ class Demographics(object):
     def skills(self):
         """Gets the skills of this Demographics.  # noqa: E501
 
-        A list of pairs of skill type and numeric skill level  # noqa: E501
+        A list of pairs of skill type and descriptive skill level  # noqa: E501
 
         :return: The skills of this Demographics.  # noqa: E501
         :rtype: list[Skills]
@@ -255,7 +253,7 @@ class Demographics(object):
     def skills(self, skills):
         """Sets the skills of this Demographics.
 
-        A list of pairs of skill type and numeric skill level  # noqa: E501
+        A list of pairs of skill type and descriptive skill level  # noqa: E501
 
         :param skills: The skills of this Demographics.  # noqa: E501
         :type: list[Skills]
