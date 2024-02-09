@@ -1348,6 +1348,8 @@ components:
         - Pain Medications
         - Splint
         - Blood
+        - IV Bag
+        - Burn Dressing
     DemographicSexEnum:
       type: string
       description: the sex of the character
