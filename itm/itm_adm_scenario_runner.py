@@ -158,7 +158,7 @@ class ADMScenarioRunner(ScenarioRunner):
         available_locations = get_swagger_class_enum_values(InjuryLocation)
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SEARCH, ActionTypeEnum.SITREP]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id()
@@ -176,7 +176,7 @@ class ADMScenarioRunner(ScenarioRunner):
                     random_action.parameters = {"category": self.assess_character_priority()}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": random_action.parameters.get('evac_id', "unknown")}
+                    random_action.parameters = {"evac_id": self.get_random_evac_id(state)}
         return random_action
 
     def get_random_supply(sellf, state: State):
@@ -185,6 +185,15 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_random_character_id(self):
         return random.choice(self.adm_knowledge.all_character_ids)
+
+    def get_random_evac_id(state: State):
+        evac_id = 'unknown'
+        if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
+            evac_ids = []
+            for aid_delay in state.environment.decision_environment.aid_delay:
+                evac_ids.append(aid_delay.id)
+            evac_id = random.choice(evac_ids)
+        return evac_id
 
     def assess_character_priority(self):
         character_priority = random.randint(1, 4)

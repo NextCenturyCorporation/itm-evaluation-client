@@ -70,7 +70,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = get_random_character_id(state)
@@ -88,7 +88,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     random_action.parameters = {"category": random.choice(tag_labels)}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": action.parameters.get('evac_id', "unknown")}
+                    random_action.parameters = {"evac_id": get_random_evac_id(state)}
         return random_action
 
 def get_random_supply(state: State):
@@ -99,6 +99,15 @@ def get_random_character_id(state: State):
     characters : List[Character] = state.characters
     index = random.randint(0, len(characters) - 1)
     return characters[index].id
+
+def get_random_evac_id(state: State):
+    evac_id = 'unknown'
+    if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
+        evac_ids = []
+        for aid_delay in state.environment.decision_environment.aid_delay:
+            evac_ids.append(aid_delay.id)
+        evac_id = random.choice(evac_ids)
+    return evac_id
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
