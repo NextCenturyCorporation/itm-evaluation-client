@@ -32,6 +32,8 @@ class Character(object):
         'name': 'str',
         'unstructured': 'str',
         'unstructured_postassess': 'str',
+        'intent': 'IntentEnum',
+        'directness_of_causality': 'DirectnessEnum',
         'rapport': 'RapportEnum',
         'demographics': 'Demographics',
         'injuries': 'list[Injury]',
@@ -45,6 +47,8 @@ class Character(object):
         'name': 'name',
         'unstructured': 'unstructured',
         'unstructured_postassess': 'unstructured_postassess',
+        'intent': 'intent',
+        'directness_of_causality': 'directness_of_causality',
         'rapport': 'rapport',
         'demographics': 'demographics',
         'injuries': 'injuries',
@@ -53,12 +57,14 @@ class Character(object):
         'tag': 'tag'
     }
 
-    def __init__(self, id=None, name=None, unstructured=None, unstructured_postassess=None, rapport=None, demographics=None, injuries=None, vitals=None, visited=False, tag=None):  # noqa: E501
+    def __init__(self, id=None, name=None, unstructured=None, unstructured_postassess=None, intent=None, directness_of_causality=None, rapport=None, demographics=None, injuries=None, vitals=None, visited=False, tag=None):  # noqa: E501
         """Character - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
         self._unstructured = None
         self._unstructured_postassess = None
+        self._intent = None
+        self._directness_of_causality = None
         self._rapport = None
         self._demographics = None
         self._injuries = None
@@ -71,6 +77,10 @@ class Character(object):
         self.unstructured = unstructured
         if unstructured_postassess is not None:
             self.unstructured_postassess = unstructured_postassess
+        if intent is not None:
+            self.intent = intent
+        if directness_of_causality is not None:
+            self.directness_of_causality = directness_of_causality
         if rapport is not None:
             self.rapport = rapport
         self.demographics = demographics
@@ -180,6 +190,48 @@ class Character(object):
         """
 
         self._unstructured_postassess = unstructured_postassess
+
+    @property
+    def intent(self):
+        """Gets the intent of this Character.  # noqa: E501
+
+
+        :return: The intent of this Character.  # noqa: E501
+        :rtype: IntentEnum
+        """
+        return self._intent
+
+    @intent.setter
+    def intent(self, intent):
+        """Sets the intent of this Character.
+
+
+        :param intent: The intent of this Character.  # noqa: E501
+        :type: IntentEnum
+        """
+
+        self._intent = intent
+
+    @property
+    def directness_of_causality(self):
+        """Gets the directness_of_causality of this Character.  # noqa: E501
+
+
+        :return: The directness_of_causality of this Character.  # noqa: E501
+        :rtype: DirectnessEnum
+        """
+        return self._directness_of_causality
+
+    @directness_of_causality.setter
+    def directness_of_causality(self, directness_of_causality):
+        """Sets the directness_of_causality of this Character.
+
+
+        :param directness_of_causality: The directness_of_causality of this Character.  # noqa: E501
+        :type: DirectnessEnum
+        """
+
+        self._directness_of_causality = directness_of_causality
 
     @property
     def rapport(self):

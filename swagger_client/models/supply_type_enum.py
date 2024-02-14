@@ -36,6 +36,8 @@ class SupplyTypeEnum(object):
     PAIN_MEDICATIONS = "Pain Medications"
     SPLINT = "Splint"
     BLOOD = "Blood"
+    IV_BAG = "IV Bag"
+    BURN_DRESSING = "Burn Dressing"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

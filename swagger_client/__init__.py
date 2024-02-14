@@ -21,9 +21,11 @@ from swagger_client.api_client import ApiClient
 from swagger_client.configuration import Configuration
 # import models into sdk package
 from swagger_client.models.action import Action
+from swagger_client.models.action_mapping import ActionMapping
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.aid_delay import AidDelay
 from swagger_client.models.aid_type_enum import AidTypeEnum
+from swagger_client.models.air_quality_enum import AirQualityEnum
 from swagger_client.models.alignment_results import AlignmentResults
 from swagger_client.models.alignment_source import AlignmentSource
 from swagger_client.models.alignment_target import AlignmentTarget
@@ -40,6 +42,7 @@ from swagger_client.models.conditions_character_vitals import ConditionsCharacte
 from swagger_client.models.decision_environment import DecisionEnvironment
 from swagger_client.models.demographic_sex_enum import DemographicSexEnum
 from swagger_client.models.demographics import Demographics
+from swagger_client.models.directness_enum import DirectnessEnum
 from swagger_client.models.environment import Environment
 from swagger_client.models.fauna_type_enum import FaunaTypeEnum
 from swagger_client.models.flora_type_enum import FloraTypeEnum
@@ -50,6 +53,7 @@ from swagger_client.models.injury_severity_enum import InjurySeverityEnum
 from swagger_client.models.injury_status_enum import InjuryStatusEnum
 from swagger_client.models.injury_trigger_enum import InjuryTriggerEnum
 from swagger_client.models.injury_type_enum import InjuryTypeEnum
+from swagger_client.models.intent_enum import IntentEnum
 from swagger_client.models.kdma_value import KDMAValue
 from swagger_client.models.lighting_type_enum import LightingTypeEnum
 from swagger_client.models.mental_status_enum import MentalStatusEnum
@@ -63,8 +67,10 @@ from swagger_client.models.mission_type_enum import MissionTypeEnum
 from swagger_client.models.movement_restriction_enum import MovementRestrictionEnum
 from swagger_client.models.oxygen_levels_enum import OxygenLevelsEnum
 from swagger_client.models.peak_noise_enum import PeakNoiseEnum
+from swagger_client.models.population_density_enum import PopulationDensityEnum
 from swagger_client.models.probe_config import ProbeConfig
 from swagger_client.models.probe_responses import ProbeResponses
+from swagger_client.models.race_enum import RaceEnum
 from swagger_client.models.rapport_enum import RapportEnum
 from swagger_client.models.scenario import Scenario
 from swagger_client.models.scene import Scene

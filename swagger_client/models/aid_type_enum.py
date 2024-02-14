@@ -24,9 +24,9 @@ class AidTypeEnum(object):
     """
     allowed enum values
     """
-    AMEV = "AMEV"
-    TRUCK = "truck"
-    HELICOPTER = "helicopter"
+    AIR = "air"
+    GROUND = "ground"
+    WATER = "water"
     UNKNOWN = "unknown"
     """
     Attributes:

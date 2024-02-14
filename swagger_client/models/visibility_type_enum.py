@@ -25,11 +25,11 @@ class VisibilityTypeEnum(object):
     allowed enum values
     """
     NONE = "none"
+    VERY_LOW = "very low"
     LOW = "low"
-    NORMAL = "normal"
+    MODERATE = "moderate"
     GOOD = "good"
     EXCELLENT = "excellent"
-    VARIABLE = "variable"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

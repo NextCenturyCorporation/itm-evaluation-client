@@ -31,28 +31,33 @@ class Injury(object):
         'name': 'InjuryTypeEnum',
         'location': 'InjuryLocationEnum',
         'severity': 'InjurySeverityEnum',
-        'status': 'InjuryStatusEnum'
+        'status': 'InjuryStatusEnum',
+        'source_character': 'str'
     }
 
     attribute_map = {
         'name': 'name',
         'location': 'location',
         'severity': 'severity',
-        'status': 'status'
+        'status': 'status',
+        'source_character': 'source_character'
     }
 
-    def __init__(self, name=None, location=None, severity=None, status=None):  # noqa: E501
+    def __init__(self, name=None, location=None, severity=None, status=None, source_character=None):  # noqa: E501
         """Injury - a model defined in Swagger"""  # noqa: E501
         self._name = None
         self._location = None
         self._severity = None
         self._status = None
+        self._source_character = None
         self.discriminator = None
         self.name = name
         self.location = location
         if severity is not None:
             self.severity = severity
         self.status = status
+        if source_character is not None:
+            self.source_character = source_character
 
     @property
     def name(self):
@@ -143,6 +148,29 @@ class Injury(object):
             raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
 
         self._status = status
+
+    @property
+    def source_character(self):
+        """Gets the source_character of this Injury.  # noqa: E501
+
+        The character id of the person responsible for the injury, subject to the character's `directness_of_causality`  # noqa: E501
+
+        :return: The source_character of this Injury.  # noqa: E501
+        :rtype: str
+        """
+        return self._source_character
+
+    @source_character.setter
+    def source_character(self, source_character):
+        """Sets the source_character of this Injury.
+
+        The character id of the person responsible for the injury, subject to the character's `directness_of_causality`  # noqa: E501
+
+        :param source_character: The source_character of this Injury.  # noqa: E501
+        :type: str
+        """
+
+        self._source_character = source_character
 
     def to_dict(self):
         """Returns the model properties as a dict"""

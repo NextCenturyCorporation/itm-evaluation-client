@@ -53,7 +53,6 @@ from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
-from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.tag_label import TagLabel
 
     
@@ -68,32 +67,46 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     random_action = action
 
         available_locations = get_swagger_class_enum_values(InjuryLocation)
-        available_supplies = get_swagger_class_enum_values(SupplyType)
         tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = get_random_character_id(state)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
-                    random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
+                    random_action.parameters = {"location": random.choice(available_locations),"treatment": get_random_supply(state)}
                 else:
                     if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
                         random_action.parameters['location'] = random.choice(available_locations)
                     if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
-                        random_action.parameters['treatment'] = random.choice(available_supplies)
+                        random_action.parameters['treatment'] = get_random_supply(state)
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": random.choice(tag_labels)}
+            elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+                if random_action.parameters is None:
+                    random_action.parameters = {"evac_id": get_random_evac_id(state)}
         return random_action
+
+def get_random_supply(state: State):
+    supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
+    return random.choice(supplies)
 
 def get_random_character_id(state: State):
     characters : List[Character] = state.characters
     index = random.randint(0, len(characters) - 1)
     return characters[index].id
+
+def get_random_evac_id(state: State):
+    evac_id = 'unknown'
+    if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
+        aid_delays = state.environment.decision_environment.aid_delay
+        evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
+        evac_id = random.choice(evac_ids)
+    return evac_id
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')

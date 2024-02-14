@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **end_scene_allowed** | **bool** | Whether ADMs can explicitly end the scene | 
 **probe_config** | [**list[ProbeConfig]**](ProbeConfig.md) | TA1-provided probe configuration, ignored by TA3 | [optional] 
 **tagging** | [**Tagging**](Tagging.md) |  | [optional] 
-**action_mapping** | [**list[Action]**](Action.md) | List of actions with details of how those actions map to probe responses | 
+**action_mapping** | [**list[ActionMapping]**](ActionMapping.md) | List of actions with details of how those actions map to probe responses | 
 **restricted_actions** | [**list[ActionTypeEnum]**](ActionTypeEnum.md) | List of actions that will be excluded from get_available_actions | [optional] 
 **transition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] 
 **transitions** | [**Conditions**](Conditions.md) |  | [optional] 

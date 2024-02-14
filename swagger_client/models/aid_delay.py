@@ -28,28 +28,57 @@ class AidDelay(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'id': 'str',
         'delay': 'float',
         'type': 'AidTypeEnum',
         'max_transport': 'int'
     }
 
     attribute_map = {
+        'id': 'id',
         'delay': 'delay',
         'type': 'type',
         'max_transport': 'max_transport'
     }
 
-    def __init__(self, delay=None, type=None, max_transport=None):  # noqa: E501
+    def __init__(self, id=None, delay=None, type=None, max_transport=None):  # noqa: E501
         """AidDelay - a model defined in Swagger"""  # noqa: E501
+        self._id = None
         self._delay = None
         self._type = None
         self._max_transport = None
         self.discriminator = None
+        self.id = id
         self.delay = delay
         if type is not None:
             self.type = type
         if max_transport is not None:
             self.max_transport = max_transport
+
+    @property
+    def id(self):
+        """Gets the id of this AidDelay.  # noqa: E501
+
+        An identifier for the evacuation opportunity, unique within the scene  # noqa: E501
+
+        :return: The id of this AidDelay.  # noqa: E501
+        :rtype: str
+        """
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        """Sets the id of this AidDelay.
+
+        An identifier for the evacuation opportunity, unique within the scene  # noqa: E501
+
+        :param id: The id of this AidDelay.  # noqa: E501
+        :type: str
+        """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
+
+        self._id = id
 
     @property
     def delay(self):
