@@ -189,9 +189,8 @@ class ADMScenarioRunner(ScenarioRunner):
     def get_random_evac_id(state: State):
         evac_id = 'unknown'
         if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
-            evac_ids = []
-            for aid_delay in state.environment.decision_environment.aid_delay:
-                evac_ids.append(aid_delay.id)
+            aid_delays = state.environment.decision_environment.aid_delay
+            evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
             evac_id = random.choice(evac_ids)
         return evac_id
 
