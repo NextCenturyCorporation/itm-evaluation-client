@@ -455,7 +455,7 @@ class ItmTa2EvalApi(object):
 
         :param async_req bool
         :param str session_id: a unique session_id, as returned by /ta2/startSession (required)
-        :param str scenario_id: a scenario id to start, used internally by TA3
+        :param str scenario_id: the scenario id to run; incompatible with /ta2/startSession's max_scenarios parameter
         :return: Scenario
                  If the method is called asynchronously,
                  returns the request thread.
@@ -478,7 +478,7 @@ class ItmTa2EvalApi(object):
 
         :param async_req bool
         :param str session_id: a unique session_id, as returned by /ta2/startSession (required)
-        :param str scenario_id: a scenario id to start, used internally by TA3
+        :param str scenario_id: the scenario id to run; incompatible with /ta2/startSession's max_scenarios parameter
         :return: Scenario
                  If the method is called asynchronously,
                  returns the request thread.

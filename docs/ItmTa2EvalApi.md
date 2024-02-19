@@ -230,7 +230,7 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi()
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
-scenario_id = 'scenario_id_example' # str | a scenario id to start, used internally by TA3 (optional)
+scenario_id = 'scenario_id_example' # str | the scenario id to run; incompatible with /ta2/startSession's max_scenarios parameter (optional)
 
 try:
     # Get the next scenario
@@ -245,7 +245,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **session_id** | **str**| a unique session_id, as returned by /ta2/startSession | 
- **scenario_id** | **str**| a scenario id to start, used internally by TA3 | [optional] 
+ **scenario_id** | **str**| the scenario id to run; incompatible with /ta2/startSession&#x27;s max_scenarios parameter | [optional] 
 
 ### Return type
 
