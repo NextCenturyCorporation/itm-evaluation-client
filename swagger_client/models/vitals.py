@@ -44,7 +44,7 @@ class Vitals(object):
         'mental_status': 'mental_status',
         'breathing': 'breathing',
         'heart_rate': 'heart_rate',
-        'spo2': 'Spo2'
+        'spo2': 'spo2'
     }
 
     def __init__(self, conscious=None, avpu=None, ambulatory=None, mental_status=None, breathing=None, heart_rate=None, spo2=None):  # noqa: E501

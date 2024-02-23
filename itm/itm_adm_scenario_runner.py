@@ -66,13 +66,14 @@ class ADMKnowledge:
 
 class ADMScenarioRunner(ScenarioRunner):
 
-    def __init__(self, session_type, max_scenarios=0):
+    def __init__(self, session_type, max_scenarios=0, scenario_id=None):
         super().__init__()
         self.session_id = None
         self.adm_name = "ITM ADM"
         self.eval_mode = session_type == 'eval'
         self.adm_knowledge: ADMKnowledge = None
         self.session_type = session_type
+        self.custom_scenario_id = scenario_id
         self.max_scenarios = max_scenarios
         self.scenarios_run = 0
         self.total_actions_taken = 0
@@ -132,7 +133,11 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def retrieve_scenario(self):
         self.adm_knowledge = ADMKnowledge() 
-        scenario: Scenario = self.itm.start_scenario(self.session_id)
+        scenario: Scenario
+        if self.custom_scenario_id:
+            scenario = self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id)
+        else:
+            scenario = self.itm.start_scenario(session_id=self.session_id)
         if scenario.session_complete:
             return True
         self.set_scenario(scenario)

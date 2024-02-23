@@ -119,6 +119,9 @@ def main():
                         'If you want to run through all available scenarios '
                         'without repeating do not use the scenario_count '
                         'argument')
+    parser.add_argument('--scenario', type=str,
+                        help='Specify a scenario_id to run. Incompatible with scenario_count '
+                        'and --eval')
     parser.add_argument('--eval', action='store_true', default=False, 
                         help='Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. ')
@@ -127,6 +130,7 @@ def main():
                         'association for each action choice. Not supported in eval sessions.')
 
     args = parser.parse_args()
+    scenario_id = args.scenario
     if args.session:
         if args.session[0] not in ['soartech', 'adept', 'eval']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
@@ -136,9 +140,14 @@ def main():
         session_type = 'eval'
     if args.eval:
         session_type = 'eval'
-    if args.kdma_training and session_type == 'eval':
+    if session_type == 'eval':
+        if args.kdma_training:
             parser.error("Training mode is not supported in eval sessions.")
+        if scenario_id:
+            parser.error("Specifying a scenario_id is not supported in eval sessions.")
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
+    if scenario_count > 0 and scenario_id:
+        parser.error("Specifying a scenario_id is incompatible with specifying a scenario_count.")
 
     config = Configuration()
     PORT = os.getenv('TA3_PORT')
@@ -159,7 +168,7 @@ def main():
     for current_path in paths["paths"]:
         session_id = None
 
-        if args.eval:
+        if session_type == 'eval':
             session_id = itm.start_session(
                 adm_name=args.adm_name,
                 session_type='eval'
@@ -172,7 +181,11 @@ def main():
                 kdma_training=args.kdma_training
             )
         while True:
-            scenario: Scenario = itm.start_scenario(session_id)
+            scenario: Scenario
+            if scenario_id:
+                scenario = itm.start_scenario(session_id=session_id, scenario_id=scenario_id)
+            else:
+                scenario = itm.start_scenario(session_id=session_id)
             if scenario.session_complete:
                 break
             print(f'Scenario name: {scenario.name}')
