@@ -202,9 +202,9 @@ def main():
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
-                    except:
-                        # An exception will occur if no probes have been answered yet, so just ignore.
-                        pass
+                    except Exception as e:
+                        # An exception will occur if no probes have been answered yet, so just log this succinctly.
+                        print(e)
             print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
