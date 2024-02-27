@@ -205,7 +205,8 @@ def main():
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            print(f'{state.unstructured}')
+            if not args.kdma_training:
+                print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
         action_path_index=0
