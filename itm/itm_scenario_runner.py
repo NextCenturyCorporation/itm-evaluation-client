@@ -4,13 +4,16 @@ from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario
 from abc import ABC, abstractmethod
 import os
+import random
 
 def get_swagger_class_enum_values(klass):
     return [getattr(klass,i) for i in dir(klass) if not i.startswith("_") and isinstance(getattr(klass,i), str)]
 
-# A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-SOARTECH_ALIGNMENT = 'kdma-alignment-target-1'
-ADEPT_ALIGNMENT = 'ADEPT-alignment-target-1-eval'
+# TODO: ITM-229: Facilitate running against two eval alignment targets
+soartech_alignment_targets = ['maximization_high', 'maximization_low']
+SOARTECH_ALIGNMENT = random.choice(soartech_alignment_targets)
+adept_alignment_targets = ['ADEPT-metrics_eval-alignment-target-train-HIGH', 'ADEPT-metrics_eval-alignment-target-train-LOW']
+ADEPT_ALIGNMENT = random.choice(adept_alignment_targets)
 
 class ScenarioRunner(ABC):
     def __init__(self):
