@@ -192,6 +192,8 @@ def main():
             alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
             state: State = scenario.state
             while not state.scenario_complete:
+                print(state.characters)
+                print(f'elapsed time = {state.elapsed_time}')
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
