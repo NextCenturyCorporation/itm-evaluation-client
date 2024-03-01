@@ -199,6 +199,8 @@ def main():
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
+                if state.scenario_complete:
+                    print(state.characters)
                 if args.kdma_training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
