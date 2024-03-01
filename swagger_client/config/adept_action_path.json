@@ -2,7 +2,7 @@
     "enabled": true,
     "paths":[
         {
-            "path":["action2","action4","tag-mike-immediate","treat_katie","action1"]
+            "path":["action2","action4","tag-mike-immediate","treat_katie","search"]
         }
     ]
 }

@@ -201,6 +201,7 @@ def main():
                 state = itm.take_action(session_id=session_id, body=action)
                 if state.scenario_complete:
                     print(state.characters)
+                    print(f'elapsed time = {state.elapsed_time}')
                 if args.kdma_training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
