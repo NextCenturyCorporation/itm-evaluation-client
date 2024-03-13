@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**unstructured** | **str** | text description of current threat state | 
-**threats** | [**list[Threat]**](Threat.md) | An array of threats | [optional] 
+**unstructured** | **str** | Natural language, plain text description of environmental threats | 
+**threats** | [**list[Threat]**](Threat.md) | A list of pairs of threat types with a severity descriptor | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

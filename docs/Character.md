@@ -3,15 +3,18 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **str** | string, globally unique character identifier | 
-**unstructured** | **str** | natural language text description of the character | 
-**name** | **str** | the name of the character, omit if unknown | [optional] 
-**relationship** | [**CharacterRelationship**](CharacterRelationship.md) |  | [optional] 
-**demographics** | [**Demographics**](Demographics.md) |  | [optional] 
-**injuries** | [**list[Injury]**](Injury.md) | an array of character injuries | [optional] 
+**id** | **str** | A unique character ID throughout the scenario | 
+**name** | **str** | display name, as in a dashboard | 
+**unstructured** | **str** | Natural language, plain text description of the character | 
+**unstructured_postassess** | **str** | unstructured description updated after character assessment | [optional] 
+**intent** | [**IntentEnum**](IntentEnum.md) |  | [optional] 
+**directness_of_causality** | [**DirectnessEnum**](DirectnessEnum.md) |  | [optional] 
+**rapport** | [**RapportEnum**](RapportEnum.md) |  | [optional] 
+**demographics** | [**Demographics**](Demographics.md) |  | 
+**injuries** | [**list[Injury]**](Injury.md) | A list of Injuries for the character | [optional] 
 **vitals** | [**Vitals**](Vitals.md) |  | [optional] 
-**visited** | **bool** | whether or not this character has been visited in the current scenario | [optional] [default to False]
-**tag** | [**CharacterTag**](CharacterTag.md) |  | [optional] 
+**visited** | **bool** | whether or not this character has been visited by the ADM in the current scenario | [optional] [default to False]
+**tag** | [**CharacterTagEnum**](CharacterTagEnum.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

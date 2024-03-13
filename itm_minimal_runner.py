@@ -51,9 +51,8 @@ import os
 from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
-from swagger_client.models.action_type import ActionType
+from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
-from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.tag_label import TagLabel
 
     
@@ -68,32 +67,46 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     random_action = action
 
         available_locations = get_swagger_class_enum_values(InjuryLocation)
-        available_supplies = get_swagger_class_enum_values(SupplyType)
         tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionType.DIRECT_MOBILE_CHARACTERS, ActionType.END_SCENARIO, ActionType.SITREP]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = get_random_character_id(state)
-            if random_action.action_type == ActionType.APPLY_TREATMENT:
+            if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
-                    random_action.parameters = {"location": random.choice(available_locations),"treatment": random.choice(available_supplies)}
-                else :
-                    if not random_action.parameters['location'] or random_action.parameters["location"] is None:
-                        random_action.parameters["location"] = random.choice(available_locations)
-                    if not random_action.parameters['treatment'] or random_action.parameters["treatment"] is None:
-                        random_action.parameters["treatment"] = random.choice(available_supplies)
-            elif random_action.action_type == ActionType.TAG_CHARACTER:
+                    random_action.parameters = {"location": random.choice(available_locations),"treatment": get_random_supply(state)}
+                else:
+                    if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
+                        random_action.parameters['location'] = random.choice(available_locations)
+                    if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
+                        random_action.parameters['treatment'] = get_random_supply(state)
+            elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
                 if random_action.parameters is None:
                     random_action.parameters = {"category": random.choice(tag_labels)}
+            elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+                if random_action.parameters is None:
+                    random_action.parameters = {"evac_id": get_random_evac_id(state)}
         return random_action
+
+def get_random_supply(state: State):
+    supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
+    return random.choice(supplies)
 
 def get_random_character_id(state: State):
     characters : List[Character] = state.characters
     index = random.randint(0, len(characters) - 1)
     return characters[index].id
+
+def get_random_evac_id(state: State):
+    evac_id = 'unknown'
+    if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
+        aid_delays = state.environment.decision_environment.aid_delay
+        evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
+        evac_id = random.choice(evac_ids)
+    return evac_id
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
@@ -106,6 +119,9 @@ def main():
                         'If you want to run through all available scenarios '
                         'without repeating do not use the scenario_count '
                         'argument')
+    parser.add_argument('--scenario', type=str,
+                        help='Specify a scenario_id to run. Incompatible with scenario_count '
+                        'and --eval')
     parser.add_argument('--eval', action='store_true', default=False, 
                         help='Run an evaluation session. '
                         'Supercedes --session and is the default if nothing is specified. ')
@@ -114,6 +130,7 @@ def main():
                         'association for each action choice. Not supported in eval sessions.')
 
     args = parser.parse_args()
+    scenario_id = args.scenario
     if args.session:
         if args.session[0] not in ['soartech', 'adept', 'eval']:
             parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
@@ -123,9 +140,14 @@ def main():
         session_type = 'eval'
     if args.eval:
         session_type = 'eval'
-    if args.kdma_training and session_type == 'eval':
+    if session_type == 'eval':
+        if args.kdma_training:
             parser.error("Training mode is not supported in eval sessions.")
+        if scenario_id:
+            parser.error("Specifying a scenario_id is not supported in eval sessions.")
     scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
+    if scenario_count > 0 and scenario_id:
+        parser.error("Specifying a scenario_id is incompatible with specifying a scenario_count.")
 
     config = Configuration()
     PORT = os.getenv('TA3_PORT')
@@ -146,7 +168,7 @@ def main():
     for current_path in paths["paths"]:
         session_id = None
 
-        if args.eval:
+        if session_type == 'eval':
             session_id = itm.start_session(
                 adm_name=args.adm_name,
                 session_type='eval'
@@ -159,10 +181,15 @@ def main():
                 kdma_training=args.kdma_training
             )
         while True:
-            scenario: Scenario = itm.start_scenario(session_id)
+            scenario: Scenario
+            if scenario_id:
+                scenario = itm.start_scenario(session_id=session_id, scenario_id=scenario_id)
+            else:
+                scenario = itm.start_scenario(session_id=session_id)
             if scenario.session_complete:
                 break
-            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id)
+            print(f'Scenario name: {scenario.name}')
+            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
@@ -175,10 +202,11 @@ def main():
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
-                    except:
-                        # An exception will occur if no probes have been answered yet, so just ignore.
-                        pass
-            print(f'{state.unstructured}')
+                    except Exception as e:
+                        # An exception will occur if no probes have been answered yet, so just log this succinctly.
+                        print(e)
+            if not args.kdma_training:
+                print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
         action_path_index=0
