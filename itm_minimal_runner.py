@@ -97,7 +97,7 @@ def get_random_supply(state: State):
 
 def get_random_character_id(state: State):
     characters : List[Character] = state.characters
-    index = random.randint(0, len(characters) - 1)
+    index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
 def get_random_evac_id(state: State):
@@ -192,7 +192,9 @@ def main():
             alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
             state: State = scenario.state
             if state and state.characters:
-                print(state.characters)
+                for character in state.characters:
+                    print(f"character id {character.id} with name {character.name}")
+                    print(character)
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
@@ -200,7 +202,9 @@ def main():
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
                 if state and state.characters:
-                    print(state.characters)
+                    for character in state.characters:
+                        print(f"character id {character.id} with name {character.name}")
+                        print(character)
                 if args.kdma_training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
