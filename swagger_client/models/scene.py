@@ -31,6 +31,7 @@ class Scene(object):
         'index': 'int',
         'state': 'State',
         'end_scene_allowed': 'bool',
+        'persist_characters': 'bool',
         'probe_config': 'list[ProbeConfig]',
         'tagging': 'Tagging',
         'action_mapping': 'list[ActionMapping]',
@@ -43,6 +44,7 @@ class Scene(object):
         'index': 'index',
         'state': 'state',
         'end_scene_allowed': 'end_scene_allowed',
+        'persist_characters': 'persist_characters',
         'probe_config': 'probe_config',
         'tagging': 'tagging',
         'action_mapping': 'action_mapping',
@@ -51,11 +53,12 @@ class Scene(object):
         'transitions': 'transitions'
     }
 
-    def __init__(self, index=None, state=None, end_scene_allowed=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
+    def __init__(self, index=None, state=None, end_scene_allowed=None, persist_characters=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
         """Scene - a model defined in Swagger"""  # noqa: E501
         self._index = None
         self._state = None
         self._end_scene_allowed = None
+        self._persist_characters = None
         self._probe_config = None
         self._tagging = None
         self._action_mapping = None
@@ -67,6 +70,8 @@ class Scene(object):
         if state is not None:
             self.state = state
         self.end_scene_allowed = end_scene_allowed
+        if persist_characters is not None:
+            self.persist_characters = persist_characters
         if probe_config is not None:
             self.probe_config = probe_config
         if tagging is not None:
@@ -149,6 +154,29 @@ class Scene(object):
             raise ValueError("Invalid value for `end_scene_allowed`, must not be `None`")  # noqa: E501
 
         self._end_scene_allowed = end_scene_allowed
+
+    @property
+    def persist_characters(self):
+        """Gets the persist_characters of this Scene.  # noqa: E501
+
+        Whether characters should persist from the previous scene  # noqa: E501
+
+        :return: The persist_characters of this Scene.  # noqa: E501
+        :rtype: bool
+        """
+        return self._persist_characters
+
+    @persist_characters.setter
+    def persist_characters(self, persist_characters):
+        """Sets the persist_characters of this Scene.
+
+        Whether characters should persist from the previous scene  # noqa: E501
+
+        :param persist_characters: The persist_characters of this Scene.  # noqa: E501
+        :type: bool
+        """
+
+        self._persist_characters = persist_characters
 
     @property
     def probe_config(self):
