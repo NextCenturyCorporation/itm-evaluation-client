@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 **index** | **int** | The order the scene appears in the scenario | 
 **state** | [**State**](State.md) |  | [optional] 
 **end_scene_allowed** | **bool** | Whether ADMs can explicitly end the scene | 
+**persist_characters** | **bool** | Whether characters should persist from the previous scene | [optional] 
 **probe_config** | [**list[ProbeConfig]**](ProbeConfig.md) | TA1-provided probe configuration, ignored by TA3 | [optional] 
 **tagging** | [**Tagging**](Tagging.md) |  | [optional] 
 **action_mapping** | [**list[ActionMapping]**](ActionMapping.md) | List of actions with details of how those actions map to probe responses | 

@@ -97,7 +97,7 @@ def get_random_supply(state: State):
 
 def get_random_character_id(state: State):
     characters : List[Character] = state.characters
-    index = random.randint(0, len(characters) - 1)
+    index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
 def get_random_evac_id(state: State):
