@@ -30,6 +30,7 @@ class Scene(object):
     swagger_types = {
         'index': 'int',
         'state': 'State',
+        'final_scene': 'bool',
         'end_scene_allowed': 'bool',
         'persist_characters': 'bool',
         'probe_config': 'list[ProbeConfig]',
@@ -43,6 +44,7 @@ class Scene(object):
     attribute_map = {
         'index': 'index',
         'state': 'state',
+        'final_scene': 'final_scene',
         'end_scene_allowed': 'end_scene_allowed',
         'persist_characters': 'persist_characters',
         'probe_config': 'probe_config',
@@ -53,10 +55,11 @@ class Scene(object):
         'transitions': 'transitions'
     }
 
-    def __init__(self, index=None, state=None, end_scene_allowed=None, persist_characters=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
+    def __init__(self, index=None, state=None, final_scene=None, end_scene_allowed=None, persist_characters=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
         """Scene - a model defined in Swagger"""  # noqa: E501
         self._index = None
         self._state = None
+        self._final_scene = None
         self._end_scene_allowed = None
         self._persist_characters = None
         self._probe_config = None
@@ -69,6 +72,8 @@ class Scene(object):
         self.index = index
         if state is not None:
             self.state = state
+        if final_scene is not None:
+            self.final_scene = final_scene
         self.end_scene_allowed = end_scene_allowed
         if persist_characters is not None:
             self.persist_characters = persist_characters
@@ -129,6 +134,29 @@ class Scene(object):
         """
 
         self._state = state
+
+    @property
+    def final_scene(self):
+        """Gets the final_scene of this Scene.  # noqa: E501
+
+        Whether this is the final scene in the scenario  # noqa: E501
+
+        :return: The final_scene of this Scene.  # noqa: E501
+        :rtype: bool
+        """
+        return self._final_scene
+
+    @final_scene.setter
+    def final_scene(self, final_scene):
+        """Sets the final_scene of this Scene.
+
+        Whether this is the final scene in the scenario  # noqa: E501
+
+        :param final_scene: The final_scene of this Scene.  # noqa: E501
+        :type: bool
+        """
+
+        self._final_scene = final_scene
 
     @property
     def end_scene_allowed(self):

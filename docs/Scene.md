@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **index** | **int** | The order the scene appears in the scenario | 
 **state** | [**State**](State.md) |  | [optional] 
+**final_scene** | **bool** | Whether this is the final scene in the scenario | [optional] 
 **end_scene_allowed** | **bool** | Whether ADMs can explicitly end the scene | 
 **persist_characters** | **bool** | Whether characters should persist from the previous scene | [optional] 
 **probe_config** | [**list[ProbeConfig]**](ProbeConfig.md) | TA1-provided probe configuration, ignored by TA3 | [optional] 
