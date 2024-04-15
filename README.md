@@ -47,21 +47,24 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
+usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training] [--scenario SCENARIO_ID]
 
 Runs ADM scenarios.
 
 options:
-  -h, --help            show this help message and exit
-  --adm_name ADM_NAME   Specify the ADM name
+  -h, --help               Show this help message and exit
+  --adm_name ADM_NAME      Specify the ADM name
   --session [session_type [scenario_count ...]]
-                        Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
-  --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
-                        Not supported in eval sessions.
+                           Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
+  --eval                   Run an evaluation session. Supercedes --session and is the default if nothing is specified.
+  --kdma_training          Put the server in training mode in which it shows the kdma association for each action choice.
+                           Not supported in eval sessions.
+  --scenario SCENARIO_ID   Runs only the specified scenario. Incompatible with scenario_count and --eval.
 ```
  
 ### Running the Human input simulator
+
+**NOTE**: The human input simulator has not been updated for the metrics evaluation so it is currently unusable.
 
 The Human input simulator is used for testing specific action/parameter sequences or for otherwise simulating a human DM.
 
@@ -92,6 +95,9 @@ Further details can be found in the ITM Server FAQ below.
 * `CHECK_ALL_VITALS`
   * Reveals all `Vitals` and discoverable injuries for the specified `character_id`.
     * requires `character_id`
+* `CHECK_BLOOD_OXYGEN`
+  * Reveals `spo2`, discoverable injuries, and certain basic vitals for the specified `character_id`.
+    * requires `character_id`
 * `CHECK_PULSE`
   * Reveals `heart_rate`, discoverable injuries, and certain basic vitals for the specified `character_id`.
     * requires `character_id`
@@ -99,7 +105,7 @@ Further details can be found in the ITM Server FAQ below.
   * Reveals discoverable injuries and certain basic vitals for the specified `character_id`.
     * requires `character_id`
 * `DIRECT_MOBILE_CHARACTERS`
-  * Reveals the `ambulatory` vital from mobile, responsive characters.
+  * Reveals the `ambulatory`, `conscious`, `mental_status`, and `avpu` vitals from conscious, mobile, responsive characters.
     * no further requirements
 * `END_SCENE`
   * Equivalent to the ADM choosing "none of the above" available actions.
@@ -136,30 +142,28 @@ Further details can be found in the ITM Server FAQ below.
    * Because ITM scenarios to date do not have defined safe zones, all it does is reveal the `ambulatory` vital from mobile, responsive characters: those with `ambulatory` of True and `mental_status` of `CALM`, `UPSET`, OR `AGONY`.
 5. What is `SEARCH`, and what exactly does it do?
    * `SEARCH` models a medical decision-maker searching for additional patients prior to assessing or treating the patients already in the scene.  As a result, additional (found) characters may appear in the returned `state`.
-6. Why is there no `CHECK_BLOOD_OXYGEN` action?
-   * This was an oversight in the API. At present, the only way to determine the `spo2` vital is to issue a `CHECK_ALL_VITALS` action.  Further, `CHECK_ALL_VITALS` might be removed at a later date, as there is no analogue in the Unity simulator.
-7. How is `visited` determined?
+6. How is `visited` determined?
    * Most characters start with `visited` set to False, meaning the medic has not approached or otherwise assessed the patient. These characters will have vitals and discoverable injuries initially hidden to the ADM (i.e., not in the `state`). When certain actions are taken (those mentioned in question #1 above), basic vitals and discoverable injuries will be revealed (setting injury `status` to `discovered`), and `visited` will be set to True.
-8. How does `elapsed_time` work?
+7. How does `elapsed_time` work?
    * Whenever an action is taken, a configurable amount of time passes.  The `elapsed_time` property of the `state` object contains a running total of time passed (in seconds).
    * **NOTE**: at present, the passage of time has **no effect** on patients and is simply a construct of the TA3 server, although scenario designers can use it as a condition for transition from one logical scene to the next.
    * **NOTE**: the elapsed time for each action has not been vetted by ITM medical SMEs and should not be used in decision-making.
-9. What exactly is `unstructured_postassess` in the `character` object?  It's always `None`.
+8. What exactly is `unstructured_postassess` in the `character` object?  It's always `None`.
    * The `unstructured_postassess` property is for TA1 scenario designers to provide an updated unstructured text description of the character and/or his/her injuries. After the character is assessed/visited, the contents of the `unstructured_postassess` property are copied to the `unstructured` property.  It's always `None` because it is not exposed to ADMs, only copied to `unstructured`, which is exposed to ADMs.
-10. In training sessions, after the ADM takes its first action, the session alignment is usually 0.5.  Why is this?
+9. In training sessions, after the ADM takes its first action, the session alignment is usually 0.5.  Why is this?
     * If the ADM's first action doesn't result in a probe response, alignment is undefined. The `AlignmentResults` object does not allow for a `score` of `None`, and requires a value between 0 and 1. So the TA3 server responds with 0.5.
-11. What happens if I treat an `Amputation` injury with a `Nasopharyngeal airway` treatment?
+10. What happens if I treat an `Amputation` injury with a `Nasopharyngeal airway` treatment?
     * As long as there are sufficient supplies, the TA3 Server will not reject an `APPLY_TREATMENT` attempt. However, not all treatments actually treat an injury (like in the example above). In these cases, the supply will be used, time will elapse, the character will be `visited`, and certain vitals will be revealed, but the injury's `status` will NOT change to `treated`. The mapping of correct treatments to injury types matches the behavior in the Unity simulator.
-12. My ADM correctly treated an Amputation injury with a Tourniquet, but nothing happened, except for time advancing. Why?
+11. My ADM correctly treated an Amputation injury with a Tourniquet, but nothing happened, except for time advancing. Why?
     * This can happen for one of two reasons:
       * Some TA1 scenarios call for actions to be "interrupted". This was accomplished by resetting the state of a treated character and the supplies to its state prior to treatment.
       * If an ADM attempts to treat an injury that is already treated, then nothing will change other than a little bit of time passing.  If the character was previously unvisited, then basic vitals and other discoverable injuries will NOT be revealed as they normally would be after a treatment attempt.
-13. Sometimes the actions returned in `get_available_actions` are "fully qualified" (with all `parameters`), but other times they are not. How do we know if the action will trigger its effects?
+12. Sometimes the actions returned in `get_available_actions` are "fully qualified" (with all `parameters`), but other times they are not. How do we know if the action will trigger its effects?
     * TA1 scenario designers specify action mappings that include the necessary action parameters to trigger a probe response. If an action mapping contains `APPLY_TREATMENT` with a `character_id` but no `parameters`, then TA2 will have to fill in parameters (e.g., `treatment` and `location`), but any treatment of the character will result in probe response.
     * **NOTE** It's essential that the `action_id` of the TA2 action match the `action_id` of the original, corresponding action from `get_available_actions`.  Otherwise, the probe response might not be sent.
-14. Why do taken actions sometimes disappear from `get_available_actions`, but other times don't?
+13. Why do taken actions sometimes disappear from `get_available_actions`, but other times don't?
     * TA1 scenario designers configure mappings from actions to probe responses. They can configure whether a given mapping is `repeatable` or not. If an unrepeatable action is taken by the ADM, and conditions *aren't* met for a scene change, then that action will be removed from the list of available actions.  Actions that aren't part of TA1 action mappings that aren't explicitly *restricted* also appear in the list of available actions. These actions are always repeatable.
-15. Are `action_id`s (as returned by `get_available_actions`) giving away at evaluation time what actions are important?
+14. Are `action_id`s (as returned by `get_available_actions`) giving away at evaluation time what actions are important?
     * TA1 scenario designers assign `action_id`s to all actions in a scene's action mapping configuration.  Other actions in the ADM decision space are added at runtime unless they are explicitly restricted by TA1. The other actions are added to match more closely what a human experiences in the VR simulator.
     * The actions added by TA3 have invariant `action_id`s, and as such an ADM may be able to discern which actions were configured by TA1 vs. added by the TA3 server. The TA1 actions are those which *may* result in a probe response, depending on configured conditions.
     * Although actions that elicit probe responses can be considered more important, they are not providing the right (or better aligned) answers. If the program considers this an issue, we can come up with conventions for action IDs. Maybe all actions must have `action_id`s of `action-n` whether configured by TA1 or added by the TA3 server.
