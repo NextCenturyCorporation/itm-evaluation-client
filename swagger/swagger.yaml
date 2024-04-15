@@ -39,6 +39,14 @@ paths:
           schema:
             type: string
             example: eval
+        - name: adm_profile
+          in: query
+          description: a profile of the ADM in terms of its alignment strategy
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
         - name: kdma_training
           in: query
           description: whether or not this is a training session with TA2
