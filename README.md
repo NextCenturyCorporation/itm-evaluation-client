@@ -47,19 +47,20 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training] [--scenario SCENARIO_ID]
+usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--adm_profile ADM_PROFILE] [--session [session_type [scenario_count ...]]]
+                             [--eval] [--kdma_training] [--scenario SCENARIO_ID]
 
 Runs ADM scenarios.
 
 options:
-  -h, --help               Show this help message and exit
-  --adm_name ADM_NAME      Specify the ADM name
-  --session [session_type [scenario_count ...]]
-                           Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                   Run an evaluation session. Supercedes --session and is the default if nothing is specified.
-  --kdma_training          Put the server in training mode in which it shows the kdma association for each action choice.
-                           Not supported in eval sessions.
-  --scenario SCENARIO_ID   Runs only the specified scenario. Incompatible with scenario_count and --eval.
+  -h, --help                 Show this help message and exit
+  --adm_name ADM_NAME        Specify the ADM name
+  --adm_profile ADM_PROFILE  Specify the ADM profile in terms of its alignment strategy  --session [session_type [scenario_count ...]]
+                             Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
+  --eval                     Run an evaluation session. Supercedes --session and is the default if nothing is specified.
+  --kdma_training            Put the server in training mode in which it shows the kdma association for each action choice.
+                             Not supported in eval sessions.
+  --scenario SCENARIO_ID     Runs only the specified scenario. Incompatible with scenario_count and --eval.
 ```
  
 ### Running the Human input simulator

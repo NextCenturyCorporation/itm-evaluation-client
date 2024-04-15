@@ -52,7 +52,6 @@ class ADMKnowledge:
     # characters
     characters: List[Character] = None
     all_character_ids: List[str] = None
-    treated_character_ids: List[str] = None
 
     # Actions
     scenario_actions_taken = 0
@@ -66,10 +65,11 @@ class ADMKnowledge:
 
 class ADMScenarioRunner(ScenarioRunner):
 
-    def __init__(self, session_type, max_scenarios=0, scenario_id=None):
+    def __init__(self, session_type, adm_profile=None, max_scenarios=0, scenario_id=None):
         super().__init__()
         self.session_id = None
         self.adm_name = "ITM ADM"
+        self.adm_profile = adm_profile
         self.eval_mode = session_type == 'eval'
         self.adm_knowledge: ADMKnowledge = None
         self.session_type = session_type
@@ -93,6 +93,7 @@ class ADMScenarioRunner(ScenarioRunner):
                 actions: List[Action] = self.itm.get_available_actions(session_id=self.session_id, scenario_id=self.adm_knowledge.scenario.id)
                 action = self.get_next_action(self.adm_knowledge.scenario, self.adm_knowledge.scenario.state, self.adm_knowledge.alignment_target, actions)
                 state = self.itm.take_action(session_id=self.session_id, body=action)
+                self.update_scenario(state)
                 self.adm_knowledge.scenario_actions_taken += 1
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
@@ -122,12 +123,14 @@ class ADMScenarioRunner(ScenarioRunner):
             self.session_id = self.itm.start_session(
                 adm_name=self.adm_name,
                 session_type='eval',
+                adm_profile=self.adm_profile,
                 max_scenarios=0
             )
         else:
             self.session_id = self.itm.start_session(
                 adm_name=self.adm_name,
                 session_type=self.session_type,
+                adm_profile=self.adm_profile,
                 max_scenarios=self.max_scenarios
             )
 
@@ -149,14 +152,16 @@ class ADMScenarioRunner(ScenarioRunner):
         self.adm_knowledge.scenario = scenario
         state: State = scenario.state
         self.adm_knowledge.scenario_id = scenario.id
+        self.adm_knowledge.action_choices = []
+        self.update_scenario(state)
+
+    def update_scenario(self, state):
         self.adm_knowledge.characters = state.characters
         self.adm_knowledge.all_character_ids = [
             character.id for character in state.characters]
-        self.adm_knowledge.treated_character_ids = []
-        self.adm_knowledge.action_choices = []
         self.adm_knowledge.supplies = state.supplies
         self.adm_knowledge.environment = state.environment
-        self.adm_knowledge.description = state.mission.unstructured
+        self.adm_knowledge.description = state.mission.unstructured if state.mission else ''
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
