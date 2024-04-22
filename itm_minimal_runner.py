@@ -112,6 +112,8 @@ def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
     parser.add_argument('--adm_name', type=str, required=True, 
                         help='Specify the ADM name')
+    parser.add_argument('--adm_profile', type=str, required=False, 
+                        help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--session', nargs='*', default=[], 
                         metavar=('session_type', 'scenario_count'), 
                         help='Specify session type and scenario count. '
@@ -171,11 +173,13 @@ def main():
         if session_type == 'eval':
             session_id = itm.start_session(
                 adm_name=args.adm_name,
+                adm_profile=args.adm_profile,
                 session_type='eval'
             )
         else:
             session_id = itm.start_session(
                 adm_name=args.adm_name,
+                adm_profile=args.adm_profile,
                 session_type=session_type,
                 max_scenarios=scenario_count,
                 kdma_training=args.kdma_training

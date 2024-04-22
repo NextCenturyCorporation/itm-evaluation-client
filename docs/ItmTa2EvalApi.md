@@ -263,7 +263,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **start_session**
-> str start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
+> str start_session(adm_name, session_type, adm_profile=adm_profile, kdma_training=kdma_training, max_scenarios=max_scenarios)
 
 Start a new session
 
@@ -281,12 +281,13 @@ from pprint import pprint
 api_instance = swagger_client.ItmTa2EvalApi()
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
 session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
+adm_profile = 'adm_profile_example' # str | a profile of the ADM in terms of its alignment strategy (optional)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
 max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session
-    api_response = api_instance.start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
+    api_response = api_instance.start_session(adm_name, session_type, adm_profile=adm_profile, kdma_training=kdma_training, max_scenarios=max_scenarios)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ItmTa2EvalApi->start_session: %s\n" % e)
@@ -298,6 +299,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **adm_name** | **str**| A self-assigned ADM name.  Can add authentication later. | 
  **session_type** | **str**| the type of session to start (&#x60;eval&#x60; or a TA1 name) | 
+ **adm_profile** | **str**| a profile of the ADM in terms of its alignment strategy | [optional] 
  **kdma_training** | **bool**| whether or not this is a training session with TA2 | [optional] [default to false]
  **max_scenarios** | **int**| the maximum number of scenarios requested, not supported in &#x60;eval&#x60; sessions | [optional] 
 

@@ -3,6 +3,8 @@ from itm import ADMScenarioRunner
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
+    parser.add_argument('--adm_profile', type=str, required=False, 
+                        help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--session', nargs='*', default=[], metavar=('session_type', 'scenario_count'), help=\
                         'Specify session type and scenario count. '
                         'Session type can be eval, adept, or soartech. '
@@ -31,9 +33,9 @@ def main():
         parser.error("Specifying a scenario_id is incompatible with specifying a scenario_count.")
 
     if scenario_id:
-        adm = ADMScenarioRunner(session_type, scenario_count, scenario_id)
+        adm = ADMScenarioRunner(session_type, args.adm_profile, scenario_count, scenario_id)
     else:
-        adm = ADMScenarioRunner(session_type, scenario_count)
+        adm = ADMScenarioRunner(session_type, args.adm_profile, scenario_count)
     adm.run()
 
 if __name__ == "__main__":
