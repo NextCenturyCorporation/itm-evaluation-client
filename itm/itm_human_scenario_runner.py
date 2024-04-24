@@ -112,6 +112,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             medical_supply = self.medical_supplies[medical_supply_index].type
         except ValueError:
             return self.prompt_treatment()
+        except IndexError:
+            return self.prompt_treatment()
         return medical_supply
 
     def prompt_justification(self):
