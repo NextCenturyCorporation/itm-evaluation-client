@@ -57,32 +57,33 @@ options:
   --adm_name ADM_NAME        Specify the ADM name
   --adm_profile ADM_PROFILE  Specify the ADM profile in terms of its alignment strategy  --session [session_type [scenario_count ...]]
                              Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
+  --session [session_type [scenario_count ...]]
+                             Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
+  --scenario SCENARIO_ID     Runs only the specified scenario. Incompatible with scenario_count and --eval.
   --eval                     Run an evaluation session. Supercedes --session and is the default if nothing is specified.
   --kdma_training            Put the server in training mode in which it shows the kdma association for each action choice.
                              Not supported in eval sessions.
-  --scenario SCENARIO_ID     Runs only the specified scenario. Incompatible with scenario_count and --eval.
 ```
- 
-### Running the Human input simulator
 
-**NOTE**: The human input simulator has not been updated for the metrics evaluation so it is currently unusable.
+### Running the Human input simulator
 
 The Human input simulator is used for testing specific action/parameter sequences or for otherwise simulating a human DM.
 
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
+usage: itm_human_input.py [-h] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]  [--scenario SCENARIO_ID]
 
 Runs Human input simulator.
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help              Show this help message and exit
   --session [session_type [scenario_count ...]]
-                        Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
-  --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
-                        Not supported in eval sessions.
+                          Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
+  --eval                  Run an evaluation session. Supercedes --session and is the default if nothing is specified.
+  --kdma_training         Put the server in training mode in which it shows the kdma association for each action choice.
+                          Not supported in eval sessions.
+  --scenario SCENARIO_ID  Runs only the specified scenario. Incompatible with scenario_count and --eval.
 ```
 
 ### Available Actions
