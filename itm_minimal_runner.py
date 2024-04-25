@@ -194,7 +194,8 @@ def main():
             if scenario.session_complete:
                 break
             print(f'Scenario name: {scenario.name}')
-            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
+            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
+            print(f'{alignment_target}')
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
@@ -202,7 +203,7 @@ def main():
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action)
-                if args.kdma_training:
+                if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
@@ -210,7 +211,7 @@ def main():
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if not args.kdma_training:
+            if not args.training:
                 print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
