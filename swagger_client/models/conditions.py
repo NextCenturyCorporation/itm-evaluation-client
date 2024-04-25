@@ -122,7 +122,7 @@ class Conditions(object):
     def actions(self):
         """Gets the actions of this Conditions.  # noqa: E501
 
-        True if the any of the specified lists of actions have been taken; multiple action ID lists have \"or\" semantics; multiple action IDs within a list have \"and\" semantics  # noqa: E501
+        True if any of the specified lists of actions have been taken; multiple action ID lists have \"or\" semantics; multiple action IDs within a list have \"and\" semantics  # noqa: E501
 
         :return: The actions of this Conditions.  # noqa: E501
         :rtype: list[list[str]]
@@ -133,7 +133,7 @@ class Conditions(object):
     def actions(self, actions):
         """Sets the actions of this Conditions.
 
-        True if the any of the specified lists of actions have been taken; multiple action ID lists have \"or\" semantics; multiple action IDs within a list have \"and\" semantics  # noqa: E501
+        True if any of the specified lists of actions have been taken; multiple action ID lists have \"or\" semantics; multiple action IDs within a list have \"and\" semantics  # noqa: E501
 
         :param actions: The actions of this Conditions.  # noqa: E501
         :type: list[list[str]]
