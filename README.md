@@ -47,42 +47,42 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --adm_name ADM_NAME [--adm_profile ADM_PROFILE] [--session [session_type [scenario_count ...]]]
-                             [--eval] [--kdma_training] [--scenario SCENARIO_ID]
+usage: itm_minimal_runner.py [-h] --name adm_name [--profile adm_profile] --session session_type [--count scenario_count]
+                             [--training] [--scenario scenario_id]
 
-Runs ADM scenarios.
+Runs ADM simulator.
 
 options:
-  -h, --help                 Show this help message and exit
-  --adm_name ADM_NAME        Specify the ADM name
-  --adm_profile ADM_PROFILE  Specify the ADM profile in terms of its alignment strategy  --session [session_type [scenario_count ...]]
-                             Specify session type and scenario count. Session type can be test, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument
-  --eval                     Run an evaluation session. Supercedes --session and is the default if nothing is specified.
-  --kdma_training            Put the server in training mode in which it shows the kdma association for each action choice.
-                             Not supported in eval sessions.
-  --scenario SCENARIO_ID     Runs only the specified scenario. Incompatible with scenario_count and --eval.
+  -h, --help              Show this help message and exit
+  --name adm_name         Specify the ADM name
+  --profile adm_profile   Specify the ADM profile in terms of its alignment strategy
+  --session session_type  Specify session type. Session type must be `eval`, `adept`, or `soartech`.
+  --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
+                          supported in `eval` sessions.
+  --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
+                          in `eval` sessions.
+  --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
- 
-### Running the Human input simulator
 
-**NOTE**: The human input simulator has not been updated for the metrics evaluation so it is currently unusable.
+### Running the Human input simulator
 
 The Human input simulator is used for testing specific action/parameter sequences or for otherwise simulating a human DM.
 
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] [--session [session_type [scenario_count ...]]] [--eval] [--kdma_training]
+usage: itm_human_input.py [-h] --session session_type [--count scenario_count] [--training] [--scenario scenario_id]
 
 Runs Human input simulator.
 
 options:
-  -h, --help            show this help message and exit
-  --session [session_type [scenario_count ...]]
-                        Specify session type and scenario count. Session type can be eval, adept, or soartech. If you want to run through all available scenarios without repeating do not use the scenario_count argument. Default: eval
-  --eval                Run an evaluation session. Supercedes --session and is the default if nothing is specified.
-  --kdma_training       Put the server in training mode in which it shows the kdma association for each action choice.
-                        Not supported in eval sessions.
+  -h, --help              Show this help message and exit
+  --session session_type  Specify session type. Session type must be `eval`, `adept`, or `soartech`.
+  --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
+                          supported in `eval` sessions.
+  --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
+                          in `eval` sessions.
+  --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
 ### Available Actions

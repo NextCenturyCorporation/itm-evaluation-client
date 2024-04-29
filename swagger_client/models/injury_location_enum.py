@@ -44,6 +44,7 @@ class InjuryLocationEnum(object):
     LEFT_SIDE = "left side"
     RIGHT_CHEST = "right chest"
     LEFT_CHEST = "left chest"
+    CENTER_CHEST = "center chest"
     RIGHT_WRIST = "right wrist"
     LEFT_WRIST = "left wrist"
     LEFT_FACE = "left face"
