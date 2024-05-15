@@ -32,6 +32,7 @@ class Character(object):
         'name': 'str',
         'unstructured': 'str',
         'unstructured_postassess': 'str',
+        'has_blanket': 'bool',
         'intent': 'IntentEnum',
         'directness_of_causality': 'DirectnessEnum',
         'rapport': 'RapportEnum',
@@ -47,6 +48,7 @@ class Character(object):
         'name': 'name',
         'unstructured': 'unstructured',
         'unstructured_postassess': 'unstructured_postassess',
+        'has_blanket': 'has_blanket',
         'intent': 'intent',
         'directness_of_causality': 'directness_of_causality',
         'rapport': 'rapport',
@@ -57,12 +59,13 @@ class Character(object):
         'tag': 'tag'
     }
 
-    def __init__(self, id=None, name=None, unstructured=None, unstructured_postassess=None, intent=None, directness_of_causality=None, rapport=None, demographics=None, injuries=None, vitals=None, visited=False, tag=None):  # noqa: E501
+    def __init__(self, id=None, name=None, unstructured=None, unstructured_postassess=None, has_blanket=False, intent=None, directness_of_causality=None, rapport=None, demographics=None, injuries=None, vitals=None, visited=False, tag=None):  # noqa: E501
         """Character - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
         self._unstructured = None
         self._unstructured_postassess = None
+        self._has_blanket = None
         self._intent = None
         self._directness_of_causality = None
         self._rapport = None
@@ -77,6 +80,8 @@ class Character(object):
         self.unstructured = unstructured
         if unstructured_postassess is not None:
             self.unstructured_postassess = unstructured_postassess
+        if has_blanket is not None:
+            self.has_blanket = has_blanket
         if intent is not None:
             self.intent = intent
         if directness_of_causality is not None:
@@ -190,6 +195,29 @@ class Character(object):
         """
 
         self._unstructured_postassess = unstructured_postassess
+
+    @property
+    def has_blanket(self):
+        """Gets the has_blanket of this Character.  # noqa: E501
+
+        whether or not this character has a blanket (either wrapped around or underneath)  # noqa: E501
+
+        :return: The has_blanket of this Character.  # noqa: E501
+        :rtype: bool
+        """
+        return self._has_blanket
+
+    @has_blanket.setter
+    def has_blanket(self, has_blanket):
+        """Sets the has_blanket of this Character.
+
+        whether or not this character has a blanket (either wrapped around or underneath)  # noqa: E501
+
+        :param has_blanket: The has_blanket of this Character.  # noqa: E501
+        :type: bool
+        """
+
+        self._has_blanket = has_blanket
 
     @property
     def intent(self):
