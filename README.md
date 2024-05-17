@@ -106,7 +106,7 @@ Further details can be found in the ITM Server FAQ below.
   * Reveals discoverable injuries and certain basic vitals for the specified `character_id`.
     * requires `character_id`
 * `DIRECT_MOBILE_CHARACTERS`
-  * Reveals the `ambulatory`, `conscious`, `mental_status`, and `avpu` vitals from conscious, mobile, responsive characters.
+  * Reveals the `ambulatory`, `mental_status`, and `avpu` vitals from mobile, responsive, alert characters.
     * no further requirements
 * `END_SCENE`
   * Equivalent to the ADM choosing "none of the above" available actions.
@@ -129,7 +129,7 @@ Further details can be found in the ITM Server FAQ below.
 ### ITM TA3 Server FAQ
 
 1. What are "certain basic vitals" from the action descriptions above?
-   * Basic vitals include `conscious`, `avpu`, `ambulatory`, `mental_status`, and `breathing`. These are revealed by `SITREP`, `APPLY_TREATMENT`, and all `CHECK_*` actions.
+   * Basic vitals include `avpu`, `ambulatory`, `mental_status`, and `breathing`. These are revealed by `SITREP`, `APPLY_TREATMENT`, and all `CHECK_*` actions.
 2. What is a "scene" and how do I know when a scene has changed?
    * It can be confusing because a scene can mean a few different things:
      * A scene is a narrative construct, where within a scenario a human decision-maker moves between one physical area and another, each with a different set of characters.  The human in the sim literally moves (or is teleported) to a different scene, whereas the ADM gets an updated state with changes to structured and unstructured data, conveying the scene change.

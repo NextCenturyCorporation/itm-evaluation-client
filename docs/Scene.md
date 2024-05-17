@@ -3,9 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**index** | **int** | The order the scene appears in the scenario | 
+**id** | **str** | The scene ID, unique throughout the scenario | 
 **state** | [**State**](State.md) |  | [optional] 
-**final_scene** | **bool** | Whether this is the final scene in the scenario | [optional] 
+**next_scene** | **str** | The ID of the default next scene in the scenario; if empty or missing, then by default this is the last scene. | [optional] 
 **end_scene_allowed** | **bool** | Whether ADMs can explicitly end the scene | 
 **persist_characters** | **bool** | Whether characters should persist from the previous scene | [optional] 
 **probe_config** | [**list[ProbeConfig]**](ProbeConfig.md) | TA1-provided probe configuration, ignored by TA3 | [optional] 

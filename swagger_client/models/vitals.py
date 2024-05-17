@@ -28,7 +28,6 @@ class Vitals(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'conscious': 'bool',
         'avpu': 'AvpuLevelEnum',
         'ambulatory': 'bool',
         'mental_status': 'MentalStatusEnum',
@@ -38,7 +37,6 @@ class Vitals(object):
     }
 
     attribute_map = {
-        'conscious': 'conscious',
         'avpu': 'avpu',
         'ambulatory': 'ambulatory',
         'mental_status': 'mental_status',
@@ -47,9 +45,8 @@ class Vitals(object):
         'spo2': 'spo2'
     }
 
-    def __init__(self, conscious=None, avpu=None, ambulatory=None, mental_status=None, breathing=None, heart_rate=None, spo2=None):  # noqa: E501
+    def __init__(self, avpu=None, ambulatory=None, mental_status=None, breathing=None, heart_rate=None, spo2=None):  # noqa: E501
         """Vitals - a model defined in Swagger"""  # noqa: E501
-        self._conscious = None
         self._avpu = None
         self._ambulatory = None
         self._mental_status = None
@@ -57,8 +54,6 @@ class Vitals(object):
         self._heart_rate = None
         self._spo2 = None
         self.discriminator = None
-        if conscious is not None:
-            self.conscious = conscious
         if avpu is not None:
             self.avpu = avpu
         if ambulatory is not None:
@@ -71,29 +66,6 @@ class Vitals(object):
             self.heart_rate = heart_rate
         if spo2 is not None:
             self.spo2 = spo2
-
-    @property
-    def conscious(self):
-        """Gets the conscious of this Vitals.  # noqa: E501
-
-        whether or not the character appears to be conscious  # noqa: E501
-
-        :return: The conscious of this Vitals.  # noqa: E501
-        :rtype: bool
-        """
-        return self._conscious
-
-    @conscious.setter
-    def conscious(self, conscious):
-        """Sets the conscious of this Vitals.
-
-        whether or not the character appears to be conscious  # noqa: E501
-
-        :param conscious: The conscious of this Vitals.  # noqa: E501
-        :type: bool
-        """
-
-        self._conscious = conscious
 
     @property
     def avpu(self):

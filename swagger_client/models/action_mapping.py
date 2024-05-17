@@ -36,7 +36,7 @@ class ActionMapping(object):
         'parameters': 'dict(str, str)',
         'probe_id': 'str',
         'choice': 'str',
-        'next_scene': 'int',
+        'next_scene': 'str',
         'kdma_association': 'dict(str, float)',
         'condition_semantics': 'SemanticTypeEnum',
         'conditions': 'Conditions'
@@ -288,10 +288,10 @@ class ActionMapping(object):
     def next_scene(self):
         """Gets the next_scene of this ActionMapping.  # noqa: E501
 
-        The next scene in the scenario, by index  # noqa: E501
+        The ID of the next scene in the scenario; overrides Scene.next_scene  # noqa: E501
 
         :return: The next_scene of this ActionMapping.  # noqa: E501
-        :rtype: int
+        :rtype: str
         """
         return self._next_scene
 
@@ -299,10 +299,10 @@ class ActionMapping(object):
     def next_scene(self, next_scene):
         """Sets the next_scene of this ActionMapping.
 
-        The next scene in the scenario, by index  # noqa: E501
+        The ID of the next scene in the scenario; overrides Scene.next_scene  # noqa: E501
 
         :param next_scene: The next_scene of this ActionMapping.  # noqa: E501
-        :type: int
+        :type: str
         """
 
         self._next_scene = next_scene

@@ -191,7 +191,7 @@ class Conditions(object):
     def character_vitals(self):
         """Gets the character_vitals of this Conditions.  # noqa: E501
 
-        True if the specified list of vitals values have been met for the specified character_id  # noqa: E501
+        True if the any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
 
         :return: The character_vitals of this Conditions.  # noqa: E501
         :rtype: list[ConditionsCharacterVitals]
@@ -202,7 +202,7 @@ class Conditions(object):
     def character_vitals(self, character_vitals):
         """Sets the character_vitals of this Conditions.
 
-        True if the specified list of vitals values have been met for the specified character_id  # noqa: E501
+        True if the any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
 
         :param character_vitals: The character_vitals of this Conditions.  # noqa: E501
         :type: list[ConditionsCharacterVitals]
@@ -214,7 +214,7 @@ class Conditions(object):
     def supplies(self):
         """Gets the supplies of this Conditions.  # noqa: E501
 
-        True if there are at least the specified quantity of the specified supply types remaining  # noqa: E501
+        True if any of the specified supplies reach or go below the specified quantity  # noqa: E501
 
         :return: The supplies of this Conditions.  # noqa: E501
         :rtype: list[Supplies]
@@ -225,7 +225,7 @@ class Conditions(object):
     def supplies(self, supplies):
         """Sets the supplies of this Conditions.
 
-        True if there are at least the specified quantity of the specified supply types remaining  # noqa: E501
+        True if any of the specified supplies reach or go below the specified quantity  # noqa: E501
 
         :param supplies: The supplies of this Conditions.  # noqa: E501
         :type: list[Supplies]

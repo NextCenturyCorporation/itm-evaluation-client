@@ -30,6 +30,7 @@ class Scenario(object):
     swagger_types = {
         'id': 'str',
         'name': 'str',
+        'first_scene': 'str',
         'session_complete': 'bool',
         'state': 'State',
         'scenes': 'list[Scene]'
@@ -38,21 +39,25 @@ class Scenario(object):
     attribute_map = {
         'id': 'id',
         'name': 'name',
+        'first_scene': 'first_scene',
         'session_complete': 'session_complete',
         'state': 'state',
         'scenes': 'scenes'
     }
 
-    def __init__(self, id=None, name=None, session_complete=None, state=None, scenes=None):  # noqa: E501
+    def __init__(self, id=None, name=None, first_scene=None, session_complete=None, state=None, scenes=None):  # noqa: E501
         """Scenario - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
+        self._first_scene = None
         self._session_complete = None
         self._state = None
         self._scenes = None
         self.discriminator = None
         self.id = id
         self.name = name
+        if first_scene is not None:
+            self.first_scene = first_scene
         if session_complete is not None:
             self.session_complete = session_complete
         if state is not None:
@@ -109,6 +114,29 @@ class Scenario(object):
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
+
+    @property
+    def first_scene(self):
+        """Gets the first_scene of this Scenario.  # noqa: E501
+
+        indicates the first/opening scene ID in the scenario  # noqa: E501
+
+        :return: The first_scene of this Scenario.  # noqa: E501
+        :rtype: str
+        """
+        return self._first_scene
+
+    @first_scene.setter
+    def first_scene(self, first_scene):
+        """Sets the first_scene of this Scenario.
+
+        indicates the first/opening scene ID in the scenario  # noqa: E501
+
+        :param first_scene: The first_scene of this Scenario.  # noqa: E501
+        :type: str
+        """
+
+        self._first_scene = first_scene
 
     @property
     def session_complete(self):

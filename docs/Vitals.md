@@ -3,7 +3,6 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**conscious** | **bool** | whether or not the character appears to be conscious | [optional] 
 **avpu** | [**AvpuLevelEnum**](AvpuLevelEnum.md) |  | [optional] 
 **ambulatory** | **bool** | whether or not the character can walk | [optional] 
 **mental_status** | [**MentalStatusEnum**](MentalStatusEnum.md) |  | [optional] 
