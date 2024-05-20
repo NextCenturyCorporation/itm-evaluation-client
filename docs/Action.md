@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **action_id** | **str** | A unique action ID within the scenario | 
 **action_type** | [**ActionTypeEnum**](ActionTypeEnum.md) |  | 
+**intent_action** | **bool** | Whether this action is to be taken or intended | [optional] [default to False]
 **unstructured** | **str** | Natural language, plain text description of the action | [optional] 
 **character_id** | **str** | The ID of the character being acted upon | [optional] 
 **parameters** | **dict(str, str)** | key-value pairs containing additional [action-specific parameters](https://github.com/NextCenturyCorporation/itm-evaluation-client?tab&#x3D;readme-ov-file#available-actions) | [optional] 

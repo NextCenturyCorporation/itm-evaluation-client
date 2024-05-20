@@ -102,6 +102,18 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
+body = swagger_client.Action() # Action | Encapsulation of the intended action by a DM in the context of the scenario (optional)
+
+try:
+    # Express intent to take an action within a scenario
+    api_response = api_instance.intend_action(session_id, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ItmTa2EvalApi->intend_action: %s\n" % e)
+
+# create an instance of the API class
+api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
+session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
 scenario_id = 'scenario_id_example' # str | the scenario id to run; incompatible with /ta2/startSession's max_scenarios parameter (optional)
 
 try:
@@ -149,6 +161,7 @@ Class | Method | HTTP request | Description
 *ItmTa2EvalApi* | [**get_available_actions**](docs/ItmTa2EvalApi.md#get_available_actions) | **GET** /ta2/{scenario_id}/getAvailableActions | Get a list of currently available ADM actions
 *ItmTa2EvalApi* | [**get_scenario_state**](docs/ItmTa2EvalApi.md#get_scenario_state) | **GET** /ta2/{scenario_id}/getState | Retrieve scenario state
 *ItmTa2EvalApi* | [**get_session_alignment**](docs/ItmTa2EvalApi.md#get_session_alignment) | **GET** /ta2/getSessionAlignment | Retrieve session alignment from TA1
+*ItmTa2EvalApi* | [**intend_action**](docs/ItmTa2EvalApi.md#intend_action) | **POST** /ta2/intendAction | Express intent to take an action within a scenario
 *ItmTa2EvalApi* | [**start_scenario**](docs/ItmTa2EvalApi.md#start_scenario) | **GET** /ta2/scenario | Get the next scenario
 *ItmTa2EvalApi* | [**start_session**](docs/ItmTa2EvalApi.md#start_session) | **GET** /ta2/startSession | Start a new session
 *ItmTa2EvalApi* | [**take_action**](docs/ItmTa2EvalApi.md#take_action) | **POST** /ta2/takeAction | Take an action within a scenario

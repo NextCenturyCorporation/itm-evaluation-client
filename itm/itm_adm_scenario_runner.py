@@ -92,7 +92,7 @@ class ADMScenarioRunner(ScenarioRunner):
             while not self.adm_knowledge.scenario_complete:
                 actions: List[Action] = self.itm.get_available_actions(session_id=self.session_id, scenario_id=self.adm_knowledge.scenario.id)
                 action = self.get_next_action(self.adm_knowledge.scenario, self.adm_knowledge.scenario.state, self.adm_knowledge.alignment_target, actions)
-                state = self.itm.take_action(session_id=self.session_id, body=action)
+                state = self.itm.take_action(session_id=self.session_id, body=action) if not action.intent_action else self.itm.intend_action(session_id=self.session_id, body=action)
                 self.update_scenario(state)
                 self.adm_knowledge.scenario_actions_taken += 1
                 self.adm_knowledge.action_choices.append(action.action_type)
