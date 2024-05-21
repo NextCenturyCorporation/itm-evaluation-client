@@ -191,7 +191,7 @@ class Conditions(object):
     def character_vitals(self):
         """Gets the character_vitals of this Conditions.  # noqa: E501
 
-        True if the any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
+        True if any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
 
         :return: The character_vitals of this Conditions.  # noqa: E501
         :rtype: list[ConditionsCharacterVitals]
@@ -202,7 +202,7 @@ class Conditions(object):
     def character_vitals(self, character_vitals):
         """Sets the character_vitals of this Conditions.
 
-        True if the any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
+        True if any of the specified collection of vital values have been met for the specified character_id  # noqa: E501
 
         :param character_vitals: The character_vitals of this Conditions.  # noqa: E501
         :type: list[ConditionsCharacterVitals]
