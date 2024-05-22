@@ -279,7 +279,7 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi()
-adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
+adm_name = 'adm_name_example' # str | A self-assigned ADM name.
 session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
 adm_profile = 'adm_profile_example' # str | a profile of the ADM in terms of its alignment strategy (optional)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
@@ -297,7 +297,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **adm_name** | **str**| A self-assigned ADM name.  Can add authentication later. | 
+ **adm_name** | **str**| A self-assigned ADM name. | 
  **session_type** | **str**| the type of session to start (&#x60;eval&#x60; or a TA1 name) | 
  **adm_profile** | **str**| a profile of the ADM in terms of its alignment strategy | [optional] 
  **kdma_training** | **bool**| whether or not this is a training session with TA2 | [optional] [default to false]

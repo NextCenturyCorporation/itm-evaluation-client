@@ -553,7 +553,7 @@ class ItmTa2EvalApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param str adm_name: A self-assigned ADM name.  Can add authentication later. (required)
+        :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval` or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
         :param bool kdma_training: whether or not this is a training session with TA2
@@ -579,7 +579,7 @@ class ItmTa2EvalApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param str adm_name: A self-assigned ADM name.  Can add authentication later. (required)
+        :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval` or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
         :param bool kdma_training: whether or not this is a training session with TA2
@@ -620,10 +620,10 @@ class ItmTa2EvalApi(object):
         query_params = []
         if 'adm_name' in params:
             query_params.append(('adm_name', params['adm_name']))  # noqa: E501
-        if 'session_type' in params:
-            query_params.append(('session_type', params['session_type']))  # noqa: E501
         if 'adm_profile' in params:
             query_params.append(('adm_profile', params['adm_profile']))  # noqa: E501
+        if 'session_type' in params:
+            query_params.append(('session_type', params['session_type']))  # noqa: E501
         if 'kdma_training' in params:
             query_params.append(('kdma_training', params['kdma_training']))  # noqa: E501
         if 'max_scenarios' in params:
