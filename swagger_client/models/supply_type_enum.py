@@ -34,6 +34,7 @@ class SupplyTypeEnum(object):
     EPI_PEN = "Epi Pen"
     VENTED_CHEST_SEAL = "Vented Chest Seal"
     PAIN_MEDICATIONS = "Pain Medications"
+    FENTANYL_LOLLIPOP = "Fentanyl Lollipop"
     SPLINT = "Splint"
     BLOOD = "Blood"
     IV_BAG = "IV Bag"
