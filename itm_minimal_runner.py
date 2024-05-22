@@ -202,7 +202,7 @@ def main():
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
                 action_path_index+=1
-                state = itm.take_action(session_id=session_id, body=action)
+                state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
                 if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.

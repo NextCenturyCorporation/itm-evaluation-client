@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**get_available_actions**](ItmTa2EvalApi.md#get_available_actions) | **GET** /ta2/{scenario_id}/getAvailableActions | Get a list of currently available ADM actions
 [**get_scenario_state**](ItmTa2EvalApi.md#get_scenario_state) | **GET** /ta2/{scenario_id}/getState | Retrieve scenario state
 [**get_session_alignment**](ItmTa2EvalApi.md#get_session_alignment) | **GET** /ta2/getSessionAlignment | Retrieve session alignment from TA1
+[**intend_action**](ItmTa2EvalApi.md#intend_action) | **POST** /ta2/intendAction | Express intent to take an action within a scenario
 [**start_scenario**](ItmTa2EvalApi.md#start_scenario) | **GET** /ta2/scenario | Get the next scenario
 [**start_session**](ItmTa2EvalApi.md#start_session) | **GET** /ta2/startSession | Start a new session
 [**take_action**](ItmTa2EvalApi.md#take_action) | **POST** /ta2/takeAction | Take an action within a scenario
@@ -208,6 +209,56 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json, text/plain
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **intend_action**
+> State intend_action(session_id, body=body)
+
+Express intent to take an action within a scenario
+
+Express intent to take the specified Action within a scenario
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ItmTa2EvalApi()
+session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
+body = swagger_client.Action() # Action | Encapsulation of the intended action by a DM in the context of the scenario (optional)
+
+try:
+    # Express intent to take an action within a scenario
+    api_response = api_instance.intend_action(session_id, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ItmTa2EvalApi->intend_action: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **session_id** | **str**| a unique session_id, as returned by /ta2/startSession | 
+ **body** | [**Action**](Action.md)| Encapsulation of the intended action by a DM in the context of the scenario | [optional] 
+
+### Return type
+
+[**State**](State.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json, text/plain
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

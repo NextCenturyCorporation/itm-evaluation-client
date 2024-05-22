@@ -33,6 +33,7 @@ class ActionMapping(object):
         'unstructured': 'str',
         'repeatable': 'bool',
         'character_id': 'str',
+        'intent_action': 'bool',
         'parameters': 'dict(str, str)',
         'probe_id': 'str',
         'choice': 'str',
@@ -48,6 +49,7 @@ class ActionMapping(object):
         'unstructured': 'unstructured',
         'repeatable': 'repeatable',
         'character_id': 'character_id',
+        'intent_action': 'intent_action',
         'parameters': 'parameters',
         'probe_id': 'probe_id',
         'choice': 'choice',
@@ -57,13 +59,14 @@ class ActionMapping(object):
         'conditions': 'conditions'
     }
 
-    def __init__(self, action_id=None, action_type=None, unstructured=None, repeatable=False, character_id=None, parameters=None, probe_id=None, choice=None, next_scene=None, kdma_association=None, condition_semantics=None, conditions=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, unstructured=None, repeatable=False, character_id=None, intent_action=False, parameters=None, probe_id=None, choice=None, next_scene=None, kdma_association=None, condition_semantics=None, conditions=None):  # noqa: E501
         """ActionMapping - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
         self._action_type = None
         self._unstructured = None
         self._repeatable = None
         self._character_id = None
+        self._intent_action = None
         self._parameters = None
         self._probe_id = None
         self._choice = None
@@ -79,6 +82,8 @@ class ActionMapping(object):
             self.repeatable = repeatable
         if character_id is not None:
             self.character_id = character_id
+        if intent_action is not None:
+            self.intent_action = intent_action
         if parameters is not None:
             self.parameters = parameters
         self.probe_id = probe_id
@@ -210,6 +215,29 @@ class ActionMapping(object):
         """
 
         self._character_id = character_id
+
+    @property
+    def intent_action(self):
+        """Gets the intent_action of this ActionMapping.  # noqa: E501
+
+        Whether this mapping is to take an action or to intend one  # noqa: E501
+
+        :return: The intent_action of this ActionMapping.  # noqa: E501
+        :rtype: bool
+        """
+        return self._intent_action
+
+    @intent_action.setter
+    def intent_action(self, intent_action):
+        """Sets the intent_action of this ActionMapping.
+
+        Whether this mapping is to take an action or to intend one  # noqa: E501
+
+        :param intent_action: The intent_action of this ActionMapping.  # noqa: E501
+        :type: bool
+        """
+
+        self._intent_action = intent_action
 
     @property
     def parameters(self):

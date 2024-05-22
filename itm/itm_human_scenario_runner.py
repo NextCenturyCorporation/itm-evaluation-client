@@ -12,6 +12,7 @@ class CommandOption(Enum):
     GET_ALIGNMENT_TARGET = "get_alignment_target (a)"
     GET_AVAILABLE_ACTIONS = "get_available_actions (v)"
     TAKE_ACTION = "take_action (t)"
+    INTEND_ACTION = "intend_action (i)"
     GET_SCENARIO_STATE = "get_scenario_state (u)"
     GET_SESSION_ALIGNMENT = "get_session_alignment (g)"
     QUIT = "quit (q)"
@@ -248,6 +249,12 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return self.available_actions
 
     def take_action_operation(self):
+        return self.take_or_intend_action(intend_action=False)
+
+    def intend_action_operation(self):
+        return self.take_or_intend_action(intend_action=True)
+
+    def take_or_intend_action(self, intend_action):
         if self.session_id is None:
             return "No active session; please start a session first."
         if self.scenario_id is None:
@@ -286,7 +293,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         print(action)
         self.actions_are_current = False
-        return self.itm.take_action(session_id=self.session_id, body=action)
+        return self.itm.take_action(session_id=self.session_id, body=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
 
     def run(self):
         while not self.session_complete:
@@ -312,6 +319,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.get_available_actions_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.TAKE_ACTION):
                 response = self.take_action_operation()
+            elif command in self.get_full_string_and_shortcut(CommandOption.INTEND_ACTION):
+                response = self.intend_action_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.GET_SESSION_ALIGNMENT):
                 response = self.get_session_alignment_operation()
         except Exception:

@@ -30,6 +30,7 @@ class Action(object):
     swagger_types = {
         'action_id': 'str',
         'action_type': 'ActionTypeEnum',
+        'intent_action': 'bool',
         'unstructured': 'str',
         'character_id': 'str',
         'parameters': 'dict(str, str)',
@@ -40,6 +41,7 @@ class Action(object):
     attribute_map = {
         'action_id': 'action_id',
         'action_type': 'action_type',
+        'intent_action': 'intent_action',
         'unstructured': 'unstructured',
         'character_id': 'character_id',
         'parameters': 'parameters',
@@ -47,10 +49,11 @@ class Action(object):
         'kdma_association': 'kdma_association'
     }
 
-    def __init__(self, action_id=None, action_type=None, unstructured=None, character_id=None, parameters=None, justification=None, kdma_association=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, intent_action=False, unstructured=None, character_id=None, parameters=None, justification=None, kdma_association=None):  # noqa: E501
         """Action - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
         self._action_type = None
+        self._intent_action = None
         self._unstructured = None
         self._character_id = None
         self._parameters = None
@@ -59,6 +62,8 @@ class Action(object):
         self.discriminator = None
         self.action_id = action_id
         self.action_type = action_type
+        if intent_action is not None:
+            self.intent_action = intent_action
         if unstructured is not None:
             self.unstructured = unstructured
         if character_id is not None:
@@ -117,6 +122,29 @@ class Action(object):
             raise ValueError("Invalid value for `action_type`, must not be `None`")  # noqa: E501
 
         self._action_type = action_type
+
+    @property
+    def intent_action(self):
+        """Gets the intent_action of this Action.  # noqa: E501
+
+        Whether this action is to be taken or intended  # noqa: E501
+
+        :return: The intent_action of this Action.  # noqa: E501
+        :rtype: bool
+        """
+        return self._intent_action
+
+    @intent_action.setter
+    def intent_action(self, intent_action):
+        """Sets the intent_action of this Action.
+
+        Whether this action is to be taken or intended  # noqa: E501
+
+        :param intent_action: The intent_action of this Action.  # noqa: E501
+        :type: bool
+        """
+
+        self._intent_action = intent_action
 
     @property
     def unstructured(self):

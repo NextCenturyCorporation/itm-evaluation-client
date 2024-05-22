@@ -56,6 +56,13 @@ class TestItmTa2EvalApi(unittest.TestCase):
         """
         pass
 
+    def test_intend_action(self):
+        """Test case for intend_action
+
+        Express intent to take an action within a scenario  # noqa: E501
+        """
+        pass
+
     def test_start_scenario(self):
         """Test case for start_scenario
 
