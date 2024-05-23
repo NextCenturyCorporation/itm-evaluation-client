@@ -33,7 +33,7 @@ class Scene(object):
         'next_scene': 'str',
         'end_scene_allowed': 'bool',
         'persist_characters': 'bool',
-        'removed_characters': 'list',
+        'removed_characters': 'list[str]',
         'probe_config': 'list[ProbeConfig]',
         'tagging': 'Tagging',
         'action_mapping': 'list[ActionMapping]',
@@ -215,9 +215,10 @@ class Scene(object):
     def removed_characters(self):
         """Gets the removed_characters of this Scene.  # noqa: E501
 
+        List of character ids to be removed from the scene  # noqa: E501
 
         :return: The removed_characters of this Scene.  # noqa: E501
-        :rtype: list
+        :rtype: list[str]
         """
         return self._removed_characters
 
@@ -225,9 +226,10 @@ class Scene(object):
     def removed_characters(self, removed_characters):
         """Sets the removed_characters of this Scene.
 
+        List of character ids to be removed from the scene  # noqa: E501
 
         :param removed_characters: The removed_characters of this Scene.  # noqa: E501
-        :type: list
+        :type: list[str]
         """
 
         self._removed_characters = removed_characters
