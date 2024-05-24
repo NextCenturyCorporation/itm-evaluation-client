@@ -179,8 +179,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.session_id is None:
             return "No active session; please start a session first."
         if self.scenario_id == None:
-            response: Scenario = \
-                self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id if self.custom_scenario_id else None)
+            if self.custom_scenario_id:
+                response = self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id)
+            else:
+                response = self.itm.start_scenario(session_id=self.session_id)
             self.current_probe_answered = False
             self.current_probe_id = ''
             if not response.session_complete:
@@ -207,8 +209,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return response
 
     def get_alignment_target_operation(self):
-        if self.kdma_training:
-            return "Getting alignment target is not supported in training mode."
+        if self.kdma_training or self.session_type == 'test':
+            return "Getting alignment target is not supported in test sessions or training mode."
         if self.session_id is None:
             return "No active session; please start a session first."
         if self.scenario_id is None:

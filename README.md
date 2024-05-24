@@ -56,11 +56,11 @@ options:
   -h, --help              Show this help message and exit
   --name adm_name         Specify the ADM name
   --profile adm_profile   Specify the ADM profile in terms of its alignment strategy
-  --session session_type  Specify session type. Session type must be `eval`, `adept`, or `soartech`.
+  --session session_type  Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
   --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
                           supported in `eval` sessions.
   --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
-                          in `eval` sessions.
+                          in `eval` or `test` sessions.
   --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
@@ -77,11 +77,11 @@ Runs Human input simulator.
 
 options:
   -h, --help              Show this help message and exit
-  --session session_type  Specify session type. Session type must be `eval`, `adept`, or `soartech`.
+  --session session_type  Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
   --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
                           supported in `eval` sessions.
   --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
-                          in `eval` sessions.
+                          in `eval` or `test` sessions.
   --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
