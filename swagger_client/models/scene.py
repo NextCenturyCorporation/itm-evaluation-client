@@ -33,6 +33,7 @@ class Scene(object):
         'next_scene': 'str',
         'end_scene_allowed': 'bool',
         'persist_characters': 'bool',
+        'removed_characters': 'list[str]',
         'probe_config': 'list[ProbeConfig]',
         'tagging': 'Tagging',
         'action_mapping': 'list[ActionMapping]',
@@ -47,6 +48,7 @@ class Scene(object):
         'next_scene': 'next_scene',
         'end_scene_allowed': 'end_scene_allowed',
         'persist_characters': 'persist_characters',
+        'removed_characters': 'removed_characters',
         'probe_config': 'probe_config',
         'tagging': 'tagging',
         'action_mapping': 'action_mapping',
@@ -55,13 +57,14 @@ class Scene(object):
         'transitions': 'transitions'
     }
 
-    def __init__(self, id=None, state=None, next_scene=None, end_scene_allowed=None, persist_characters=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
+    def __init__(self, id=None, state=None, next_scene=None, end_scene_allowed=None, persist_characters=None, removed_characters=None, probe_config=None, tagging=None, action_mapping=None, restricted_actions=None, transition_semantics=None, transitions=None):  # noqa: E501
         """Scene - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._state = None
         self._next_scene = None
         self._end_scene_allowed = None
         self._persist_characters = None
+        self._removed_characters = None
         self._probe_config = None
         self._tagging = None
         self._action_mapping = None
@@ -77,6 +80,8 @@ class Scene(object):
         self.end_scene_allowed = end_scene_allowed
         if persist_characters is not None:
             self.persist_characters = persist_characters
+        if removed_characters is not None:
+            self.removed_characters = removed_characters
         if probe_config is not None:
             self.probe_config = probe_config
         if tagging is not None:
@@ -205,6 +210,29 @@ class Scene(object):
         """
 
         self._persist_characters = persist_characters
+
+    @property
+    def removed_characters(self):
+        """Gets the removed_characters of this Scene.  # noqa: E501
+
+        List of character ids to be removed from the scene  # noqa: E501
+
+        :return: The removed_characters of this Scene.  # noqa: E501
+        :rtype: list[str]
+        """
+        return self._removed_characters
+
+    @removed_characters.setter
+    def removed_characters(self, removed_characters):
+        """Sets the removed_characters of this Scene.
+
+        List of character ids to be removed from the scene  # noqa: E501
+
+        :param removed_characters: The removed_characters of this Scene.  # noqa: E501
+        :type: list[str]
+        """
+
+        self._removed_characters = removed_characters
 
     @property
     def probe_config(self):
