@@ -28,6 +28,7 @@ class InjuryStatusEnum(object):
     DISCOVERABLE = "discoverable"
     VISIBLE = "visible"
     DISCOVERED = "discovered"
+    PARTIALLY_TREATED = "partially treated"
     TREATED = "treated"
     """
     Attributes:
