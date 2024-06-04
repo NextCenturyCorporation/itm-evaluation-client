@@ -115,13 +115,13 @@ def main():
     parser.add_argument('--profile', metavar='adm_profile', required=False, 
                         help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--session', required=True, metavar='session_type', help=\
-                        'Specify session type. Session type must be `eval`, `adept`, or `soartech`. ')
+                        'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
                         'accordance with server defaults. Not supported in `eval` sessions.')
     parser.add_argument('--training', action='store_true', default=False,
                         help='Put the server in training mode in which it returns the KDMA '
-                        'association for each action choice. Not supported in `eval` sessions.')
+                        'association for each action choice. Not supported in `eval` or `test` sessions.')
     parser.add_argument('--scenario', type=str, metavar='scenario_id',
                         help='Specify a scenario_id to run. Incompatible with count parameter '
                         'and `eval` sessions.')
@@ -130,8 +130,8 @@ def main():
     scenario_id = args.scenario
     scenario_count = args.count
     if args.session:
-        if args.session not in ['soartech', 'adept', 'eval']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
+        if args.session not in ['soartech', 'adept', 'eval', 'test']:
+            parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
         else:
             session_type = args.session
 
@@ -142,6 +142,8 @@ def main():
             parser.error("Training mode is not supported in eval sessions.")
         if scenario_count is not None:
             parser.error("Scenario count is not supported in eval sessions.")
+    elif session_type == 'test' and args.training:
+        parser.error("Training mode is not supported in test sessions.")
 
     if scenario_count is not None:
         if scenario_count < 1:
@@ -194,8 +196,11 @@ def main():
             if scenario.session_complete:
                 break
             print(f'Scenario name: {scenario.name}')
-            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
-            print(f'{alignment_target}')
+            if session_type != 'test':
+                alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
+                print(f'Alignment target: {alignment_target}')
+            else:
+                alignment_target = None
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)

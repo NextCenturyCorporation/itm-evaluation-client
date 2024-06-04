@@ -6,7 +6,7 @@ def main():
     parser.add_argument('--profile', metavar='adm_profile', required=False, 
                         help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--session', required=True, metavar='session_type', help=\
-                        'Specify session type. Session type must be `eval`, `adept`, or `soartech`. ')
+                        'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`. ')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
                         'accordance with server defaults. Not supported in `eval` sessions.')
@@ -18,8 +18,8 @@ def main():
     scenario_id = args.scenario
     scenario_count = args.count
     if args.session:
-        if args.session not in ['soartech', 'adept', 'eval']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
+        if args.session not in ['soartech', 'adept', 'eval', 'test']:
+            parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
         else:
             session_type = args.session
 

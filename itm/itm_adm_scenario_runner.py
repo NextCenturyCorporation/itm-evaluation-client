@@ -136,7 +136,6 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def retrieve_scenario(self):
         self.adm_knowledge = ADMKnowledge() 
-        scenario: Scenario
         if self.custom_scenario_id:
             scenario = self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id)
         else:
@@ -145,7 +144,7 @@ class ADMScenarioRunner(ScenarioRunner):
             return True
         self.set_scenario(scenario)
         self.adm_knowledge.alignment_target = \
-            self.itm.get_alignment_target(self.session_id, self.adm_knowledge.scenario.id)
+            self.itm.get_alignment_target(self.session_id, self.adm_knowledge.scenario.id) if self.session_type != 'test' else None
         return False
 
     def set_scenario(self, scenario):
@@ -189,14 +188,14 @@ class ADMScenarioRunner(ScenarioRunner):
                     random_action.parameters = {"evac_id": self.get_random_evac_id(state)}
         return random_action
 
-    def get_random_supply(sellf, state: State):
+    def get_random_supply(self, state: State):
         supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
         return random.choice(supplies)
 
     def get_random_character_id(self):
         return random.choice(self.adm_knowledge.all_character_ids)
 
-    def get_random_evac_id(state: State):
+    def get_random_evac_id(self, state: State):
         evac_id = 'unknown'
         if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
             aid_delays = state.environment.decision_environment.aid_delay

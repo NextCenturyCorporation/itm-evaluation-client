@@ -1,0 +1,11 @@
+{
+    "enabled": false,
+    "paths":[
+        {
+            "path":["mike-vitals","intend-evac-captain","cleanup"]
+        },
+        {
+            "path":["treat-civ","intend-evac-marine","check_blood_oxygen"]
+        }
+    ]
+}
