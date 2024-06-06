@@ -205,6 +205,7 @@ Class | Method | HTTP request | Description
  - [KDMAValue](docs/KDMAValue.md)
  - [LightingTypeEnum](docs/LightingTypeEnum.md)
  - [MentalStatusEnum](docs/MentalStatusEnum.md)
+ - [MetaInfo](docs/MetaInfo.md)
  - [MilitaryBranchEnum](docs/MilitaryBranchEnum.md)
  - [MilitaryDispositionEnum](docs/MilitaryDispositionEnum.md)
  - [MilitaryRankEnum](docs/MilitaryRankEnum.md)

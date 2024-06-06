@@ -29,7 +29,7 @@ class State(object):
     """
     swagger_types = {
         'unstructured': 'str',
-        'elapsed_time': 'int',
+        'meta_info': 'MetaInfo',
         'scenario_complete': 'bool',
         'mission': 'Mission',
         'environment': 'Environment',
@@ -40,7 +40,7 @@ class State(object):
 
     attribute_map = {
         'unstructured': 'unstructured',
-        'elapsed_time': 'elapsed_time',
+        'meta_info': 'meta_info',
         'scenario_complete': 'scenario_complete',
         'mission': 'mission',
         'environment': 'environment',
@@ -49,10 +49,10 @@ class State(object):
         'characters': 'characters'
     }
 
-    def __init__(self, unstructured=None, elapsed_time=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
+    def __init__(self, unstructured=None, meta_info=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
         """State - a model defined in Swagger"""  # noqa: E501
         self._unstructured = None
-        self._elapsed_time = None
+        self._meta_info = None
         self._scenario_complete = None
         self._mission = None
         self._environment = None
@@ -61,8 +61,8 @@ class State(object):
         self._characters = None
         self.discriminator = None
         self.unstructured = unstructured
-        if elapsed_time is not None:
-            self.elapsed_time = elapsed_time
+        if meta_info is not None:
+            self.meta_info = meta_info
         if scenario_complete is not None:
             self.scenario_complete = scenario_complete
         if mission is not None:
@@ -99,27 +99,25 @@ class State(object):
         self._unstructured = unstructured
 
     @property
-    def elapsed_time(self):
-        """Gets the elapsed_time of this State.  # noqa: E501
+    def meta_info(self):
+        """Gets the meta_info of this State.  # noqa: E501
 
-        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
 
-        :return: The elapsed_time of this State.  # noqa: E501
-        :rtype: int
+        :return: The meta_info of this State.  # noqa: E501
+        :rtype: MetaInfo
         """
-        return self._elapsed_time
+        return self._meta_info
 
-    @elapsed_time.setter
-    def elapsed_time(self, elapsed_time):
-        """Sets the elapsed_time of this State.
+    @meta_info.setter
+    def meta_info(self, meta_info):
+        """Sets the meta_info of this State.
 
-        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
 
-        :param elapsed_time: The elapsed_time of this State.  # noqa: E501
-        :type: int
+        :param meta_info: The meta_info of this State.  # noqa: E501
+        :type: MetaInfo
         """
 
-        self._elapsed_time = elapsed_time
+        self._meta_info = meta_info
 
     @property
     def scenario_complete(self):
