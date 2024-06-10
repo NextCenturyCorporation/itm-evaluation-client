@@ -32,7 +32,9 @@ class Injury(object):
         'location': 'InjuryLocationEnum',
         'severity': 'InjurySeverityEnum',
         'status': 'InjuryStatusEnum',
-        'source_character': 'str'
+        'source_character': 'str',
+        'treatments_required': 'int',
+        'treatments_applied': 'int'
     }
 
     attribute_map = {
@@ -40,16 +42,20 @@ class Injury(object):
         'location': 'location',
         'severity': 'severity',
         'status': 'status',
-        'source_character': 'source_character'
+        'source_character': 'source_character',
+        'treatments_required': 'treatments_required',
+        'treatments_applied': 'treatments_applied'
     }
 
-    def __init__(self, name=None, location=None, severity=None, status=None, source_character=None):  # noqa: E501
+    def __init__(self, name=None, location=None, severity=None, status=None, source_character=None, treatments_required=None, treatments_applied=0):  # noqa: E501
         """Injury - a model defined in Swagger"""  # noqa: E501
         self._name = None
         self._location = None
         self._severity = None
         self._status = None
         self._source_character = None
+        self._treatments_required = None
+        self._treatments_applied = None
         self.discriminator = None
         self.name = name
         self.location = location
@@ -58,6 +64,10 @@ class Injury(object):
         self.status = status
         if source_character is not None:
             self.source_character = source_character
+        if treatments_required is not None:
+            self.treatments_required = treatments_required
+        if treatments_applied is not None:
+            self.treatments_applied = treatments_applied
 
     @property
     def name(self):
@@ -171,6 +181,52 @@ class Injury(object):
         """
 
         self._source_character = source_character
+
+    @property
+    def treatments_required(self):
+        """Gets the treatments_required of this Injury.  # noqa: E501
+
+        The number of successful treatments required to treat the injury fully, which sets `status` to `treated`  # noqa: E501
+
+        :return: The treatments_required of this Injury.  # noqa: E501
+        :rtype: int
+        """
+        return self._treatments_required
+
+    @treatments_required.setter
+    def treatments_required(self, treatments_required):
+        """Sets the treatments_required of this Injury.
+
+        The number of successful treatments required to treat the injury fully, which sets `status` to `treated`  # noqa: E501
+
+        :param treatments_required: The treatments_required of this Injury.  # noqa: E501
+        :type: int
+        """
+
+        self._treatments_required = treatments_required
+
+    @property
+    def treatments_applied(self):
+        """Gets the treatments_applied of this Injury.  # noqa: E501
+
+        The number of successful treatments applied to the injury  # noqa: E501
+
+        :return: The treatments_applied of this Injury.  # noqa: E501
+        :rtype: int
+        """
+        return self._treatments_applied
+
+    @treatments_applied.setter
+    def treatments_applied(self, treatments_applied):
+        """Sets the treatments_applied of this Injury.
+
+        The number of successful treatments applied to the injury  # noqa: E501
+
+        :param treatments_applied: The treatments_applied of this Injury.  # noqa: E501
+        :type: int
+        """
+
+        self._treatments_applied = treatments_applied
 
     def to_dict(self):
         """Returns the model properties as a dict"""
