@@ -1154,8 +1154,8 @@ components:
           minimum: 0
     ProbeResponse:
       type: object
-      description: 
-      properties:
+      description: a response to a ta1 probe 
+      properties: 
         probe_id:
           type: string
           description: probe_id being responded to
