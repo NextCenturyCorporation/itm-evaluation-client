@@ -30,7 +30,7 @@ class MetaInfo(object):
     swagger_types = {
         'elapsed_time': 'int',
         'scene_id': 'str',
-        'probe_response': 'object'
+        'probe_response': 'ProbeResponse'
     }
 
     attribute_map = {
@@ -102,10 +102,9 @@ class MetaInfo(object):
     def probe_response(self):
         """Gets the probe_response of this MetaInfo.  # noqa: E501
 
-        If the last action taken responded to a probe, the probe response will be recorded here. If not, value will be null.  # noqa: E501
 
         :return: The probe_response of this MetaInfo.  # noqa: E501
-        :rtype: object
+        :rtype: ProbeResponse
         """
         return self._probe_response
 
@@ -113,10 +112,9 @@ class MetaInfo(object):
     def probe_response(self, probe_response):
         """Sets the probe_response of this MetaInfo.
 
-        If the last action taken responded to a probe, the probe response will be recorded here. If not, value will be null.  # noqa: E501
 
         :param probe_response: The probe_response of this MetaInfo.  # noqa: E501
-        :type: object
+        :type: ProbeResponse
         """
 
         self._probe_response = probe_response

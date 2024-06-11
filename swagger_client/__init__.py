@@ -70,6 +70,7 @@ from swagger_client.models.oxygen_levels_enum import OxygenLevelsEnum
 from swagger_client.models.peak_noise_enum import PeakNoiseEnum
 from swagger_client.models.population_density_enum import PopulationDensityEnum
 from swagger_client.models.probe_config import ProbeConfig
+from swagger_client.models.probe_response import ProbeResponse
 from swagger_client.models.probe_responses import ProbeResponses
 from swagger_client.models.race_enum import RaceEnum
 from swagger_client.models.rapport_enum import RapportEnum

@@ -218,6 +218,7 @@ Class | Method | HTTP request | Description
  - [PeakNoiseEnum](docs/PeakNoiseEnum.md)
  - [PopulationDensityEnum](docs/PopulationDensityEnum.md)
  - [ProbeConfig](docs/ProbeConfig.md)
+ - [ProbeResponse](docs/ProbeResponse.md)
  - [ProbeResponses](docs/ProbeResponses.md)
  - [RaceEnum](docs/RaceEnum.md)
  - [RapportEnum](docs/RapportEnum.md)
