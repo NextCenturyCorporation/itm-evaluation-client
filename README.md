@@ -112,7 +112,7 @@ Further details can be found in the ITM Server FAQ below.
   * Equivalent to the ADM choosing "none of the above" available actions.
     * no further requirements
 * `MOVE_TO`
-  * Chooses to move the ADM to the location of the specified `character_id`.
+  * Moves the ADM to the location of the specified `character_id`, making characters in the present scene "unseen".
     * requires `character_id` whose `unseen` property is set to True
 * `MOVE_TO_EVAC`
   * Chooses to evacuate the specified `character_id` to the specified `evac_id`. It is assumed that others can perform the actual evacuation so the medic can return to triage.
