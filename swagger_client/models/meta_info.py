@@ -28,52 +28,24 @@ class MetaInfo(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'elapsed_time': 'int',
         'scene_id': 'str',
         'probe_response': 'ProbeResponse'
     }
 
     attribute_map = {
-        'elapsed_time': 'elapsed_time',
         'scene_id': 'scene_id',
         'probe_response': 'probe_response'
     }
 
-    def __init__(self, elapsed_time=None, scene_id=None, probe_response=None):  # noqa: E501
+    def __init__(self, scene_id=None, probe_response=None):  # noqa: E501
         """MetaInfo - a model defined in Swagger"""  # noqa: E501
-        self._elapsed_time = None
         self._scene_id = None
         self._probe_response = None
         self.discriminator = None
-        if elapsed_time is not None:
-            self.elapsed_time = elapsed_time
         if scene_id is not None:
             self.scene_id = scene_id
         if probe_response is not None:
             self.probe_response = probe_response
-
-    @property
-    def elapsed_time(self):
-        """Gets the elapsed_time of this MetaInfo.  # noqa: E501
-
-        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
-
-        :return: The elapsed_time of this MetaInfo.  # noqa: E501
-        :rtype: int
-        """
-        return self._elapsed_time
-
-    @elapsed_time.setter
-    def elapsed_time(self, elapsed_time):
-        """Sets the elapsed_time of this MetaInfo.
-
-        the simulated elapsed time (in seconds) since the scenario started  # noqa: E501
-
-        :param elapsed_time: The elapsed_time of this MetaInfo.  # noqa: E501
-        :type: int
-        """
-
-        self._elapsed_time = elapsed_time
 
     @property
     def scene_id(self):

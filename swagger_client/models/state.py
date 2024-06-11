@@ -29,6 +29,7 @@ class State(object):
     """
     swagger_types = {
         'unstructured': 'str',
+        'elapsed_time': 'int',
         'meta_info': 'MetaInfo',
         'scenario_complete': 'bool',
         'mission': 'Mission',
@@ -40,6 +41,7 @@ class State(object):
 
     attribute_map = {
         'unstructured': 'unstructured',
+        'elapsed_time': 'elapsed_time',
         'meta_info': 'meta_info',
         'scenario_complete': 'scenario_complete',
         'mission': 'mission',
@@ -49,9 +51,10 @@ class State(object):
         'characters': 'characters'
     }
 
-    def __init__(self, unstructured=None, meta_info=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
+    def __init__(self, unstructured=None, elapsed_time=None, meta_info=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
         """State - a model defined in Swagger"""  # noqa: E501
         self._unstructured = None
+        self._elapsed_time = None
         self._meta_info = None
         self._scenario_complete = None
         self._mission = None
@@ -61,6 +64,8 @@ class State(object):
         self._characters = None
         self.discriminator = None
         self.unstructured = unstructured
+        if elapsed_time is not None:
+            self.elapsed_time = elapsed_time
         if meta_info is not None:
             self.meta_info = meta_info
         if scenario_complete is not None:
@@ -97,6 +102,29 @@ class State(object):
             raise ValueError("Invalid value for `unstructured`, must not be `None`")  # noqa: E501
 
         self._unstructured = unstructured
+
+    @property
+    def elapsed_time(self):
+        """Gets the elapsed_time of this State.  # noqa: E501
+
+        The simulated elapsed time (in seconds) since the scenario started  # noqa: E501
+
+        :return: The elapsed_time of this State.  # noqa: E501
+        :rtype: int
+        """
+        return self._elapsed_time
+
+    @elapsed_time.setter
+    def elapsed_time(self, elapsed_time):
+        """Sets the elapsed_time of this State.
+
+        The simulated elapsed time (in seconds) since the scenario started  # noqa: E501
+
+        :param elapsed_time: The elapsed_time of this State.  # noqa: E501
+        :type: int
+        """
+
+        self._elapsed_time = elapsed_time
 
     @property
     def meta_info(self):
