@@ -28,86 +28,37 @@ class ProbeResponse(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'probe_id': 'str',
-        'choice_id': 'str',
         'scenario_id': 'str',
+        'probe_id': 'str',
+        'choice': 'str',
         'justification': 'str'
     }
 
     attribute_map = {
-        'probe_id': 'probe_id',
-        'choice_id': 'choice_id',
         'scenario_id': 'scenario_id',
+        'probe_id': 'probe_id',
+        'choice': 'choice',
         'justification': 'justification'
     }
 
-    def __init__(self, probe_id=None, choice_id=None, scenario_id=None, justification=None):  # noqa: E501
+    def __init__(self, scenario_id=None, probe_id=None, choice=None, justification=None):  # noqa: E501
         """ProbeResponse - a model defined in Swagger"""  # noqa: E501
-        self._probe_id = None
-        self._choice_id = None
         self._scenario_id = None
+        self._probe_id = None
+        self._choice = None
         self._justification = None
         self.discriminator = None
-        if probe_id is not None:
-            self.probe_id = probe_id
-        if choice_id is not None:
-            self.choice_id = choice_id
-        if scenario_id is not None:
-            self.scenario_id = scenario_id
+        self.scenario_id = scenario_id
+        self.probe_id = probe_id
+        self.choice = choice
         if justification is not None:
             self.justification = justification
-
-    @property
-    def probe_id(self):
-        """Gets the probe_id of this ProbeResponse.  # noqa: E501
-
-        probe_id being responded to  # noqa: E501
-
-        :return: The probe_id of this ProbeResponse.  # noqa: E501
-        :rtype: str
-        """
-        return self._probe_id
-
-    @probe_id.setter
-    def probe_id(self, probe_id):
-        """Sets the probe_id of this ProbeResponse.
-
-        probe_id being responded to  # noqa: E501
-
-        :param probe_id: The probe_id of this ProbeResponse.  # noqa: E501
-        :type: str
-        """
-
-        self._probe_id = probe_id
-
-    @property
-    def choice_id(self):
-        """Gets the choice_id of this ProbeResponse.  # noqa: E501
-
-        choice used to respond to probe  # noqa: E501
-
-        :return: The choice_id of this ProbeResponse.  # noqa: E501
-        :rtype: str
-        """
-        return self._choice_id
-
-    @choice_id.setter
-    def choice_id(self, choice_id):
-        """Sets the choice_id of this ProbeResponse.
-
-        choice used to respond to probe  # noqa: E501
-
-        :param choice_id: The choice_id of this ProbeResponse.  # noqa: E501
-        :type: str
-        """
-
-        self._choice_id = choice_id
 
     @property
     def scenario_id(self):
         """Gets the scenario_id of this ProbeResponse.  # noqa: E501
 
-        current scenario id  # noqa: E501
+        globally unique scenario ID  # noqa: E501
 
         :return: The scenario_id of this ProbeResponse.  # noqa: E501
         :rtype: str
@@ -118,19 +69,71 @@ class ProbeResponse(object):
     def scenario_id(self, scenario_id):
         """Sets the scenario_id of this ProbeResponse.
 
-        current scenario id  # noqa: E501
+        globally unique scenario ID  # noqa: E501
 
         :param scenario_id: The scenario_id of this ProbeResponse.  # noqa: E501
         :type: str
         """
+        if scenario_id is None:
+            raise ValueError("Invalid value for `scenario_id`, must not be `None`")  # noqa: E501
 
         self._scenario_id = scenario_id
+
+    @property
+    def probe_id(self):
+        """Gets the probe_id of this ProbeResponse.  # noqa: E501
+
+        globally unique probe ID  # noqa: E501
+
+        :return: The probe_id of this ProbeResponse.  # noqa: E501
+        :rtype: str
+        """
+        return self._probe_id
+
+    @probe_id.setter
+    def probe_id(self, probe_id):
+        """Sets the probe_id of this ProbeResponse.
+
+        globally unique probe ID  # noqa: E501
+
+        :param probe_id: The probe_id of this ProbeResponse.  # noqa: E501
+        :type: str
+        """
+        if probe_id is None:
+            raise ValueError("Invalid value for `probe_id`, must not be `None`")  # noqa: E501
+
+        self._probe_id = probe_id
+
+    @property
+    def choice(self):
+        """Gets the choice of this ProbeResponse.  # noqa: E501
+
+        id of choice made  # noqa: E501
+
+        :return: The choice of this ProbeResponse.  # noqa: E501
+        :rtype: str
+        """
+        return self._choice
+
+    @choice.setter
+    def choice(self, choice):
+        """Sets the choice of this ProbeResponse.
+
+        id of choice made  # noqa: E501
+
+        :param choice: The choice of this ProbeResponse.  # noqa: E501
+        :type: str
+        """
+        if choice is None:
+            raise ValueError("Invalid value for `choice`, must not be `None`")  # noqa: E501
+
+        self._choice = choice
 
     @property
     def justification(self):
         """Gets the justification of this ProbeResponse.  # noqa: E501
 
-        justification for choice, if provided  # noqa: E501
+        A justification of the response to the probe  # noqa: E501
 
         :return: The justification of this ProbeResponse.  # noqa: E501
         :rtype: str
@@ -141,7 +144,7 @@ class ProbeResponse(object):
     def justification(self, justification):
         """Sets the justification of this ProbeResponse.
 
-        justification for choice, if provided  # noqa: E501
+        A justification of the response to the probe  # noqa: E501
 
         :param justification: The justification of this ProbeResponse.  # noqa: E501
         :type: str

@@ -3,10 +3,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**probe_id** | **str** | probe_id being responded to | [optional] 
-**choice_id** | **str** | choice used to respond to probe | [optional] 
-**scenario_id** | **str** | current scenario id | [optional] 
-**justification** | **str** | justification for choice, if provided | [optional] 
+**scenario_id** | **str** | globally unique scenario ID | 
+**probe_id** | **str** | globally unique probe ID | 
+**choice** | **str** | id of choice made | 
+**justification** | **str** | A justification of the response to the probe | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
