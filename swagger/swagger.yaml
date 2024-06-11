@@ -566,6 +566,10 @@ components:
         scene_id:
           type: string
           description: The scene ID, unique throughout the scenario
+        probe_response:
+          type: object
+          description: If the last action taken responded to a probe, the probe response will be recorded here. If not, value will be null.
+
     Mission:
       required:
         - mission_type

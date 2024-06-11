@@ -29,23 +29,28 @@ class MetaInfo(object):
     """
     swagger_types = {
         'elapsed_time': 'int',
-        'scene_id': 'str'
+        'scene_id': 'str',
+        'probe_response': 'object'
     }
 
     attribute_map = {
         'elapsed_time': 'elapsed_time',
-        'scene_id': 'scene_id'
+        'scene_id': 'scene_id',
+        'probe_response': 'probe_response'
     }
 
-    def __init__(self, elapsed_time=None, scene_id=None):  # noqa: E501
+    def __init__(self, elapsed_time=None, scene_id=None, probe_response=None):  # noqa: E501
         """MetaInfo - a model defined in Swagger"""  # noqa: E501
         self._elapsed_time = None
         self._scene_id = None
+        self._probe_response = None
         self.discriminator = None
         if elapsed_time is not None:
             self.elapsed_time = elapsed_time
         if scene_id is not None:
             self.scene_id = scene_id
+        if probe_response is not None:
+            self.probe_response = probe_response
 
     @property
     def elapsed_time(self):
@@ -92,6 +97,29 @@ class MetaInfo(object):
         """
 
         self._scene_id = scene_id
+
+    @property
+    def probe_response(self):
+        """Gets the probe_response of this MetaInfo.  # noqa: E501
+
+        If the last action taken responded to a probe, the probe response will be recorded here. If not, value will be null.  # noqa: E501
+
+        :return: The probe_response of this MetaInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._probe_response
+
+    @probe_response.setter
+    def probe_response(self, probe_response):
+        """Sets the probe_response of this MetaInfo.
+
+        If the last action taken responded to a probe, the probe response will be recorded here. If not, value will be null.  # noqa: E501
+
+        :param probe_response: The probe_response of this MetaInfo.  # noqa: E501
+        :type: object
+        """
+
+        self._probe_response = probe_response
 
     def to_dict(self):
         """Returns the model properties as a dict"""
