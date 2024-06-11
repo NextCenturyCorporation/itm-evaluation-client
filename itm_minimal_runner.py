@@ -73,7 +73,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
-                random_action.character_id = get_random_character_id(state)
+                random_action.character_id = get_random_character_id(state, random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
@@ -95,8 +95,13 @@ def get_random_supply(state: State):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
     return random.choice(supplies)
 
-def get_random_character_id(state: State):
-    characters : List[Character] = state.characters
+def get_random_character_id(state: State, action_type):
+    if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
+        characters : List[Character] = [character for character in state.characters]
+    elif action_type in [ActionTypeEnum.MOVE_TO]:
+        characters : List[Character] = [character for character in state.characters if character.unseen]
+    else:
+        characters : List[Character] = [character for character in state.characters if not character.unseen]
     index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
