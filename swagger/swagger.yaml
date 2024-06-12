@@ -561,7 +561,7 @@ components:
             $ref: "#/components/schemas/Character"
     MetaInfo:
       type: object
-      description: includes meta info (scene IDs, probe response)
+      description: Includes meta info to assist with debugging. Only provided during training sessions.
       properties:
         scene_id:
           type: string
