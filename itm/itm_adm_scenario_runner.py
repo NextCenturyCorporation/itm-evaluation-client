@@ -170,7 +170,7 @@ class ADMScenarioRunner(ScenarioRunner):
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
-                random_action.character_id = self.get_random_character_id()
+                random_action.character_id = self.get_random_character_id(random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
@@ -192,8 +192,15 @@ class ADMScenarioRunner(ScenarioRunner):
         supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
         return random.choice(supplies)
 
-    def get_random_character_id(self):
-        return random.choice(self.adm_knowledge.all_character_ids)
+    def get_random_character_id(self, action_type):
+        if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters]
+        elif action_type in [ActionTypeEnum.MOVE_TO]:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters if character.unseen]
+        else:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters if not character.unseen]
+        index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
+        return characters[index].id
 
     def get_random_evac_id(self, state: State):
         evac_id = 'unknown'
