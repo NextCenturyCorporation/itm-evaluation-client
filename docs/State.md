@@ -4,7 +4,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **unstructured** | **str** | Natural language, plain text description of a scene&#x27;s state | 
-**elapsed_time** | **int** | the simulated elapsed time (in seconds) since the scenario started | [optional] 
+**elapsed_time** | **int** | The simulated elapsed time (in seconds) since the scenario started | [optional] 
+**meta_info** | [**MetaInfo**](MetaInfo.md) |  | [optional] 
 **scenario_complete** | **bool** | set to true if the scenario is complete; subsequent calls involving that scenario will return an error code | [optional] 
 **mission** | [**Mission**](Mission.md) |  | [optional] 
 **environment** | [**Environment**](Environment.md) |  | 
