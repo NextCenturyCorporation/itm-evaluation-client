@@ -34,6 +34,7 @@ class ActionMapping(object):
         'repeatable': 'bool',
         'character_id': 'str',
         'intent_action': 'bool',
+        'threat_state': 'ThreatState',
         'parameters': 'dict(str, str)',
         'probe_id': 'str',
         'choice': 'str',
@@ -50,6 +51,7 @@ class ActionMapping(object):
         'repeatable': 'repeatable',
         'character_id': 'character_id',
         'intent_action': 'intent_action',
+        'threat_state': 'threat_state',
         'parameters': 'parameters',
         'probe_id': 'probe_id',
         'choice': 'choice',
@@ -59,7 +61,7 @@ class ActionMapping(object):
         'conditions': 'conditions'
     }
 
-    def __init__(self, action_id=None, action_type=None, unstructured=None, repeatable=False, character_id=None, intent_action=False, parameters=None, probe_id=None, choice=None, next_scene=None, kdma_association=None, condition_semantics=None, conditions=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, unstructured=None, repeatable=False, character_id=None, intent_action=False, threat_state=None, parameters=None, probe_id=None, choice=None, next_scene=None, kdma_association=None, condition_semantics=None, conditions=None):  # noqa: E501
         """ActionMapping - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
         self._action_type = None
@@ -67,6 +69,7 @@ class ActionMapping(object):
         self._repeatable = None
         self._character_id = None
         self._intent_action = None
+        self._threat_state = None
         self._parameters = None
         self._probe_id = None
         self._choice = None
@@ -84,6 +87,8 @@ class ActionMapping(object):
             self.character_id = character_id
         if intent_action is not None:
             self.intent_action = intent_action
+        if threat_state is not None:
+            self.threat_state = threat_state
         if parameters is not None:
             self.parameters = parameters
         self.probe_id = probe_id
@@ -238,6 +243,27 @@ class ActionMapping(object):
         """
 
         self._intent_action = intent_action
+
+    @property
+    def threat_state(self):
+        """Gets the threat_state of this ActionMapping.  # noqa: E501
+
+
+        :return: The threat_state of this ActionMapping.  # noqa: E501
+        :rtype: ThreatState
+        """
+        return self._threat_state
+
+    @threat_state.setter
+    def threat_state(self, threat_state):
+        """Sets the threat_state of this ActionMapping.
+
+
+        :param threat_state: The threat_state of this ActionMapping.  # noqa: E501
+        :type: ThreatState
+        """
+
+        self._threat_state = threat_state
 
     @property
     def parameters(self):

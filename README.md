@@ -159,7 +159,7 @@ Further details can be found in the ITM Server FAQ below.
 10. What happens if I treat an `Amputation` injury with a `Nasopharyngeal airway` treatment?
     * As long as there are sufficient supplies, the TA3 Server will not reject an `APPLY_TREATMENT` attempt. However, not all treatments actually treat an injury (like in the example above). In these cases, the supply will be used, time will elapse, the character will be `visited`, and certain vitals will be revealed, but the injury's `status` will NOT change to `treated`. The mapping of correct treatments to injury types matches the behavior in the Unity simulator.
 11. What `location` should I use when applying a `Blanket` to a patient?
-    * When applying a `Blanket`, `location` is required but ignored-- the effect is the same: `Character.hasBlanket` is set to True.
+    * When applying a `Blanket`, `location` is required but ignored-- the effect is the same: `Character.has_blanket` is set to True.
 12. My ADM correctly treated an Amputation injury with a Tourniquet, but nothing happened, except for time advancing. Why?
     * This can happen for one of two reasons:
       * Scenario designers have the ability to alter the state after any action, potentially overwriting or overriding ADM actions, giving the appearance of erasing history.  Typically, if a scenarios calls for actions to be "interrupted" or "intent only," they will configure action mappings to be `intent_only`, so ADMs know that they are expressing an intention instead of taking an action.
