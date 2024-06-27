@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **mission** | [**Mission**](Mission.md) |  | [optional] 
 **environment** | [**Environment**](Environment.md) |  | 
 **threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 
+**events** | [**list[Event]**](Event.md) | A list of scenario events to inform decision-making | [optional] 
 **supplies** | [**list[Supplies]**](Supplies.md) | A list of supplies available to the medic | 
 **characters** | [**list[Character]**](Character.md) | A list of characters in the scene, including injured patients, civilians, medics, etc. | 
 
