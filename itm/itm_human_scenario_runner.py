@@ -24,7 +24,7 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "SEARCH", "SITREP"]
+ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
     def __init__(self, session_type, kdma_training=False, max_scenarios=-1, scenario_id=None):

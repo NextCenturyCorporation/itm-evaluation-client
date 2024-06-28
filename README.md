@@ -96,9 +96,11 @@ Further details can be found in the ITM Server FAQ below.
 * `CHECK_ALL_VITALS`
   * Reveals all `Vitals` and discoverable injuries for the specified `character_id`.
     * requires `character_id`
+    * requires a Pulse Oximeter in supplies
 * `CHECK_BLOOD_OXYGEN`
   * Reveals `spo2`, discoverable injuries, and certain basic vitals for the specified `character_id`.
     * requires `character_id`
+    * requires a Pulse Oximeter in supplies
 * `CHECK_PULSE`
   * Reveals `heart_rate`, discoverable injuries, and certain basic vitals for the specified `character_id`.
     * requires `character_id`
@@ -111,13 +113,16 @@ Further details can be found in the ITM Server FAQ below.
 * `END_SCENE`
   * Equivalent to the ADM choosing "none of the above" available actions.
     * no further requirements
+* `MESSAGE`
+  * Send a pre-configured message
+    * no further requirements, as `MESSAGE` actions are pre-configured in the scenario.
 * `MOVE_TO`
   * Moves the ADM to the location of the specified `character_id`, making characters in the present scene "unseen".
     * requires `character_id` whose `unseen` property is set to True
 * `MOVE_TO_EVAC`
   * Chooses to evacuate the specified `character_id` to the specified `evac_id`. It is assumed that others can perform the actual evacuation so the medic can return to triage.
     * requires `character_id`
-    * requires `evac_id`
+    * requires parameter `evac_id`
 * `SEARCH`
   * Attempts to search for additional characters, moving the ADM to the a new location that might have found characters.
     * no further requirements
@@ -177,7 +182,7 @@ Further details can be found in the ITM Server FAQ below.
     * Typically, ADMs should use `/ta2/takeAction`.  Sometimes scenario designers want the ADM to specify the *intent* to take an action, or want to interrupt an action before it happens.  In these cases, some or all `Actions` returned by `get_available_actions` will have the `intent_action` property set to `True`.  If you are selecting one of these actions, then call `/ta2/intendAction`.
     * The API for these calls is very similar.  In both cases, they reject (via 400 error code) when there's a mismatch of action type (e.g., using `/ta2/takeAction` for an intent action and vice versa). Requests and responses have the same format.
     * The main difference is that when taking an action via `/ta2/takeAction`, ADMs can expect that their actions are reflected in the state (e.g., a supply is decremented after a correct treatment), whereas intending an action via `/ta2/intendAction` may not result in a change of state.  Please note that in all cases, the state might appear completely different from prior to the taken/intended action, for example if the action transitions the scenario to the next narrative scene.
-17. What are Events and what are the semantics for interpreting them in the scene?
+17. What are Events and what are the semantics for interpreting them in the scene?<br>
     Events communicate information from the scenario to ADM.  Each event has unstructured text and one of the following event types:
     * change: signifies a change in state from one known value to another.
       * source is the entity telling of the state change
@@ -199,6 +204,17 @@ Further details can be found in the ITM Server FAQ below.
       * for a supply, it's the type
       * for a threat, it's the threat_type
       * for an injury, it's the location
+18. What are `MESSAGE` actions and what are the semantics for interpreting them in the action space?
+    * Messages can be thought of as the opposite side of the coin to Events, and are similar in design.
+    * All `MESSAGE` actions and their parameters are pre-configured in the scenario; the ADM shouldn't change any properties (including `parameters`) from what they received in `get_available_actions()`.
+    * If the recipient of the message is a character in the scene, then the action's `character_id` is the recipient of the message.  If not, then the `recipient` parameter describes the entity the ADM is addressing (taken from `EntityTypeEnum`).
+    * There are different types of messages, taken from `MessageTypeEnum`:
+      * allow: permit something to happen; may contain a `action_type` parameter
+      * ask: ask someone for permission or advice; contains an `action_type` parameter for the action the ADM is asking for permission to do; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed
+      * delegate: have the recipient make the decision; contains an `action_type` parameter the type of action the ADM is delegating
+      * deny: forbid/prevent something from happening; may contain an `object` parameter to indicate who is being denied/prevented
+      * recommend: recommend a course of action; contains an `action_type` parameter for the recommended action; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed, or possibly the thing that is being recommended if it is not an action type
+      * wait: tell the recipient to wait
 
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.
