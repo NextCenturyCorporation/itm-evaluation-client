@@ -35,6 +35,7 @@ class State(object):
         'mission': 'Mission',
         'environment': 'Environment',
         'threat_state': 'ThreatState',
+        'events': 'list[Event]',
         'supplies': 'list[Supplies]',
         'characters': 'list[Character]'
     }
@@ -47,11 +48,12 @@ class State(object):
         'mission': 'mission',
         'environment': 'environment',
         'threat_state': 'threat_state',
+        'events': 'events',
         'supplies': 'supplies',
         'characters': 'characters'
     }
 
-    def __init__(self, unstructured=None, elapsed_time=None, meta_info=None, scenario_complete=None, mission=None, environment=None, threat_state=None, supplies=None, characters=None):  # noqa: E501
+    def __init__(self, unstructured=None, elapsed_time=None, meta_info=None, scenario_complete=None, mission=None, environment=None, threat_state=None, events=None, supplies=None, characters=None):  # noqa: E501
         """State - a model defined in Swagger"""  # noqa: E501
         self._unstructured = None
         self._elapsed_time = None
@@ -60,6 +62,7 @@ class State(object):
         self._mission = None
         self._environment = None
         self._threat_state = None
+        self._events = None
         self._supplies = None
         self._characters = None
         self.discriminator = None
@@ -75,6 +78,8 @@ class State(object):
         self.environment = environment
         if threat_state is not None:
             self.threat_state = threat_state
+        if events is not None:
+            self.events = events
         self.supplies = supplies
         self.characters = characters
 
@@ -234,6 +239,29 @@ class State(object):
         """
 
         self._threat_state = threat_state
+
+    @property
+    def events(self):
+        """Gets the events of this State.  # noqa: E501
+
+        A list of scenario events to inform decision-making  # noqa: E501
+
+        :return: The events of this State.  # noqa: E501
+        :rtype: list[Event]
+        """
+        return self._events
+
+    @events.setter
+    def events(self, events):
+        """Sets the events of this State.
+
+        A list of scenario events to inform decision-making  # noqa: E501
+
+        :param events: The events of this State.  # noqa: E501
+        :type: list[Event]
+        """
+
+        self._events = events
 
     @property
     def supplies(self):

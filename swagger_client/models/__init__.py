@@ -26,7 +26,10 @@ from swagger_client.models.demographics import Demographics
 from swagger_client.models.demographics_rank import DemographicsRank
 from swagger_client.models.demographics_sex import DemographicsSex
 from swagger_client.models.directness_enum import DirectnessEnum
+from swagger_client.models.entity_type_enum import EntityTypeEnum
 from swagger_client.models.environment import Environment
+from swagger_client.models.event import Event
+from swagger_client.models.event_type_enum import EventTypeEnum
 from swagger_client.models.fauna_type_enum import FaunaTypeEnum
 from swagger_client.models.flora_type_enum import FloraTypeEnum
 from swagger_client.models.heart_rate_enum import HeartRateEnum

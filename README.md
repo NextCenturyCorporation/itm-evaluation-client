@@ -177,6 +177,28 @@ Further details can be found in the ITM Server FAQ below.
     * Typically, ADMs should use `/ta2/takeAction`.  Sometimes scenario designers want the ADM to specify the *intent* to take an action, or want to interrupt an action before it happens.  In these cases, some or all `Actions` returned by `get_available_actions` will have the `intent_action` property set to `True`.  If you are selecting one of these actions, then call `/ta2/intendAction`.
     * The API for these calls is very similar.  In both cases, they reject (via 400 error code) when there's a mismatch of action type (e.g., using `/ta2/takeAction` for an intent action and vice versa). Requests and responses have the same format.
     * The main difference is that when taking an action via `/ta2/takeAction`, ADMs can expect that their actions are reflected in the state (e.g., a supply is decremented after a correct treatment), whereas intending an action via `/ta2/intendAction` may not result in a change of state.  Please note that in all cases, the state might appear completely different from prior to the taken/intended action, for example if the action transitions the scenario to the next narrative scene.
+17. What are Events and what are the semantics for interpreting them in the scene?
+    Events communicate information from the scenario to ADM.  Each event has unstructured text and one of the following event types:
+    * change: signifies a change in state from one known value to another.
+      * source is the entity telling of the state change
+      * relevant_state is/are the state that changed
+    * emphasize: point out a previously known value from the state that has not changed.
+      * source is the entity emphasizing the current state
+      * relevant_state is/are the current state that is being emphasized
+    * inform: notify of new state or state that has gone from an unknown value to a known value.
+      * source is the entity informing of the state
+      * relevant_state is/are the state that is new or newly known
+    * order: authoritarian directive, usually to perform an action.
+      * source is the entity ordering the action
+      * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
+    * recommend: suggestion or opinion, usually to perform an action.
+      * source is the entity recommending the action
+      * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
+    The `relevant_state` property is a list of string paths within the `State` object, in which indexed lists are context-sensitive:
+      * for an aid_delay or a character, it's the id
+      * for a supply, it's the type
+      * for a threat, it's the threat_type
+      * for an injury, it's the location
 
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.
