@@ -171,7 +171,7 @@ Class | Method | HTTP request | Description
  - [Action](docs/Action.md)
  - [ActionMapping](docs/ActionMapping.md)
  - [ActionTypeEnum](docs/ActionTypeEnum.md)
- - [AidDelay](docs/AidDelay.md)
+ - [Aid](docs/Aid.md)
  - [AidTypeEnum](docs/AidTypeEnum.md)
  - [AirQualityEnum](docs/AirQualityEnum.md)
  - [AlignmentResults](docs/AlignmentResults.md)

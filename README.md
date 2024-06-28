@@ -200,7 +200,7 @@ Further details can be found in the ITM Server FAQ below.
       * source is the entity recommending the action
       * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
     The `relevant_state` property is a list of string paths within the `State` object, in which indexed lists are context-sensitive:
-      * for an aid_delay or a character, it's the id
+      * for an aid or a character, it's the id
       * for a supply, it's the type
       * for a threat, it's the threat_type
       * for an injury, it's the location

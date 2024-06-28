@@ -29,7 +29,7 @@ class DecisionEnvironment(object):
     """
     swagger_types = {
         'unstructured': 'str',
-        'aid_delay': 'list[AidDelay]',
+        'aid': 'list[Aid]',
         'movement_restriction': 'MovementRestrictionEnum',
         'sound_restriction': 'SoundRestrictionEnum',
         'oxygen_levels': 'OxygenLevelsEnum',
@@ -41,7 +41,7 @@ class DecisionEnvironment(object):
 
     attribute_map = {
         'unstructured': 'unstructured',
-        'aid_delay': 'aid_delay',
+        'aid': 'aid',
         'movement_restriction': 'movement_restriction',
         'sound_restriction': 'sound_restriction',
         'oxygen_levels': 'oxygen_levels',
@@ -51,10 +51,10 @@ class DecisionEnvironment(object):
         'city_infrastructure': 'city_infrastructure'
     }
 
-    def __init__(self, unstructured=None, aid_delay=None, movement_restriction=None, sound_restriction=None, oxygen_levels=None, population_density=None, injury_triggers=None, air_quality=None, city_infrastructure=None):  # noqa: E501
+    def __init__(self, unstructured=None, aid=None, movement_restriction=None, sound_restriction=None, oxygen_levels=None, population_density=None, injury_triggers=None, air_quality=None, city_infrastructure=None):  # noqa: E501
         """DecisionEnvironment - a model defined in Swagger"""  # noqa: E501
         self._unstructured = None
-        self._aid_delay = None
+        self._aid = None
         self._movement_restriction = None
         self._sound_restriction = None
         self._oxygen_levels = None
@@ -64,8 +64,8 @@ class DecisionEnvironment(object):
         self._city_infrastructure = None
         self.discriminator = None
         self.unstructured = unstructured
-        if aid_delay is not None:
-            self.aid_delay = aid_delay
+        if aid is not None:
+            self.aid = aid
         if movement_restriction is not None:
             self.movement_restriction = movement_restriction
         if sound_restriction is not None:
@@ -107,27 +107,27 @@ class DecisionEnvironment(object):
         self._unstructured = unstructured
 
     @property
-    def aid_delay(self):
-        """Gets the aid_delay of this DecisionEnvironment.  # noqa: E501
+    def aid(self):
+        """Gets the aid of this DecisionEnvironment.  # noqa: E501
 
-        A list of evacuation opportunities  # noqa: E501
+        A list of available forms of aid  # noqa: E501
 
-        :return: The aid_delay of this DecisionEnvironment.  # noqa: E501
-        :rtype: list[AidDelay]
+        :return: The aid of this DecisionEnvironment.  # noqa: E501
+        :rtype: list[Aid]
         """
-        return self._aid_delay
+        return self._aid
 
-    @aid_delay.setter
-    def aid_delay(self, aid_delay):
-        """Sets the aid_delay of this DecisionEnvironment.
+    @aid.setter
+    def aid(self, aid):
+        """Sets the aid of this DecisionEnvironment.
 
-        A list of evacuation opportunities  # noqa: E501
+        A list of available forms of aid  # noqa: E501
 
-        :param aid_delay: The aid_delay of this DecisionEnvironment.  # noqa: E501
-        :type: list[AidDelay]
+        :param aid: The aid of this DecisionEnvironment.  # noqa: E501
+        :type: list[Aid]
         """
 
-        self._aid_delay = aid_delay
+        self._aid = aid
 
     @property
     def movement_restriction(self):

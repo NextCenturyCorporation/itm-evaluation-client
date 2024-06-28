@@ -43,7 +43,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         self.scenario_id = None
         self.characters = {}
         self.medical_supplies = {}
-        self.aid_delays = []
+        self.aids = []
         self.available_actions = None
         self.actions_are_current = False
         self.current_probe_id = ''
@@ -160,14 +160,14 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def prompt_evac_id(self) -> Action:
         evac_input = input(
             f"Enter Evac ID by number from the list:\n"
-            f"  {[f'({i + 1}, aid_delay={aid_delay})' for i, aid_delay in enumerate(self.aid_delays)]}: "
+            f"  {[f'({i + 1}, aid={aid})' for i, aid in enumerate(self.aids)]}: "
         )
         try:
             evac_index = int(evac_input) - 1
             evac_id = None
-            for index, aid_delay in enumerate(self.aid_delays):
+            for index, aid in enumerate(self.aids):
                 if index == evac_index:
-                    evac_id = aid_delay.id
+                    evac_id = aid.id
                     break
         except ValueError:
             return self.prompt_evac_id()
@@ -338,7 +338,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             self.medical_supplies = response.supplies
             self.characters = response.characters
             if response.environment.decision_environment:
-                self.aid_delays = response.environment.decision_environment.aid_delay
+                self.aids = response.environment.decision_environment.aid
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None
