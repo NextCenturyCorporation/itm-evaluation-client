@@ -179,6 +179,7 @@ Class | Method | HTTP request | Description
  - [AlignmentTarget](docs/AlignmentTarget.md)
  - [AmbientNoiseEnum](docs/AmbientNoiseEnum.md)
  - [AvpuLevelEnum](docs/AvpuLevelEnum.md)
+ - [BloodOxygenEnum](docs/BloodOxygenEnum.md)
  - [BreathingLevelEnum](docs/BreathingLevelEnum.md)
  - [Character](docs/Character.md)
  - [CharacterRoleEnum](docs/CharacterRoleEnum.md)

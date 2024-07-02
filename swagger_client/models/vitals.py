@@ -33,7 +33,7 @@ class Vitals(object):
         'mental_status': 'MentalStatusEnum',
         'breathing': 'BreathingLevelEnum',
         'heart_rate': 'HeartRateEnum',
-        'spo2': 'float'
+        'spo2': 'BloodOxygenEnum'
     }
 
     attribute_map = {
@@ -178,10 +178,9 @@ class Vitals(object):
     def spo2(self):
         """Gets the spo2 of this Vitals.  # noqa: E501
 
-        blood oxygen level (percentage)  # noqa: E501
 
         :return: The spo2 of this Vitals.  # noqa: E501
-        :rtype: float
+        :rtype: BloodOxygenEnum
         """
         return self._spo2
 
@@ -189,10 +188,9 @@ class Vitals(object):
     def spo2(self, spo2):
         """Sets the spo2 of this Vitals.
 
-        blood oxygen level (percentage)  # noqa: E501
 
         :param spo2: The spo2 of this Vitals.  # noqa: E501
-        :type: float
+        :type: BloodOxygenEnum
         """
 
         self._spo2 = spo2
