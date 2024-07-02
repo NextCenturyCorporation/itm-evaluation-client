@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **unstructured** | **str** | Natural language, plain text description of decision-impacting environmental factors | 
-**aid_delay** | [**list[AidDelay]**](AidDelay.md) | A list of evacuation opportunities | [optional] 
+**aid** | [**list[Aid]**](Aid.md) | A list of available forms of aid | [optional] 
 **movement_restriction** | [**MovementRestrictionEnum**](MovementRestrictionEnum.md) |  | [optional] 
 **sound_restriction** | [**SoundRestrictionEnum**](SoundRestrictionEnum.md) |  | [optional] 
 **oxygen_levels** | [**OxygenLevelsEnum**](OxygenLevelsEnum.md) |  | [optional] 

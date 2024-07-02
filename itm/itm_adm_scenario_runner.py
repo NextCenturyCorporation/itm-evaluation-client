@@ -185,7 +185,7 @@ class ADMScenarioRunner(ScenarioRunner):
                     random_action.parameters = {"category": self.assess_character_priority()}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": self.get_random_evac_id(state)}
+                    random_action.parameters = {"aid_id": self.get_random_aid_id(state)}
         return random_action
 
     def get_random_supply(self, state: State):
@@ -202,13 +202,13 @@ class ADMScenarioRunner(ScenarioRunner):
         index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
         return characters[index].id
 
-    def get_random_evac_id(self, state: State):
-        evac_id = 'unknown'
-        if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
-            aid_delays = state.environment.decision_environment.aid_delay
-            evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
-            evac_id = random.choice(evac_ids)
-        return evac_id
+    def get_random_aid_id(self, state: State):
+        aid_id = 'unknown evac'
+        if state.environment.decision_environment and state.environment.decision_environment.aid:
+            aids = state.environment.decision_environment.aid
+            aid_ids = [aid.id for aid in aids if aids]
+            aid_id = random.choice(aid_ids)
+        return aid_id
 
     def assess_character_priority(self):
         character_priority = random.randint(1, 4)

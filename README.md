@@ -120,9 +120,9 @@ Further details can be found in the ITM Server FAQ below.
   * Moves the ADM to the location of the specified `character_id`, making characters in the present scene "unseen".
     * requires `character_id` whose `unseen` property is set to True
 * `MOVE_TO_EVAC`
-  * Chooses to evacuate the specified `character_id` to the specified `evac_id`. It is assumed that others can perform the actual evacuation so the medic can return to triage.
+  * Chooses to transfer the specified `character_id` to the specified `aid_id`. It is assumed that others can perform the actual transfer so the medic can return to triage.
     * requires `character_id`
-    * requires parameter `evac_id`
+    * requires parameter `aid_id`
 * `SEARCH`
   * Attempts to search for additional characters, moving the ADM to the a new location that might have found characters.
     * no further requirements
@@ -200,12 +200,12 @@ Further details can be found in the ITM Server FAQ below.
       * source is the entity recommending the action
       * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
     The `relevant_state` property is a list of string paths within the `State` object, in which indexed lists are context-sensitive:
-      * for an aid_delay or a character, it's the id
+      * for an aid or a character, it's the id
       * for a supply, it's the type
       * for a threat, it's the threat_type
       * for an injury, it's the location
 18. What are `MESSAGE` actions and what are the semantics for interpreting them in the action space?
-    * Messages can be thought of as the opposite side of the coin to Events, and are similar in design.
+    * Messages communicate different kinds of actions from the ADM to the server.  They can be thought of as the opposite side of the same coin of Events, and are similar in design.
     * All `MESSAGE` actions and their parameters are pre-configured in the scenario; the ADM shouldn't change any properties (including `parameters`) from what they received in `get_available_actions()`.
     * If the recipient of the message is a character in the scene, then the action's `character_id` is the recipient of the message.  If not, then the `recipient` parameter describes the entity the ADM is addressing (taken from `EntityTypeEnum`).
     * There are different types of messages, taken from `MessageTypeEnum`:
