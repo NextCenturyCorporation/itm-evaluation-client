@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from swagger_client.models.action import Action
 from swagger_client.models.action_mapping import ActionMapping
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.aid_delay import AidDelay
+from swagger_client.models.aid import Aid
 from swagger_client.models.aid_type_enum import AidTypeEnum
 from swagger_client.models.air_quality_enum import AirQualityEnum
 from swagger_client.models.alignment_results import AlignmentResults

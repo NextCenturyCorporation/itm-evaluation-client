@@ -43,7 +43,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         self.scenario_id = None
         self.characters = {}
         self.medical_supplies = {}
-        self.aid_delays = []
+        self.aids = []
         self.available_actions = None
         self.actions_are_current = False
         self.current_probe_id = ''
@@ -157,23 +157,23 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return self.prompt_action()
         return action
 
-    def prompt_evac_id(self) -> Action:
-        evac_input = input(
-            f"Enter Evac ID by number from the list:\n"
-            f"  {[f'({i + 1}, aid_delay={aid_delay})' for i, aid_delay in enumerate(self.aid_delays)]}: "
+    def prompt_aid_id(self) -> Action:
+        aid_input = input(
+            f"Enter Aid ID by number from the list:\n"
+            f"  {[f'({i + 1}, aid={aid})' for i, aid in enumerate(self.aids)]}: "
         )
         try:
-            evac_index = int(evac_input) - 1
-            evac_id = None
-            for index, aid_delay in enumerate(self.aid_delays):
-                if index == evac_index:
-                    evac_id = aid_delay.id
+            aid_index = int(aid_input) - 1
+            aid_id = None
+            for index, aid in enumerate(self.aids):
+                if index == aid_index:
+                    aid_id = aid.id
                     break
         except ValueError:
-            return self.prompt_evac_id()
-        if evac_id is None:
-            return self.prompt_evac_id()
-        return evac_id
+            return self.prompt_aid_id()
+        if aid_id is None:
+            return self.prompt_aid_id()
+        return aid_id
 
     def start_scenario_operation(self):
         if self.session_id is None:
@@ -288,7 +288,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 action.parameters = {"category": self.prompt_tagType()}
         elif action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
             if action.parameters is None:
-                action.parameters = {"evac_id": self.prompt_evac_id()}
+                action.parameters = {"aid_id": self.prompt_aid_id()}
 
         # Prompt for (optional) justification
         action.justification = self.prompt_justification()
@@ -338,7 +338,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             self.medical_supplies = response.supplies
             self.characters = response.characters
             if response.environment.decision_environment:
-                self.aid_delays = response.environment.decision_environment.aid_delay
+                self.aids = response.environment.decision_environment.aid
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None

@@ -88,7 +88,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     random_action.parameters = {"category": random.choice(tag_labels)}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": get_random_evac_id(state)}
+                    random_action.parameters = {"aid_id": get_random_aid_id(state)}
         return random_action
 
 def get_random_supply(state: State):
@@ -105,13 +105,13 @@ def get_random_character_id(state: State, action_type):
     index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
-def get_random_evac_id(state: State):
-    evac_id = 'unknown'
-    if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
-        aid_delays = state.environment.decision_environment.aid_delay
-        evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
-        evac_id = random.choice(evac_ids)
-    return evac_id
+def get_random_aid_id(state: State):
+    aid_id = 'unknown'
+    if state.environment.decision_environment and state.environment.decision_environment.aid:
+        aids = state.environment.decision_environment.aid
+        aid_ids = [aid.id for aid in aids if aids]
+        aid_id = random.choice(aid_ids)
+    return aid_id
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM simulator.')
