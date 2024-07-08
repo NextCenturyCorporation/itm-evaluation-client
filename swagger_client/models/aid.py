@@ -31,7 +31,7 @@ class Aid(object):
         'id': 'str',
         'delay': 'float',
         'type': 'AidTypeEnum',
-        'level': 'int',
+        'role': 'int',
         'patients_treated': 'list[MilitaryDispositionEnum]',
         'max_transport': 'int'
     }
@@ -40,17 +40,17 @@ class Aid(object):
         'id': 'id',
         'delay': 'delay',
         'type': 'type',
-        'level': 'level',
+        'role': 'role',
         'patients_treated': 'patients_treated',
         'max_transport': 'max_transport'
     }
 
-    def __init__(self, id=None, delay=None, type=None, level=None, patients_treated=None, max_transport=None):  # noqa: E501
+    def __init__(self, id=None, delay=None, type=None, role=None, patients_treated=None, max_transport=None):  # noqa: E501
         """Aid - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._delay = None
         self._type = None
-        self._level = None
+        self._role = None
         self._patients_treated = None
         self._max_transport = None
         self.discriminator = None
@@ -58,8 +58,8 @@ class Aid(object):
         self.delay = delay
         if type is not None:
             self.type = type
-        if level is not None:
-            self.level = level
+        if role is not None:
+            self.role = role
         if patients_treated is not None:
             self.patients_treated = patients_treated
         if max_transport is not None:
@@ -137,27 +137,27 @@ class Aid(object):
         self._type = type
 
     @property
-    def level(self):
-        """Gets the level of this Aid.  # noqa: E501
+    def role(self):
+        """Gets the role of this Aid.  # noqa: E501
 
-        Refers to the kinds of resources/capabilities available in a trauma center; Level 1 has more resources than Level 5. See [amtrauma.org](https://www.amtrauma.org/page/traumalevels/)   # noqa: E501
+        The characterization of health support for the distribution of medical resources and capabilities; Role 1 has higher capability than Role 4. See [health.mil](https://health.mil/Reference-Center/Glossary-Terms/2018/06/22/Roles-of-Medical-Care)   # noqa: E501
 
-        :return: The level of this Aid.  # noqa: E501
+        :return: The role of this Aid.  # noqa: E501
         :rtype: int
         """
-        return self._level
+        return self._role
 
-    @level.setter
-    def level(self, level):
-        """Sets the level of this Aid.
+    @role.setter
+    def role(self, role):
+        """Sets the role of this Aid.
 
-        Refers to the kinds of resources/capabilities available in a trauma center; Level 1 has more resources than Level 5. See [amtrauma.org](https://www.amtrauma.org/page/traumalevels/)   # noqa: E501
+        The characterization of health support for the distribution of medical resources and capabilities; Role 1 has higher capability than Role 4. See [health.mil](https://health.mil/Reference-Center/Glossary-Terms/2018/06/22/Roles-of-Medical-Care)   # noqa: E501
 
-        :param level: The level of this Aid.  # noqa: E501
+        :param role: The role of this Aid.  # noqa: E501
         :type: int
         """
 
-        self._level = level
+        self._role = role
 
     @property
     def patients_treated(self):

@@ -184,37 +184,41 @@ Further details can be found in the ITM Server FAQ below.
     * The main difference is that when taking an action via `/ta2/takeAction`, ADMs can expect that their actions are reflected in the state (e.g., a supply is decremented after a correct treatment), whereas intending an action via `/ta2/intendAction` may not result in a change of state.  Please note that in all cases, the state might appear completely different from prior to the taken/intended action, for example if the action transitions the scenario to the next narrative scene.
 17. What are Events and what are the semantics for interpreting them in the scene?<br>
     Events communicate information from the scenario to ADM.  Each event has unstructured text and one of the following event types:
-    * change: signifies a change in state from one known value to another.
-      * source is the entity telling of the state change
-      * relevant_state is/are the state that changed
-    * emphasize: point out a previously known value from the state that has not changed.
-      * source is the entity emphasizing the current state
-      * relevant_state is/are the current state that is being emphasized
-    * inform: notify of new state or state that has gone from an unknown value to a known value.
-      * source is the entity informing of the state
-      * relevant_state is/are the state that is new or newly known
-    * order: authoritarian directive, usually to perform an action.
-      * source is the entity ordering the action
-      * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
-    * recommend: suggestion or opinion, usually to perform an action.
-      * source is the entity recommending the action
-      * action_id is the ID of the ordered action; the action_id matches an action from `get_available_state`
+    * `change`: signifies a change in state from one known value to another.
+      * `source` is the entity telling of the state change
+      * `when` indicates when (in minutes) the state changed (negative value) or is expected to change (positive value)
+      * `relevant_state` is/are the state that changed
+    * `emphasize`: point out a previously known value from the state that has not changed.
+      * `source` is the entity emphasizing the current state
+      * `relevant_state` is/are the current state that is being emphasized
+    * `inform`: notify of new state or state that has gone from an unknown value to a known value.
+      * `source` is the entity informing of the state
+      * `when` indicates when (in minutes) the state happened (negative value) or is expected to happen (positive value)
+      * `relevant_state` is/are the state that is new or newly known
+    * `order`: authoritarian directive, usually to perform an action.
+      * `source` is the entity ordering the action
+      * `action_id` is the ID of the ordered action; the action_id matches an action from `get_available_state`
+    * `recommend`: suggestion or opinion, usually to perform an action.
+      * `source` is the entity recommending the action
+      * `action_id` is the ID of the ordered action; the action_id matches an action from `get_available_state`
+
     The `relevant_state` property is a list of string paths within the `State` object, in which indexed lists are context-sensitive:
-      * for an aid or a character, it's the id
-      * for a supply, it's the type
-      * for a threat, it's the threat_type
-      * for an injury, it's the location
+    * for `Aid` or a `Character`, it's the `id`
+    * for `Supplies`, it's the `type`
+    * for `Threat`, it's the `threat_type`
+    * for `Injury`, it's the `location`
+
 18. What are `MESSAGE` actions and what are the semantics for interpreting them in the action space?
     * Messages communicate different kinds of actions from the ADM to the server.  They can be thought of as the opposite side of the same coin of Events, and are similar in design.
     * All `MESSAGE` actions and their parameters are pre-configured in the scenario; the ADM shouldn't change any properties (including `parameters`) from what they received in `get_available_actions()`.
     * If the recipient of the message is a character in the scene, then the action's `character_id` is the recipient of the message.  If not, then the `recipient` parameter describes the entity the ADM is addressing (taken from `EntityTypeEnum`).
     * There are different types of messages, taken from `MessageTypeEnum`:
-      * allow: permit something to happen; may contain a `action_type` parameter
-      * ask: ask someone for permission or advice; contains an `action_type` parameter for the action the ADM is asking for permission to do; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed
-      * delegate: have the recipient make the decision; contains an `action_type` parameter the type of action the ADM is delegating
-      * deny: forbid/prevent something from happening; may contain an `object` parameter to indicate who is being denied/prevented
-      * recommend: recommend a course of action; contains an `action_type` parameter for the recommended action; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed, or possibly the thing that is being recommended if it is not an action type
-      * wait: tell the recipient to wait
+      * `allow`: permit something to happen; may contain a `action_type` parameter
+      * `ask`: ask someone for permission or advice; contains an `action_type` parameter for the action the ADM is asking for permission to do; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed
+      * `delegate`: have the recipient make the decision; contains an `action_type` parameter the type of action the ADM is delegating
+      * `deny`: forbid/prevent something from happening; may contain an `object` parameter to indicate who is being denied/prevented
+      * `recommend`: recommend a course of action; contains an `action_type` parameter for the recommended action; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed, or possibly the thing that is being recommended if it is not an action type
+      * `wait`: tell the recipient to wait
 
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.

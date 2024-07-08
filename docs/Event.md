@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **type** | [**EventTypeEnum**](EventTypeEnum.md) |  | 
 **source** | **str** | The &#x27;subject&#x27; of the event; can be a character &#x60;id&#x60; or an &#x60;EntityTypeEnum&#x60; | [optional] 
 **object** | **str** | The &#x27;object&#x27; of the event; can be a character &#x60;id&#x60; or an &#x60;EntityTypeEnum&#x60; | [optional] 
+**when** | **float** | indicates when (in minutes) the event happened (negative value) or is expected to happen (positive value); omit if zero (event happens now) | [optional] 
 **action_id** | **str** | An action ID from among the available actions | [optional] 
 **relevant_state** | **list[str]** | An array of relevant state for the Event | [optional] 
 
