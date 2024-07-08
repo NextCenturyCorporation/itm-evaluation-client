@@ -52,6 +52,9 @@ class InjuryLocationEnum(object):
     LEFT_NECK = "left neck"
     RIGHT_NECK = "right neck"
     INTERNAL = "internal"
+    HEAD = "head"
+    NECK = "neck"
+    STOMACH = "stomach"
     UNSPECIFIED = "unspecified"
     """
     Attributes:
