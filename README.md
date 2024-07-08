@@ -203,10 +203,10 @@ Further details can be found in the ITM Server FAQ below.
       * `action_id` is the ID of the ordered action; the action_id matches an action from `get_available_state`
 
     The `relevant_state` property is a list of string paths within the `State` object, in which indexed lists are context-sensitive:
-    * for an `Aid` or a `Character`, it's the `id`
-    * for a `Supplies`, it's the `type`
-    * for a `Threat`, it's the `threat_type`
-    * for an `Injury`, it's the `location`
+    * for `Aid` or a `Character`, it's the `id`
+    * for `Supplies`, it's the `type`
+    * for `Threat`, it's the `threat_type`
+    * for `Injury`, it's the `location`
 
 18. What are `MESSAGE` actions and what are the semantics for interpreting them in the action space?
     * Messages communicate different kinds of actions from the ADM to the server.  They can be thought of as the opposite side of the same coin of Events, and are similar in design.
