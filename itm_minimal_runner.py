@@ -12,7 +12,7 @@ The script starts a session and then enters a loop:
 4. Checks if the scenario state's 'scenario_complete' property is True.
    If it is, then it ends the scenario.
 
-Session types can be 'eval', 'adept', or 'soartech'. If the 'eval'
+Session types can be 'eval', 'test', 'adept', or 'soartech'. If the 'eval'
 argument is used, then an eval session type is initiated. 
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
