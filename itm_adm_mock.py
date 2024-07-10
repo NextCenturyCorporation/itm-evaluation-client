@@ -2,38 +2,46 @@ import argparse
 from itm import ADMScenarioRunner
 
 def main():
-    parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
-    parser.add_argument('--session', nargs='*', default=[], metavar=('session_type', 'scenario_count'), help=\
-                        'Specify session type and scenario count. '
-                        'Session type can be eval, adept, or soartech. '
-                        'If you want to run through all available scenarios without repeating do not use the scenario_count argument')
-    parser.add_argument('--eval', action='store_true', default=False, help=\
-                        'Run an eval session')
-    parser.add_argument('--scenario', type=str,
-                        help='Specify a scenario_id to run. Incompatible with scenario_count '
-                        'and --eval')
+    parser = argparse.ArgumentParser(description='Runs ADM simulator.')
+    parser.add_argument('--profile', metavar='adm_profile', required=False, 
+                        help='Specify the ADM profile in terms of its alignment strategy')
+    parser.add_argument('--session', required=True, metavar='session_type', help=\
+                        'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`. ')
+    parser.add_argument('--count', type=int, metavar='scenario_count', help=\
+                        'Run the specified number of scenarios. Otherwise, will run scenarios in '
+                        'accordance with server defaults. Not supported in `eval` sessions.')
+    parser.add_argument('--scenario', type=str, metavar='scenario_id',
+                        help='Specify a scenario_id to run. Incompatible with count parameter '
+                        'and `eval` sessions.')
 
     args = parser.parse_args()
     scenario_id = args.scenario
+    scenario_count = args.count
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'eval']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
+        if args.session not in ['soartech', 'adept', 'eval', 'test']:
+            parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
         else:
-            session_type = args.session[0]
+            session_type = args.session
+
+    if session_type == 'eval':
+        if scenario_id:
+            parser.error("Specifying a scenario_id is not supported in eval sessions.")
+        if scenario_count is not None:
+            parser.error("Scenario count is not supported in eval sessions.")
+
+    if scenario_count is not None:
+        if scenario_count < 1:
+            parser.error("Scenario count must be a positive integer.")
     else:
-        session_type = 'eval'
-    if args.eval:
-        session_type = 'eval'
-    if session_type == 'eval' and scenario_id:
-        parser.error("Specifying a scenario_id is not supported in eval sessions.")
-    scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
+        scenario_count = 0
+
     if scenario_count > 0 and scenario_id:
-        parser.error("Specifying a scenario_id is incompatible with specifying a scenario_count.")
+        parser.error("--scenario is incompatible with --count.")
 
     if scenario_id:
-        adm = ADMScenarioRunner(session_type, scenario_count, scenario_id)
+        adm = ADMScenarioRunner(session_type, args.profile, scenario_count, scenario_id)
     else:
-        adm = ADMScenarioRunner(session_type, scenario_count)
+        adm = ADMScenarioRunner(session_type, args.profile, scenario_count)
     adm.run()
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ class CommandOption(Enum):
     GET_ALIGNMENT_TARGET = "get_alignment_target (a)"
     GET_AVAILABLE_ACTIONS = "get_available_actions (v)"
     TAKE_ACTION = "take_action (t)"
+    INTEND_ACTION = "intend_action (i)"
     GET_SCENARIO_STATE = "get_scenario_state (u)"
     GET_SESSION_ALIGNMENT = "get_session_alignment (g)"
     QUIT = "quit (q)"
@@ -23,10 +24,10 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "SITREP"]
+ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, kdma_training=False, max_scenarios=-1):
+    def __init__(self, session_type, kdma_training=False, max_scenarios=-1, scenario_id=None):
         super().__init__()
         self.username = session_type + " ITM Human"
         self.session_type = session_type
@@ -35,12 +36,14 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             self.max_scenarios = max_scenarios
         else:
             self.max_scenarios = None
+        self.custom_scenario_id = scenario_id
         self.scenario_complete = False
         self.session_complete = False
         self.session_id = None
         self.scenario_id = None
         self.characters = {}
         self.medical_supplies = {}
+        self.aids = []
         self.available_actions = None
         self.actions_are_current = False
         self.current_probe_id = ''
@@ -110,6 +113,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             medical_supply = self.medical_supplies[medical_supply_index].type
         except ValueError:
             return self.prompt_treatment()
+        except IndexError:
+            return self.prompt_treatment()
         return medical_supply
 
     def prompt_justification(self):
@@ -152,14 +157,35 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return self.prompt_action()
         return action
 
+    def prompt_aid_id(self) -> Action:
+        aid_input = input(
+            f"Enter Aid ID by number from the list:\n"
+            f"  {[f'({i + 1}, aid={aid})' for i, aid in enumerate(self.aids)]}: "
+        )
+        try:
+            aid_index = int(aid_input) - 1
+            aid_id = None
+            for index, aid in enumerate(self.aids):
+                if index == aid_index:
+                    aid_id = aid.id
+                    break
+        except ValueError:
+            return self.prompt_aid_id()
+        if aid_id is None:
+            return self.prompt_aid_id()
+        return aid_id
+
     def start_scenario_operation(self):
-        if self.session_id == None:
+        if self.session_id is None:
             return "No active session; please start a session first."
         if self.scenario_id == None:
-            response: Scenario = self.itm.start_scenario(self.session_id)
+            if self.custom_scenario_id:
+                response = self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id)
+            else:
+                response = self.itm.start_scenario(session_id=self.session_id)
             self.current_probe_answered = False
             self.current_probe_id = ''
-            if response.session_complete == False:
+            if not response.session_complete:
                 self.scenario_id = response.id
                 self.scenario = response
                 state: State = response.state
@@ -172,8 +198,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return response
 
     def start_session_operation(self, username):
-        if self.session_id == None:
-            if self.max_scenarios == None:
+        if self.session_id is None:
+            if self.max_scenarios is None:
                 self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training)
             else:
                 self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
@@ -183,18 +209,18 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return response
 
     def get_alignment_target_operation(self):
-        if self.kdma_training:
-            return "Getting alignment target is not supported in training mode."
-        if self.session_id == None:
+        if self.kdma_training or self.session_type == 'test':
+            return "Getting alignment target is not supported in test sessions or training mode."
+        if self.session_id is None:
             return "No active session; please start a session first."
-        if self.scenario_id == None:
+        if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         return self.itm.get_alignment_target(self.session_id, self.scenario_id)
 
     def get_session_alignment_operation(self):
-        if self.session_id == None:
+        if self.session_id is None:
             return "No active session; please start a session first."
-        if self.scenario_id == None:
+        if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         if self.kdma_training == False:
             return "Session alignment can only be requested during a training session."
@@ -207,27 +233,33 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return None
 
     def get_scenario_state_operation(self):
-        if self.session_id == None:
+        if self.session_id is None:
             return "No active session; please start a session first."
-        if self.scenario_id == None:
+        if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         response = self.itm.get_scenario_state(self.session_id, self.scenario_id)
         self.medical_supplies = response.supplies
         return response
 
     def get_available_actions_operation(self):
-        if self.session_id == None:
+        if self.session_id is None:
             return "No active session; please start a session first."
-        if self.scenario_id == None:
+        if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         self.available_actions = self.itm.get_available_actions(self.session_id, self.scenario_id)
         self.actions_are_current = True
         return self.available_actions
 
     def take_action_operation(self):
-        if self.session_id == None:
+        return self.take_or_intend_action(intend_action=False)
+
+    def intend_action_operation(self):
+        return self.take_or_intend_action(intend_action=True)
+
+    def take_or_intend_action(self, intend_action):
+        if self.session_id is None:
             return "No active session; please start a session first."
-        if self.scenario_id == None:
+        if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         if not self.actions_are_current:
             return f"Call {self.get_full_string_and_shortcut(CommandOption.GET_AVAILABLE_ACTIONS)[0]} first."
@@ -244,9 +276,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if action.parameters is None:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
-                if not action.parameters['location'] or action.parameters["location"] is None:
+                if not action.parameters.get('location'):
                     action.parameters["location"] = self.prompt_location()
-                if not action.parameters['treatment'] or action.parameters["treatment"] is None:
+                if not action.parameters.get('treatment'):
                     action.parameters["treatment"] = self.prompt_treatment()
         elif action.action_type == ActionTypeEnum.SITREP:
             if action.character_id is None:
@@ -254,13 +286,16 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         elif action.action_type == ActionTypeEnum.TAG_CHARACTER:
             if action.parameters is None:
                 action.parameters = {"category": self.prompt_tagType()}
+        elif action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+            if action.parameters is None:
+                action.parameters = {"aid_id": self.prompt_aid_id()}
 
         # Prompt for (optional) justification
         action.justification = self.prompt_justification()
 
         print(action)
         self.actions_are_current = False
-        return self.itm.take_action(session_id=self.session_id, body=action)
+        return self.itm.take_action(session_id=self.session_id, body=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
 
     def run(self):
         while not self.session_complete:
@@ -286,6 +321,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.get_available_actions_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.TAKE_ACTION):
                 response = self.take_action_operation()
+            elif command in self.get_full_string_and_shortcut(CommandOption.INTEND_ACTION):
+                response = self.intend_action_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.GET_SESSION_ALIGNMENT):
                 response = self.get_session_alignment_operation()
         except Exception:
@@ -299,6 +336,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             print("Quitting session-- server will not save history for current scenario if it was enabled.")
         elif isinstance(response, State):
             self.medical_supplies = response.supplies
+            self.characters = response.characters
+            if response.environment.decision_environment:
+                self.aids = response.environment.decision_environment.aid
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None

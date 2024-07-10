@@ -24,10 +24,12 @@ class AidTypeEnum(object):
     """
     allowed enum values
     """
-    AIR = "air"
-    GROUND = "ground"
-    WATER = "water"
-    UNKNOWN = "unknown"
+    LOCAL_MILITARY = "local military"
+    LOCAL_NON_MILITARY = "local non-military"
+    AIR_EVAC = "air evac"
+    GROUND_EVAC = "ground evac"
+    WATER_EVAC = "water evac"
+    UNKNOWN_EVAC = "unknown evac"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

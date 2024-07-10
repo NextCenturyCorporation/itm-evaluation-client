@@ -12,7 +12,7 @@ The script starts a session and then enters a loop:
 4. Checks if the scenario state's 'scenario_complete' property is True.
    If it is, then it ends the scenario.
 
-Session types can be 'eval', 'adept', or 'soartech'. If the 'eval'
+Session types can be 'eval', 'test', 'adept', or 'soartech'. If the 'eval'
 argument is used, then an eval session type is initiated. 
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
@@ -73,7 +73,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
-                random_action.character_id = get_random_character_id(state)
+                random_action.character_id = get_random_character_id(state, random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
@@ -88,66 +88,76 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     random_action.parameters = {"category": random.choice(tag_labels)}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": get_random_evac_id(state)}
+                    random_action.parameters = {"aid_id": get_random_aid_id(state)}
         return random_action
 
 def get_random_supply(state: State):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
     return random.choice(supplies)
 
-def get_random_character_id(state: State):
-    characters : List[Character] = state.characters
-    index = random.randint(0, len(characters) - 1)
+def get_random_character_id(state: State, action_type):
+    if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
+        characters : List[Character] = [character for character in state.characters]
+    elif action_type in [ActionTypeEnum.MOVE_TO]:
+        characters : List[Character] = [character for character in state.characters if character.unseen]
+    else:
+        characters : List[Character] = [character for character in state.characters if not character.unseen]
+    index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
-def get_random_evac_id(state: State):
-    evac_id = 'unknown'
-    if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
-        aid_delays = state.environment.decision_environment.aid_delay
-        evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
-        evac_id = random.choice(evac_ids)
-    return evac_id
+def get_random_aid_id(state: State):
+    aid_id = 'unknown'
+    if state.environment.decision_environment and state.environment.decision_environment.aid:
+        aids = state.environment.decision_environment.aid
+        aid_ids = [aid.id for aid in aids if aids]
+        aid_id = random.choice(aid_ids)
+    return aid_id
 
 def main():
-    parser = argparse.ArgumentParser(description='Runs ADM scenarios.')
-    parser.add_argument('--adm_name', type=str, required=True, 
+    parser = argparse.ArgumentParser(description='Runs ADM simulator.')
+    parser.add_argument('--name', metavar='adm_name', required=True, 
                         help='Specify the ADM name')
-    parser.add_argument('--session', nargs='*', default=[], 
-                        metavar=('session_type', 'scenario_count'), 
-                        help='Specify session type and scenario count. '
-                        'Session type can be eval, adept, or soartech. '
-                        'If you want to run through all available scenarios '
-                        'without repeating do not use the scenario_count '
-                        'argument')
-    parser.add_argument('--scenario', type=str,
-                        help='Specify a scenario_id to run. Incompatible with scenario_count '
-                        'and --eval')
-    parser.add_argument('--eval', action='store_true', default=False, 
-                        help='Run an evaluation session. '
-                        'Supercedes --session and is the default if nothing is specified. ')
-    parser.add_argument('--kdma_training', action='store_true', default=False,
-                        help='Put the server in training mode in which it shows the kdma '
-                        'association for each action choice. Not supported in eval sessions.')
+    parser.add_argument('--profile', metavar='adm_profile', required=False, 
+                        help='Specify the ADM profile in terms of its alignment strategy')
+    parser.add_argument('--session', required=True, metavar='session_type', help=\
+                        'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
+    parser.add_argument('--count', type=int, metavar='scenario_count', help=\
+                        'Run the specified number of scenarios. Otherwise, will run scenarios in '
+                        'accordance with server defaults. Not supported in `eval` sessions.')
+    parser.add_argument('--training', action='store_true', default=False,
+                        help='Put the server in training mode in which it returns the KDMA '
+                        'association for each action choice. Not supported in `eval` or `test` sessions.')
+    parser.add_argument('--scenario', type=str, metavar='scenario_id',
+                        help='Specify a scenario_id to run. Incompatible with count parameter '
+                        'and `eval` sessions.')
 
     args = parser.parse_args()
     scenario_id = args.scenario
+    scenario_count = args.count
     if args.session:
-        if args.session[0] not in ['soartech', 'adept', 'eval']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', or 'eval'.")
+        if args.session not in ['soartech', 'adept', 'eval', 'test']:
+            parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
         else:
-            session_type = args.session[0]
-    else:
-        session_type = 'eval'
-    if args.eval:
-        session_type = 'eval'
+            session_type = args.session
+
     if session_type == 'eval':
-        if args.kdma_training:
-            parser.error("Training mode is not supported in eval sessions.")
         if scenario_id:
             parser.error("Specifying a scenario_id is not supported in eval sessions.")
-    scenario_count = int(args.session[1]) if len(args.session) > 1 else 0
+        if args.training:
+            parser.error("Training mode is not supported in eval sessions.")
+        if scenario_count is not None:
+            parser.error("Scenario count is not supported in eval sessions.")
+    elif session_type == 'test' and args.training:
+        parser.error("Training mode is not supported in test sessions.")
+
+    if scenario_count is not None:
+        if scenario_count < 1:
+            parser.error("Scenario count must be a positive integer.")
+    else:
+        scenario_count = 0
+
     if scenario_count > 0 and scenario_id:
-        parser.error("Specifying a scenario_id is incompatible with specifying a scenario_count.")
+        parser.error("--scenario is incompatible with --count.")
 
     config = Configuration()
     PORT = os.getenv('TA3_PORT')
@@ -170,15 +180,17 @@ def main():
 
         if session_type == 'eval':
             session_id = itm.start_session(
-                adm_name=args.adm_name,
+                adm_name=args.name,
+                adm_profile=args.profile,
                 session_type='eval'
             )
         else:
             session_id = itm.start_session(
-                adm_name=args.adm_name,
+                adm_name=args.name,
+                adm_profile=args.profile,
                 session_type=session_type,
                 max_scenarios=scenario_count,
-                kdma_training=args.kdma_training
+                kdma_training=args.training
             )
         while True:
             scenario: Scenario
@@ -189,15 +201,19 @@ def main():
             if scenario.session_complete:
                 break
             print(f'Scenario name: {scenario.name}')
-            alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.kdma_training else None
+            if session_type != 'test':
+                alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
+                print(f'Alignment target: {alignment_target}')
+            else:
+                alignment_target = None
             state: State = scenario.state
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
                 action_path_index+=1
-                state = itm.take_action(session_id=session_id, body=action)
-                if args.kdma_training:
+                state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
+                if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
@@ -205,7 +221,7 @@ def main():
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if not args.kdma_training:
+            if not args.training:
                 print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1

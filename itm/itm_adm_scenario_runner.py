@@ -52,7 +52,6 @@ class ADMKnowledge:
     # characters
     characters: List[Character] = None
     all_character_ids: List[str] = None
-    treated_character_ids: List[str] = None
 
     # Actions
     scenario_actions_taken = 0
@@ -66,10 +65,11 @@ class ADMKnowledge:
 
 class ADMScenarioRunner(ScenarioRunner):
 
-    def __init__(self, session_type, max_scenarios=0, scenario_id=None):
+    def __init__(self, session_type, adm_profile=None, max_scenarios=0, scenario_id=None):
         super().__init__()
         self.session_id = None
         self.adm_name = "ITM ADM"
+        self.adm_profile = adm_profile
         self.eval_mode = session_type == 'eval'
         self.adm_knowledge: ADMKnowledge = None
         self.session_type = session_type
@@ -92,7 +92,8 @@ class ADMScenarioRunner(ScenarioRunner):
             while not self.adm_knowledge.scenario_complete:
                 actions: List[Action] = self.itm.get_available_actions(session_id=self.session_id, scenario_id=self.adm_knowledge.scenario.id)
                 action = self.get_next_action(self.adm_knowledge.scenario, self.adm_knowledge.scenario.state, self.adm_knowledge.alignment_target, actions)
-                state = self.itm.take_action(session_id=self.session_id, body=action)
+                state = self.itm.take_action(session_id=self.session_id, body=action) if not action.intent_action else self.itm.intend_action(session_id=self.session_id, body=action)
+                self.update_scenario(state)
                 self.adm_knowledge.scenario_actions_taken += 1
                 self.adm_knowledge.action_choices.append(action.action_type)
                 self.total_actions_taken += 1
@@ -122,18 +123,19 @@ class ADMScenarioRunner(ScenarioRunner):
             self.session_id = self.itm.start_session(
                 adm_name=self.adm_name,
                 session_type='eval',
+                adm_profile=self.adm_profile,
                 max_scenarios=0
             )
         else:
             self.session_id = self.itm.start_session(
                 adm_name=self.adm_name,
                 session_type=self.session_type,
+                adm_profile=self.adm_profile,
                 max_scenarios=self.max_scenarios
             )
 
     def retrieve_scenario(self):
         self.adm_knowledge = ADMKnowledge() 
-        scenario: Scenario
         if self.custom_scenario_id:
             scenario = self.itm.start_scenario(session_id=self.session_id, scenario_id=self.custom_scenario_id)
         else:
@@ -142,21 +144,23 @@ class ADMScenarioRunner(ScenarioRunner):
             return True
         self.set_scenario(scenario)
         self.adm_knowledge.alignment_target = \
-            self.itm.get_alignment_target(self.session_id, self.adm_knowledge.scenario.id)
+            self.itm.get_alignment_target(self.session_id, self.adm_knowledge.scenario.id) if self.session_type != 'test' else None
         return False
 
     def set_scenario(self, scenario):
         self.adm_knowledge.scenario = scenario
         state: State = scenario.state
         self.adm_knowledge.scenario_id = scenario.id
+        self.adm_knowledge.action_choices = []
+        self.update_scenario(state)
+
+    def update_scenario(self, state):
         self.adm_knowledge.characters = state.characters
         self.adm_knowledge.all_character_ids = [
             character.id for character in state.characters]
-        self.adm_knowledge.treated_character_ids = []
-        self.adm_knowledge.action_choices = []
         self.adm_knowledge.supplies = state.supplies
         self.adm_knowledge.environment = state.environment
-        self.adm_knowledge.description = state.mission.unstructured
+        self.adm_knowledge.description = state.mission.unstructured if state.mission else ''
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
@@ -166,7 +170,7 @@ class ADMScenarioRunner(ScenarioRunner):
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
-                random_action.character_id = self.get_random_character_id()
+                random_action.character_id = self.get_random_character_id(random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
                 if random_action.parameters is None:
@@ -181,23 +185,30 @@ class ADMScenarioRunner(ScenarioRunner):
                     random_action.parameters = {"category": self.assess_character_priority()}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
-                    random_action.parameters = {"evac_id": self.get_random_evac_id(state)}
+                    random_action.parameters = {"aid_id": self.get_random_aid_id(state)}
         return random_action
 
-    def get_random_supply(sellf, state: State):
+    def get_random_supply(self, state: State):
         supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
         return random.choice(supplies)
 
-    def get_random_character_id(self):
-        return random.choice(self.adm_knowledge.all_character_ids)
+    def get_random_character_id(self, action_type):
+        if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters]
+        elif action_type in [ActionTypeEnum.MOVE_TO]:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters if character.unseen]
+        else:
+            characters : List[Character] = [character for character in self.adm_knowledge.characters if not character.unseen]
+        index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
+        return characters[index].id
 
-    def get_random_evac_id(state: State):
-        evac_id = 'unknown'
-        if state.environment.decision_environment and state.environment.decision_environment.aid_delay:
-            aid_delays = state.environment.decision_environment.aid_delay
-            evac_ids = [aid_delay.id for aid_delay in aid_delays if aid_delays]
-            evac_id = random.choice(evac_ids)
-        return evac_id
+    def get_random_aid_id(self, state: State):
+        aid_id = 'unknown evac'
+        if state.environment.decision_environment and state.environment.decision_environment.aid:
+            aids = state.environment.decision_environment.aid
+            aid_ids = [aid.id for aid in aids if aids]
+            aid_id = random.choice(aid_ids)
+        return aid_id
 
     def assess_character_priority(self):
         character_priority = random.randint(1, 4)

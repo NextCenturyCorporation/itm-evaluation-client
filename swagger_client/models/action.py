@@ -30,8 +30,10 @@ class Action(object):
     swagger_types = {
         'action_id': 'str',
         'action_type': 'ActionTypeEnum',
+        'intent_action': 'bool',
         'unstructured': 'str',
         'character_id': 'str',
+        'threat_state': 'ThreatState',
         'parameters': 'dict(str, str)',
         'justification': 'str',
         'kdma_association': 'dict(str, float)'
@@ -40,29 +42,37 @@ class Action(object):
     attribute_map = {
         'action_id': 'action_id',
         'action_type': 'action_type',
+        'intent_action': 'intent_action',
         'unstructured': 'unstructured',
         'character_id': 'character_id',
+        'threat_state': 'threat_state',
         'parameters': 'parameters',
         'justification': 'justification',
         'kdma_association': 'kdma_association'
     }
 
-    def __init__(self, action_id=None, action_type=None, unstructured=None, character_id=None, parameters=None, justification=None, kdma_association=None):  # noqa: E501
+    def __init__(self, action_id=None, action_type=None, intent_action=False, unstructured=None, character_id=None, threat_state=None, parameters=None, justification=None, kdma_association=None):  # noqa: E501
         """Action - a model defined in Swagger"""  # noqa: E501
         self._action_id = None
         self._action_type = None
+        self._intent_action = None
         self._unstructured = None
         self._character_id = None
+        self._threat_state = None
         self._parameters = None
         self._justification = None
         self._kdma_association = None
         self.discriminator = None
         self.action_id = action_id
         self.action_type = action_type
+        if intent_action is not None:
+            self.intent_action = intent_action
         if unstructured is not None:
             self.unstructured = unstructured
         if character_id is not None:
             self.character_id = character_id
+        if threat_state is not None:
+            self.threat_state = threat_state
         if parameters is not None:
             self.parameters = parameters
         if justification is not None:
@@ -119,6 +129,29 @@ class Action(object):
         self._action_type = action_type
 
     @property
+    def intent_action(self):
+        """Gets the intent_action of this Action.  # noqa: E501
+
+        Whether this action is to be taken or intended  # noqa: E501
+
+        :return: The intent_action of this Action.  # noqa: E501
+        :rtype: bool
+        """
+        return self._intent_action
+
+    @intent_action.setter
+    def intent_action(self, intent_action):
+        """Sets the intent_action of this Action.
+
+        Whether this action is to be taken or intended  # noqa: E501
+
+        :param intent_action: The intent_action of this Action.  # noqa: E501
+        :type: bool
+        """
+
+        self._intent_action = intent_action
+
+    @property
     def unstructured(self):
         """Gets the unstructured of this Action.  # noqa: E501
 
@@ -163,6 +196,27 @@ class Action(object):
         """
 
         self._character_id = character_id
+
+    @property
+    def threat_state(self):
+        """Gets the threat_state of this Action.  # noqa: E501
+
+
+        :return: The threat_state of this Action.  # noqa: E501
+        :rtype: ThreatState
+        """
+        return self._threat_state
+
+    @threat_state.setter
+    def threat_state(self, threat_state):
+        """Sets the threat_state of this Action.
+
+
+        :param threat_state: The threat_state of this Action.  # noqa: E501
+        :type: ThreatState
+        """
+
+        self._threat_state = threat_state
 
     @property
     def parameters(self):

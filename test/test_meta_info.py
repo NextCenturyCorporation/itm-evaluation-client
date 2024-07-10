@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.aid_delay import AidDelay  # noqa: E501
+from swagger_client.models.meta_info import MetaInfo  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestAidDelay(unittest.TestCase):
-    """AidDelay unit test stubs"""
+class TestMetaInfo(unittest.TestCase):
+    """MetaInfo unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestAidDelay(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testAidDelay(self):
-        """Test AidDelay"""
+    def testMetaInfo(self):
+        """Test MetaInfo"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.aid_delay.AidDelay()  # noqa: E501
+        # model = swagger_client.models.meta_info.MetaInfo()  # noqa: E501
         pass
 
 

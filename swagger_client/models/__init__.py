@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from swagger_client.models.action import Action
 from swagger_client.models.action_mapping import ActionMapping
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.aid_delay import AidDelay
+from swagger_client.models.aid import Aid
 from swagger_client.models.aid_type_enum import AidTypeEnum
 from swagger_client.models.air_quality_enum import AirQualityEnum
 from swagger_client.models.alignment_results import AlignmentResults
@@ -11,6 +11,7 @@ from swagger_client.models.alignment_source import AlignmentSource
 from swagger_client.models.alignment_target import AlignmentTarget
 from swagger_client.models.ambient_noise_enum import AmbientNoiseEnum
 from swagger_client.models.avpu_level_enum import AvpuLevelEnum
+from swagger_client.models.blood_oxygen_enum import BloodOxygenEnum
 from swagger_client.models.breathing_level_enum import BreathingLevelEnum
 from swagger_client.models.character import Character
 from swagger_client.models.character_role_enum import CharacterRoleEnum
@@ -26,7 +27,10 @@ from swagger_client.models.demographics import Demographics
 from swagger_client.models.demographics_rank import DemographicsRank
 from swagger_client.models.demographics_sex import DemographicsSex
 from swagger_client.models.directness_enum import DirectnessEnum
+from swagger_client.models.entity_type_enum import EntityTypeEnum
 from swagger_client.models.environment import Environment
+from swagger_client.models.event import Event
+from swagger_client.models.event_type_enum import EventTypeEnum
 from swagger_client.models.fauna_type_enum import FaunaTypeEnum
 from swagger_client.models.flora_type_enum import FloraTypeEnum
 from swagger_client.models.heart_rate_enum import HeartRateEnum
@@ -42,6 +46,8 @@ from swagger_client.models.intent_enum import IntentEnum
 from swagger_client.models.kdma_value import KDMAValue
 from swagger_client.models.lighting_type_enum import LightingTypeEnum
 from swagger_client.models.mental_status_enum import MentalStatusEnum
+from swagger_client.models.message_type_enum import MessageTypeEnum
+from swagger_client.models.meta_info import MetaInfo
 from swagger_client.models.military_branch_enum import MilitaryBranchEnum
 from swagger_client.models.military_disposition_enum import MilitaryDispositionEnum
 from swagger_client.models.military_rank_enum import MilitaryRankEnum
@@ -54,6 +60,7 @@ from swagger_client.models.oxygen_levels_enum import OxygenLevelsEnum
 from swagger_client.models.peak_noise_enum import PeakNoiseEnum
 from swagger_client.models.population_density_enum import PopulationDensityEnum
 from swagger_client.models.probe_config import ProbeConfig
+from swagger_client.models.probe_response import ProbeResponse
 from swagger_client.models.probe_responses import ProbeResponses
 from swagger_client.models.race_enum import RaceEnum
 from swagger_client.models.rapport_enum import RapportEnum

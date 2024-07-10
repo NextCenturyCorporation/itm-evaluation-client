@@ -32,9 +32,10 @@ class InjuryTypeEnum(object):
     CHEST_COLLAPSE = "Chest Collapse"
     AMPUTATION = "Amputation"
     BURN = "Burn"
-    ABRASION = "Abrasion"
     BROKEN_BONE = "Broken Bone"
     INTERNAL = "Internal"
+    TRAUMATIC_BRAIN_INJURY = "Traumatic Brain Injury"
+    OPEN_ABDOMINAL_WOUND = "Open Abdominal Wound"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

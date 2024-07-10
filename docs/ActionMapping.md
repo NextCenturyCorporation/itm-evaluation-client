@@ -8,10 +8,12 @@ Name | Type | Description | Notes
 **unstructured** | **str** | Natural language, plain text description of the action | 
 **repeatable** | **bool** | Whether or not this action should remain after it&#x27;s selected by an ADM | [optional] [default to False]
 **character_id** | **str** | The ID of the character being acted upon | [optional] 
+**intent_action** | **bool** | Whether this mapping is to take an action or to intend one | [optional] [default to False]
+**threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 
 **parameters** | **dict(str, str)** | key-value pairs containing additional [action-specific parameters](https://github.com/NextCenturyCorporation/itm-evaluation-client?tab&#x3D;readme-ov-file#available-actions) | [optional] 
 **probe_id** | **str** | A valid probe_id from the appropriate TA1 | 
 **choice** | **str** | A valid choice for the specified probe_id | 
-**next_scene** | **int** | The next scene in the scenario, by index | [optional] 
+**next_scene** | **str** | The ID of the next scene in the scenario; overrides Scene.next_scene | [optional] 
 **kdma_association** | **dict(str, float)** | KDMA associations for this choice, if provided by TA1 | [optional] 
 **condition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] 
 **conditions** | [**Conditions**](Conditions.md) |  | [optional] 

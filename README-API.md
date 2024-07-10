@@ -102,6 +102,18 @@ except ApiException as e:
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
 session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
+body = swagger_client.Action() # Action | Encapsulation of the intended action by a DM in the context of the scenario (optional)
+
+try:
+    # Express intent to take an action within a scenario
+    api_response = api_instance.intend_action(session_id, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ItmTa2EvalApi->intend_action: %s\n" % e)
+
+# create an instance of the API class
+api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
+session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
 scenario_id = 'scenario_id_example' # str | the scenario id to run; incompatible with /ta2/startSession's max_scenarios parameter (optional)
 
 try:
@@ -113,14 +125,15 @@ except ApiException as e:
 
 # create an instance of the API class
 api_instance = swagger_client.ItmTa2EvalApi(swagger_client.ApiClient(configuration))
-adm_name = 'adm_name_example' # str | A self-assigned ADM name.  Can add authentication later.
-session_type = 'session_type_example' # str | the type of session to start (`eval` or a TA1 name)
+adm_name = 'adm_name_example' # str | A self-assigned ADM name.
+session_type = 'session_type_example' # str | the type of session to start (`eval`, `test`, or a TA1 name)
+adm_profile = 'adm_profile_example' # str | a profile of the ADM in terms of its alignment strategy (optional)
 kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
 max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session
-    api_response = api_instance.start_session(adm_name, session_type, kdma_training=kdma_training, max_scenarios=max_scenarios)
+    api_response = api_instance.start_session(adm_name, session_type, adm_profile=adm_profile, kdma_training=kdma_training, max_scenarios=max_scenarios)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ItmTa2EvalApi->start_session: %s\n" % e)
@@ -148,6 +161,7 @@ Class | Method | HTTP request | Description
 *ItmTa2EvalApi* | [**get_available_actions**](docs/ItmTa2EvalApi.md#get_available_actions) | **GET** /ta2/{scenario_id}/getAvailableActions | Get a list of currently available ADM actions
 *ItmTa2EvalApi* | [**get_scenario_state**](docs/ItmTa2EvalApi.md#get_scenario_state) | **GET** /ta2/{scenario_id}/getState | Retrieve scenario state
 *ItmTa2EvalApi* | [**get_session_alignment**](docs/ItmTa2EvalApi.md#get_session_alignment) | **GET** /ta2/getSessionAlignment | Retrieve session alignment from TA1
+*ItmTa2EvalApi* | [**intend_action**](docs/ItmTa2EvalApi.md#intend_action) | **POST** /ta2/intendAction | Express intent to take an action within a scenario
 *ItmTa2EvalApi* | [**start_scenario**](docs/ItmTa2EvalApi.md#start_scenario) | **GET** /ta2/scenario | Get the next scenario
 *ItmTa2EvalApi* | [**start_session**](docs/ItmTa2EvalApi.md#start_session) | **GET** /ta2/startSession | Start a new session
 *ItmTa2EvalApi* | [**take_action**](docs/ItmTa2EvalApi.md#take_action) | **POST** /ta2/takeAction | Take an action within a scenario
@@ -157,7 +171,7 @@ Class | Method | HTTP request | Description
  - [Action](docs/Action.md)
  - [ActionMapping](docs/ActionMapping.md)
  - [ActionTypeEnum](docs/ActionTypeEnum.md)
- - [AidDelay](docs/AidDelay.md)
+ - [Aid](docs/Aid.md)
  - [AidTypeEnum](docs/AidTypeEnum.md)
  - [AirQualityEnum](docs/AirQualityEnum.md)
  - [AlignmentResults](docs/AlignmentResults.md)
@@ -165,6 +179,7 @@ Class | Method | HTTP request | Description
  - [AlignmentTarget](docs/AlignmentTarget.md)
  - [AmbientNoiseEnum](docs/AmbientNoiseEnum.md)
  - [AvpuLevelEnum](docs/AvpuLevelEnum.md)
+ - [BloodOxygenEnum](docs/BloodOxygenEnum.md)
  - [BreathingLevelEnum](docs/BreathingLevelEnum.md)
  - [Character](docs/Character.md)
  - [CharacterRoleEnum](docs/CharacterRoleEnum.md)
@@ -177,7 +192,10 @@ Class | Method | HTTP request | Description
  - [DemographicSexEnum](docs/DemographicSexEnum.md)
  - [Demographics](docs/Demographics.md)
  - [DirectnessEnum](docs/DirectnessEnum.md)
+ - [EntityTypeEnum](docs/EntityTypeEnum.md)
  - [Environment](docs/Environment.md)
+ - [Event](docs/Event.md)
+ - [EventTypeEnum](docs/EventTypeEnum.md)
  - [FaunaTypeEnum](docs/FaunaTypeEnum.md)
  - [FloraTypeEnum](docs/FloraTypeEnum.md)
  - [HeartRateEnum](docs/HeartRateEnum.md)
@@ -191,6 +209,8 @@ Class | Method | HTTP request | Description
  - [KDMAValue](docs/KDMAValue.md)
  - [LightingTypeEnum](docs/LightingTypeEnum.md)
  - [MentalStatusEnum](docs/MentalStatusEnum.md)
+ - [MessageTypeEnum](docs/MessageTypeEnum.md)
+ - [MetaInfo](docs/MetaInfo.md)
  - [MilitaryBranchEnum](docs/MilitaryBranchEnum.md)
  - [MilitaryDispositionEnum](docs/MilitaryDispositionEnum.md)
  - [MilitaryRankEnum](docs/MilitaryRankEnum.md)
@@ -203,6 +223,7 @@ Class | Method | HTTP request | Description
  - [PeakNoiseEnum](docs/PeakNoiseEnum.md)
  - [PopulationDensityEnum](docs/PopulationDensityEnum.md)
  - [ProbeConfig](docs/ProbeConfig.md)
+ - [ProbeResponse](docs/ProbeResponse.md)
  - [ProbeResponses](docs/ProbeResponses.md)
  - [RaceEnum](docs/RaceEnum.md)
  - [RapportEnum](docs/RapportEnum.md)
