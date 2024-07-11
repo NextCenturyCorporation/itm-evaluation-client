@@ -35,7 +35,7 @@ class Mission(object):
         'communication_capability': 'CommunicationCapabilityEnum',
         'roe': 'str',
         'political_climate': 'str',
-        'medical_policies': 'MedicalPoliciesEnum'
+        'medical_policies': 'list[MedicalPoliciesEnum]'
     }
 
     attribute_map = {
@@ -238,9 +238,10 @@ class Mission(object):
     def medical_policies(self):
         """Gets the medical_policies of this Mission.  # noqa: E501
 
+        A list of medical policies  # noqa: E501
 
         :return: The medical_policies of this Mission.  # noqa: E501
-        :rtype: MedicalPoliciesEnum
+        :rtype: list[MedicalPoliciesEnum]
         """
         return self._medical_policies
 
@@ -248,9 +249,10 @@ class Mission(object):
     def medical_policies(self, medical_policies):
         """Sets the medical_policies of this Mission.
 
+        A list of medical policies  # noqa: E501
 
         :param medical_policies: The medical_policies of this Mission.  # noqa: E501
-        :type: MedicalPoliciesEnum
+        :type: list[MedicalPoliciesEnum]
         """
 
         self._medical_policies = medical_policies

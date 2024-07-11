@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **character_id** | **str** | The ID of the character being acted upon | [optional] 
 **threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 
 **parameters** | **dict(str, str)** | key-value pairs containing additional [action-specific parameters](https://github.com/NextCenturyCorporation/itm-evaluation-client?tab&#x3D;readme-ov-file#available-actions) | [optional] 
-**justification** | **str** | A justification of the action taken | 
+**justification** | **str** | A justification of the action taken | [optional] 
 **kdma_association** | **dict(str, float)** | KDMA associations for this choice, if provided by TA1 | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
