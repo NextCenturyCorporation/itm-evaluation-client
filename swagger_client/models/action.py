@@ -75,8 +75,7 @@ class Action(object):
             self.threat_state = threat_state
         if parameters is not None:
             self.parameters = parameters
-        if justification is not None:
-            self.justification = justification
+        self.justification = justification
         if kdma_association is not None:
             self.kdma_association = kdma_association
 
@@ -261,6 +260,8 @@ class Action(object):
         :param justification: The justification of this Action.  # noqa: E501
         :type: str
         """
+        if justification is None:
+            raise ValueError("Invalid value for `justification`, must not be `None`")  # noqa: E501
 
         self._justification = justification
 
