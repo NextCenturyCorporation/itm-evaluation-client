@@ -96,7 +96,7 @@ Further details can be found in the ITM Server FAQ below.
 * `CHECK_ALL_VITALS`
   * Reveals all `Vitals` and discoverable injuries for the specified `character_id`.
     * requires `character_id`
-    * requires a Pulse Oximeter in supplies
+    * If no Pulse Oximeter is available in supplies, then blood oxygen (`spo2`) will not be returned.
 * `CHECK_BLOOD_OXYGEN`
   * Reveals `spo2`, discoverable injuries, and certain basic vitals for the specified `character_id`.
     * requires `character_id`
