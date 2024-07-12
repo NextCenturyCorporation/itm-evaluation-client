@@ -89,6 +89,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
                     random_action.parameters = {"aid_id": get_random_aid_id(state)}
+        random_action.justification = "ADM Default Justification"
         return random_action
 
 def get_random_supply(state: State):

@@ -119,9 +119,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
     def prompt_justification(self):
         justification = input(
-            f"Enter optional justification, or <Enter> to skip: "
+            f"Enter optional justification, or <Enter> to use default justification: "
         )
-        return justification
+        return justification if justification else "A Default justification"
 
     def prompt_tagType(self):
         tag_name = input(
