@@ -186,6 +186,8 @@ class ADMScenarioRunner(ScenarioRunner):
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
                 if random_action.parameters is None:
                     random_action.parameters = {"aid_id": self.get_random_aid_id(state)}
+                    
+        random_action.justification = "ADM Default Justification"
         return random_action
 
     def get_random_supply(self, state: State):
