@@ -45,6 +45,7 @@ from swagger_client.models.injury_type_enum import InjuryTypeEnum
 from swagger_client.models.intent_enum import IntentEnum
 from swagger_client.models.kdma_value import KDMAValue
 from swagger_client.models.lighting_type_enum import LightingTypeEnum
+from swagger_client.models.medical_policies_enum import MedicalPoliciesEnum
 from swagger_client.models.mental_status_enum import MentalStatusEnum
 from swagger_client.models.message_type_enum import MessageTypeEnum
 from swagger_client.models.meta_info import MetaInfo

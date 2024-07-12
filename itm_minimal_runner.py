@@ -76,7 +76,7 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 random_action.character_id = get_random_character_id(state, random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"location": random.choice(available_locations),"treatment": get_random_supply(state)}
                 else:
                     if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
@@ -84,11 +84,12 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
                         random_action.parameters['treatment'] = get_random_supply(state)
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"category": random.choice(tag_labels)}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"aid_id": get_random_aid_id(state)}
+        random_action.justification = "ADM Default Justification"
         return random_action
 
 def get_random_supply(state: State):

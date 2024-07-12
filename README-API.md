@@ -208,6 +208,7 @@ Class | Method | HTTP request | Description
  - [IntentEnum](docs/IntentEnum.md)
  - [KDMAValue](docs/KDMAValue.md)
  - [LightingTypeEnum](docs/LightingTypeEnum.md)
+ - [MedicalPoliciesEnum](docs/MedicalPoliciesEnum.md)
  - [MentalStatusEnum](docs/MentalStatusEnum.md)
  - [MessageTypeEnum](docs/MessageTypeEnum.md)
  - [MetaInfo](docs/MetaInfo.md)
