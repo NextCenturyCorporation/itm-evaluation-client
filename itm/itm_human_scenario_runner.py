@@ -273,7 +273,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
         if action.action_type == ActionTypeEnum.APPLY_TREATMENT:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
                 if not action.parameters.get('location'):
@@ -284,10 +284,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if action.character_id is None:
                 action.character_id = self.prompt_character_id(none_allowed=True)
         elif action.action_type == ActionTypeEnum.TAG_CHARACTER:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"category": self.prompt_tagType()}
         elif action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"aid_id": self.prompt_aid_id()}
 
         # Prompt for (optional) justification

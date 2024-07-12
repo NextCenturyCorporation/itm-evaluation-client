@@ -173,7 +173,7 @@ class ADMScenarioRunner(ScenarioRunner):
                 random_action.character_id = self.get_random_character_id(random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": self.get_random_supply(state)}
                 else:
                     if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
@@ -181,10 +181,10 @@ class ADMScenarioRunner(ScenarioRunner):
                     if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
                         random_action.parameters['treatment'] = self.get_random_supply(state)
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"category": self.assess_character_priority()}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"aid_id": self.get_random_aid_id(state)}
                     
         random_action.justification = "ADM Default Justification"
