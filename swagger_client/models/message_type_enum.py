@@ -28,9 +28,9 @@ class MessageTypeEnum(object):
     ASK = "ask"
     DELEGATE = "delegate"
     DENY = "deny"
+    JUSTIFY = "justify"
     RECOMMEND = "recommend"
     WAIT = "wait"
-    TBD = "tbd"
     """
     Attributes:
       swagger_types (dict): The key is attribute name
