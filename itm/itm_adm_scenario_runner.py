@@ -167,7 +167,7 @@ class ADMScenarioRunner(ScenarioRunner):
         available_locations = get_swagger_class_enum_values(InjuryLocation)
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id(random_action.action_type)
