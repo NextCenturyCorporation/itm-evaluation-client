@@ -2,7 +2,7 @@ from enum import Enum
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
-from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import traceback
 
 
@@ -225,7 +225,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.kdma_training == False:
             return "Session alignment can only be requested during a training session."
         try:
-            target_id = SOARTECH_ALIGNMENT if self.session_type == 'soartech' else ADEPT_ALIGNMENT
+            if self.session_type == 'soartech':
+                target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in self.scenario_id else SOARTECH_VOL_ALIGNMENT
+            else:
+                target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in self.scenario_id else ADEPT_IO_ALIGNMENT
             return self.itm.get_session_alignment(self.session_id, target_id)
         except:
             # An exception will occur if no probes have been answered yet.
