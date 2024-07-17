@@ -29,7 +29,6 @@ class EventTypeEnum(object):
     INFORM = "inform"
     ORDER = "order"
     RECOMMEND = "recommend"
-    TBD = "tbd"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

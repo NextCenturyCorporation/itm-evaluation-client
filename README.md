@@ -217,6 +217,7 @@ Further details can be found in the ITM Server FAQ below.
       * `ask`: ask someone for permission or advice; contains an `action_type` parameter for the action the ADM is asking for permission to do; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed
       * `delegate`: have the recipient make the decision; contains an `action_type` parameter the type of action the ADM is delegating
       * `deny`: forbid/prevent something from happening; may contain an `object` parameter to indicate who is being denied/prevented
+      * `justify`: provide a rationale for the previous ADM action; contains `relevant_state` to specify the state that justifies the action. Please note that there may be multiple relevant states specified.  See Events FAQ for more on `relevant_state`.
       * `recommend`: recommend a course of action; contains an `action_type` parameter for the recommended action; may contain an `object` parameter to signify the character_id or `EntityTypeEnum` upon whom the action is performed, or possibly the thing that is being recommended if it is not an action type
       * `wait`: tell the recipient to wait
 
