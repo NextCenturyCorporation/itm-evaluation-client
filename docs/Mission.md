@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **communication_capability** | [**CommunicationCapabilityEnum**](CommunicationCapabilityEnum.md) |  | [optional] 
 **roe** | **str** | rules of engagement to inform decision-making, but not to restrict decision space | [optional] 
 **political_climate** | **str** | The political climate in a mission to inform decision-making | [optional] 
-**medical_policies** | **str** | Medical policies in effect in a mission, to inform decision-making | [optional] 
+**medical_policies** | [**list[MedicalPoliciesEnum]**](MedicalPoliciesEnum.md) | A list of medical policies; omit this property if no special policy is in place | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

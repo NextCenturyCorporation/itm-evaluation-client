@@ -30,7 +30,6 @@ class EntityTypeEnum(object):
     COMMANDER = "commander"
     EVERYBODY = "everybody"
     MEDIC = "medic"
-    TBD = "tbd"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

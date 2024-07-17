@@ -2,7 +2,7 @@ from enum import Enum
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location import InjuryLocation
-from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
+from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import traceback
 
 
@@ -119,9 +119,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
     def prompt_justification(self):
         justification = input(
-            f"Enter optional justification, or <Enter> to skip: "
+            f"Enter optional justification, or <Enter> to use default justification: "
         )
-        return justification
+        return justification if justification else "A Default justification"
 
     def prompt_tagType(self):
         tag_name = input(
@@ -225,7 +225,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.kdma_training == False:
             return "Session alignment can only be requested during a training session."
         try:
-            target_id = SOARTECH_ALIGNMENT if self.session_type == 'soartech' else ADEPT_ALIGNMENT
+            if self.session_type == 'soartech':
+                target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in self.scenario_id else SOARTECH_VOL_ALIGNMENT
+            else:
+                target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in self.scenario_id else ADEPT_IO_ALIGNMENT
             return self.itm.get_session_alignment(self.session_id, target_id)
         except:
             # An exception will occur if no probes have been answered yet.
@@ -273,7 +276,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
         if action.action_type == ActionTypeEnum.APPLY_TREATMENT:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"location": self.prompt_location(), "treatment": self.prompt_treatment()}
             else:
                 if not action.parameters.get('location'):
@@ -284,10 +287,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if action.character_id is None:
                 action.character_id = self.prompt_character_id(none_allowed=True)
         elif action.action_type == ActionTypeEnum.TAG_CHARACTER:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"category": self.prompt_tagType()}
         elif action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-            if action.parameters is None:
+            if not action.parameters:
                 action.parameters = {"aid_id": self.prompt_aid_id()}
 
         # Prompt for (optional) justification

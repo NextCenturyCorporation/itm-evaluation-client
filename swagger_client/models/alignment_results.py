@@ -30,28 +30,24 @@ class AlignmentResults(object):
     swagger_types = {
         'alignment_source': 'list[AlignmentSource]',
         'alignment_target_id': 'str',
-        'score': 'float',
-        'kdma_values': 'list[KDMAValue]'
+        'score': 'float'
     }
 
     attribute_map = {
         'alignment_source': 'alignment_source',
         'alignment_target_id': 'alignment_target_id',
-        'score': 'score',
-        'kdma_values': 'kdma_values'
+        'score': 'score'
     }
 
-    def __init__(self, alignment_source=None, alignment_target_id=None, score=None, kdma_values=None):  # noqa: E501
+    def __init__(self, alignment_source=None, alignment_target_id=None, score=None):  # noqa: E501
         """AlignmentResults - a model defined in Swagger"""  # noqa: E501
         self._alignment_source = None
         self._alignment_target_id = None
         self._score = None
-        self._kdma_values = None
         self.discriminator = None
         self.alignment_source = alignment_source
         self.alignment_target_id = alignment_target_id
         self.score = score
-        self.kdma_values = kdma_values
 
     @property
     def alignment_source(self):
@@ -125,31 +121,6 @@ class AlignmentResults(object):
             raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
-
-    @property
-    def kdma_values(self):
-        """Gets the kdma_values of this AlignmentResults.  # noqa: E501
-
-        Computed KDMA profile from results  # noqa: E501
-
-        :return: The kdma_values of this AlignmentResults.  # noqa: E501
-        :rtype: list[KDMAValue]
-        """
-        return self._kdma_values
-
-    @kdma_values.setter
-    def kdma_values(self, kdma_values):
-        """Sets the kdma_values of this AlignmentResults.
-
-        Computed KDMA profile from results  # noqa: E501
-
-        :param kdma_values: The kdma_values of this AlignmentResults.  # noqa: E501
-        :type: list[KDMAValue]
-        """
-        if kdma_values is None:
-            raise ValueError("Invalid value for `kdma_values`, must not be `None`")  # noqa: E501
-
-        self._kdma_values = kdma_values
 
     def to_dict(self):
         """Returns the model properties as a dict"""

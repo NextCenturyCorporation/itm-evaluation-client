@@ -167,13 +167,13 @@ class ADMScenarioRunner(ScenarioRunner):
         available_locations = get_swagger_class_enum_values(InjuryLocation)
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id(random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"location": random.choice(available_locations), "treatment": self.get_random_supply(state)}
                 else:
                     if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
@@ -181,11 +181,13 @@ class ADMScenarioRunner(ScenarioRunner):
                     if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
                         random_action.parameters['treatment'] = self.get_random_supply(state)
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"category": self.assess_character_priority()}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"aid_id": self.get_random_aid_id(state)}
+                    
+        random_action.justification = "ADM Default Justification"
         return random_action
 
     def get_random_supply(self, state: State):

@@ -42,7 +42,7 @@ The implementation of this function should be replaced with decision-making logi
 """
 
 import argparse
-from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_ALIGNMENT, ADEPT_ALIGNMENT
+from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import swagger_client
 import random
 from typing import List
@@ -70,13 +70,13 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
         tag_labels = get_swagger_class_enum_values(TagLabel)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
+        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = get_random_character_id(state, random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
 
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"location": random.choice(available_locations),"treatment": get_random_supply(state)}
                 else:
                     if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
@@ -84,11 +84,12 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                     if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
                         random_action.parameters['treatment'] = get_random_supply(state)
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"category": random.choice(tag_labels)}
             elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if random_action.parameters is None:
+                if not random_action.parameters:
                     random_action.parameters = {"aid_id": get_random_aid_id(state)}
+        random_action.justification = "ADM Default Justification"
         return random_action
 
 def get_random_supply(state: State):
@@ -216,7 +217,10 @@ def main():
                 if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        target_id = SOARTECH_ALIGNMENT if session_type == 'soartech' else ADEPT_ALIGNMENT
+                        if session_type == 'soartech':
+                            target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
+                        else:
+                            target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
