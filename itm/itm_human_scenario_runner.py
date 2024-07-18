@@ -1,7 +1,7 @@
 from enum import Enum
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location import InjuryLocation
+from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import traceback
 
@@ -85,7 +85,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         return character_id
 
     def prompt_location(self):
-        available_locations = get_swagger_class_enum_values(InjuryLocation)
+        available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         location = input(
             f"Enter injury location by number from the list:\n"
             f"  {[f'({i + 1}, {location_name})' for i, location_name in enumerate(available_locations)]}: "

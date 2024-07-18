@@ -15,7 +15,6 @@ from swagger_client.models.blood_oxygen_enum import BloodOxygenEnum
 from swagger_client.models.breathing_level_enum import BreathingLevelEnum
 from swagger_client.models.character import Character
 from swagger_client.models.character_role_enum import CharacterRoleEnum
-from swagger_client.models.character_tag import CharacterTag
 from swagger_client.models.character_tag_enum import CharacterTagEnum
 from swagger_client.models.civilian_presence_enum import CivilianPresenceEnum
 from swagger_client.models.communication_capability_enum import CommunicationCapabilityEnum
@@ -24,8 +23,6 @@ from swagger_client.models.conditions_character_vitals import ConditionsCharacte
 from swagger_client.models.decision_environment import DecisionEnvironment
 from swagger_client.models.demographic_sex_enum import DemographicSexEnum
 from swagger_client.models.demographics import Demographics
-from swagger_client.models.demographics_rank import DemographicsRank
-from swagger_client.models.demographics_sex import DemographicsSex
 from swagger_client.models.directness_enum import DirectnessEnum
 from swagger_client.models.entity_type_enum import EntityTypeEnum
 from swagger_client.models.environment import Environment
@@ -35,12 +32,10 @@ from swagger_client.models.fauna_type_enum import FaunaTypeEnum
 from swagger_client.models.flora_type_enum import FloraTypeEnum
 from swagger_client.models.heart_rate_enum import HeartRateEnum
 from swagger_client.models.injury import Injury
-from swagger_client.models.injury_location import InjuryLocation
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from swagger_client.models.injury_severity_enum import InjurySeverityEnum
 from swagger_client.models.injury_status_enum import InjuryStatusEnum
 from swagger_client.models.injury_trigger_enum import InjuryTriggerEnum
-from swagger_client.models.injury_type import InjuryType
 from swagger_client.models.injury_type_enum import InjuryTypeEnum
 from swagger_client.models.intent_enum import IntentEnum
 from swagger_client.models.kdma_value import KDMAValue
@@ -76,9 +71,7 @@ from swagger_client.models.skills import Skills
 from swagger_client.models.sound_restriction_enum import SoundRestrictionEnum
 from swagger_client.models.state import State
 from swagger_client.models.supplies import Supplies
-from swagger_client.models.supply_type import SupplyType
 from swagger_client.models.supply_type_enum import SupplyTypeEnum
-from swagger_client.models.tag_label import TagLabel
 from swagger_client.models.tagging import Tagging
 from swagger_client.models.terrain_type_enum import TerrainTypeEnum
 from swagger_client.models.threat import Threat

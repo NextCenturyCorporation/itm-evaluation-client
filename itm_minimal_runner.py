@@ -52,8 +52,8 @@ from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location import InjuryLocation
-from swagger_client.models.tag_label import TagLabel
+from swagger_client.models.injury_location_enum import InjuryLocationEnum
+from swagger_client.models.character_tag_enum import CharacterTagEnum
 
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -66,8 +66,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
-        available_locations = get_swagger_class_enum_values(InjuryLocation)
-        tag_labels = get_swagger_class_enum_values(TagLabel)
+        available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
+        tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
 
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
