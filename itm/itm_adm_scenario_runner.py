@@ -12,7 +12,7 @@ from swagger_client.models import (
     AlignmentTarget
 )
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location import InjuryLocation
+from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values
 
 
@@ -164,7 +164,7 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
-        available_locations = get_swagger_class_enum_values(InjuryLocation)
+        available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         random_action = random.choice(actions)
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:

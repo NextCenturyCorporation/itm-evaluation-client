@@ -52,8 +52,8 @@ from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location import InjuryLocation
-from swagger_client.models.tag_label import TagLabel
+from swagger_client.models.injury_location_enum import InjuryLocationEnum
+from swagger_client.models.character_tag_enum import CharacterTagEnum
 
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -66,8 +66,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
-        available_locations = get_swagger_class_enum_values(InjuryLocation)
-        tag_labels = get_swagger_class_enum_values(TagLabel)
+        available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
+        tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
 
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
@@ -208,12 +208,17 @@ def main():
             else:
                 alignment_target = None
             state: State = scenario.state
+            current_scene = state.meta_info.scene_id
+            print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
-                print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
+                print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
+                if state.meta_info.scene_id != current_scene:
+                    current_scene = state.meta_info.scene_id
+                    print(f"Changed to scene '{current_scene}'.")
                 if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
