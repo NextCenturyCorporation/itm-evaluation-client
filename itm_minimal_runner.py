@@ -208,12 +208,17 @@ def main():
             else:
                 alignment_target = None
             state: State = scenario.state
+            current_scene = state.meta_info.scene_id
+            print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
-                print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
+                print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
+                if state.meta_info.scene_id != current_scene:
+                    current_scene = state.meta_info.scene_id
+                    print(f"Changed to scene '{current_scene}'.")
                 if args.training:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
