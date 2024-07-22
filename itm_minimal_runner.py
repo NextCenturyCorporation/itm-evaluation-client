@@ -204,7 +204,7 @@ def main():
             print(f'Scenario name: {scenario.name}')
             if session_type != 'test':
                 alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
-                print(f'Alignment target: {alignment_target}')
+                print(f'Alignment target ID: {alignment_target.id if alignment_target else None}')
             else:
                 alignment_target = None
             state: State = scenario.state

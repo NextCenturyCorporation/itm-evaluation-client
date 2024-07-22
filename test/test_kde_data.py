@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.medical_policies_enum import MedicalPoliciesEnum  # noqa: E501
+from swagger_client.models.kde_data import KDEData  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestMedicalPoliciesEnum(unittest.TestCase):
-    """MedicalPoliciesEnum unit test stubs"""
+class TestKDEData(unittest.TestCase):
+    """KDEData unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestMedicalPoliciesEnum(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testMedicalPoliciesEnum(self):
-        """Test MedicalPoliciesEnum"""
+    def testKDEData(self):
+        """Test KDEData"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.medical_policies_enum.MedicalPoliciesEnum()  # noqa: E501
+        # model = swagger_client.models.kde_data.KDEData()  # noqa: E501
         pass
 
 
