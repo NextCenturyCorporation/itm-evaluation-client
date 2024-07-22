@@ -32,6 +32,7 @@ class InjuryTypeEnum(object):
     CHEST_COLLAPSE = "Chest Collapse"
     AMPUTATION = "Amputation"
     BURN = "Burn"
+    ABRASION = "Abrasion"
     BROKEN_BONE = "Broken Bone"
     INTERNAL = "Internal"
     TRAUMATIC_BRAIN_INJURY = "Traumatic Brain Injury"
