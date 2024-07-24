@@ -232,7 +232,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return self.itm.get_session_alignment(self.session_id, target_id)
         except:
             # An exception will occur if no probes have been answered yet.
-            print("Error getting session alignment-- perhaps actions have not answered any TA1 probes.")
+            print("Error getting session alignment-- perhaps actions have not answered any TA1 probes, " \
+                  "or you're running a SoarTech scenrio but haven't yet answered all probes.")
             return None
 
     def get_scenario_state_operation(self):
