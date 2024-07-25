@@ -204,7 +204,7 @@ def main():
             print(f'Scenario name: {scenario.name}')
             if session_type != 'test':
                 alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
-                print(f'Alignment target: {alignment_target}')
+                print(f'Alignment target ID: {alignment_target.id if alignment_target else None}')
             else:
                 alignment_target = None
             state: State = scenario.state
@@ -219,18 +219,23 @@ def main():
                 if state.meta_info.scene_id != current_scene:
                     current_scene = state.meta_info.scene_id
                     print(f"Changed to scene '{current_scene}'.")
-                if args.training:
+                if args.training and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        if session_type == 'soartech':
-                            target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
-                        else:
-                            target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
+                        target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if not args.training:
+            if args.training:
+                try:
+                    if session_type == 'soartech':
+                        target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
+                        print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+                except Exception as e:
+                    # An exception will occur if no probes have been answered yet, so just log this succinctly.
+                    print(e)
+            else:
                 print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1

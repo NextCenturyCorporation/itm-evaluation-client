@@ -9,8 +9,8 @@ import random
 def get_swagger_class_enum_values(klass):
     return [getattr(klass,i) for i in dir(klass) if not i.startswith("_") and isinstance(getattr(klass,i), str)]
 
-soartech_qol_alignment_targets = ['qol_1', 'qol_5', 'qol_9']
-soartech_vol_alignment_targets = ['vol_1', 'vol_5', 'vol_9']
+soartech_qol_alignment_targets = ['15d7b3ed-qol-low', '79f47f55-qol-high']
+soartech_vol_alignment_targets = ['468c49da-vol-high', '8bdb186f-vol-low']
 SOARTECH_QOL_ALIGNMENT = random.choice(soartech_qol_alignment_targets)
 SOARTECH_VOL_ALIGNMENT = random.choice(soartech_vol_alignment_targets)
 adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.1', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.9']
