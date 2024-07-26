@@ -52,8 +52,8 @@ from swagger_client.configuration import Configuration
 from swagger_client.api_client import ApiClient
 from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
 from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location import InjuryLocation
-from swagger_client.models.tag_label import TagLabel
+from swagger_client.models.injury_location_enum import InjuryLocationEnum
+from swagger_client.models.character_tag_enum import CharacterTagEnum
 
     
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -66,8 +66,8 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
 
-        available_locations = get_swagger_class_enum_values(InjuryLocation)
-        tag_labels = get_swagger_class_enum_values(TagLabel)
+        available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
+        tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
 
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
@@ -204,28 +204,38 @@ def main():
             print(f'Scenario name: {scenario.name}')
             if session_type != 'test':
                 alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not args.training else None
-                print(f'Alignment target: {alignment_target}')
+                print(f'Alignment target ID: {alignment_target.id if alignment_target else None}')
             else:
                 alignment_target = None
             state: State = scenario.state
+            current_scene = state.meta_info.scene_id
+            print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
-                print(f'Action type: {action.action_type}; Character ID: {action.character_id}')
+                print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
                 state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
-                if args.training:
+                if state.meta_info.scene_id != current_scene:
+                    current_scene = state.meta_info.scene_id
+                    print(f"Changed to scene '{current_scene}'.")
+                if args.training and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        if session_type == 'soartech':
-                            target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
-                        else:
-                            target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
+                        target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if not args.training:
+            if args.training:
+                try:
+                    if session_type == 'soartech':
+                        target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
+                        print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+                except Exception as e:
+                    # An exception will occur if no probes have been answered yet, so just log this succinctly.
+                    print(e)
+            else:
                 print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
