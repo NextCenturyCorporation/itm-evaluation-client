@@ -15,8 +15,10 @@ Name | Type | Description | Notes
 **choice** | **str** | A valid choice for the specified probe_id | 
 **next_scene** | **str** | The ID of the next scene in the scenario; overrides Scene.next_scene | [optional] 
 **kdma_association** | **dict(str, float)** | KDMA associations for this choice, if provided by TA1 | [optional] 
-**condition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] 
-**conditions** | [**Conditions**](Conditions.md) |  | [optional] 
+**action_condition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] 
+**action_conditions** | [**Conditions**](Conditions.md) |  | [optional] 
+**probe_condition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] 
+**probe_conditions** | [**Conditions**](Conditions.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
