@@ -59,6 +59,7 @@ from swagger_client.models.injury_trigger_enum import InjuryTriggerEnum
 from swagger_client.models.injury_type_enum import InjuryTypeEnum
 from swagger_client.models.intent_enum import IntentEnum
 from swagger_client.models.kde_data import KDEData
+from swagger_client.models.kdma_profile import KDMAProfile
 from swagger_client.models.kdma_value import KDMAValue
 from swagger_client.models.lighting_type_enum import LightingTypeEnum
 from swagger_client.models.medical_policies_enum import MedicalPoliciesEnum

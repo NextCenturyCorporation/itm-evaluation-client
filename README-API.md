@@ -207,6 +207,7 @@ Class | Method | HTTP request | Description
  - [InjuryTypeEnum](docs/InjuryTypeEnum.md)
  - [IntentEnum](docs/IntentEnum.md)
  - [KDEData](docs/KDEData.md)
+ - [KDMAProfile](docs/KDMAProfile.md)
  - [KDMAValue](docs/KDMAValue.md)
  - [LightingTypeEnum](docs/LightingTypeEnum.md)
  - [MedicalPoliciesEnum](docs/MedicalPoliciesEnum.md)
