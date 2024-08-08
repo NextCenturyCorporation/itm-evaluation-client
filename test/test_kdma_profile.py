@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.sim_environment_type_enum import SimEnvironmentTypeEnum  # noqa: E501
+from swagger_client.models.kdma_profile import KDMAProfile  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestSimEnvironmentTypeEnum(unittest.TestCase):
-    """SimEnvironmentTypeEnum unit test stubs"""
+class TestKDMAProfile(unittest.TestCase):
+    """KDMAProfile unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestSimEnvironmentTypeEnum(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testSimEnvironmentTypeEnum(self):
-        """Test SimEnvironmentTypeEnum"""
+    def testKDMAProfile(self):
+        """Test KDMAProfile"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.sim_environment_type_enum.SimEnvironmentTypeEnum()  # noqa: E501
+        # model = swagger_client.models.kdma_profile.KDMAProfile()  # noqa: E501
         pass
 
 
