@@ -111,6 +111,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if medical_supply_index < 0:
                 raise ValueError()
             medical_supply = self.medical_supplies[medical_supply_index].type
+            if self.medical_supplies[medical_supply_index].quantity < 1:
+                print(f'No more {medical_supply} supplies.')
+                return self.prompt_treatment()
         except ValueError:
             return self.prompt_treatment()
         except IndexError:

@@ -164,22 +164,30 @@ class ADMScenarioRunner(ScenarioRunner):
 
     def get_next_action(self, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action]):
+        if not actions:
+            raise Exception("No actions from which to choose...exiting.")
         available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         random_action = random.choice(actions)
+
         # Fill in any missing fields with random values
         if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if random_action.character_id is None:
                 random_action.character_id = self.get_random_character_id(random_action.action_type)
             if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
-
+                configured_supply = random_action.parameters.get('treatment') if random_action.parameters else None
+                supply = configured_supply if configured_supply else self.get_random_supply(state)
+                if not supply or (configured_supply and not self.supply_available(state, configured_supply)):
+                    # No supplies available, so pick another action
+                    print(f"Can't do APPLY_TREATMENT because no {supply}; trying something else.")
+                    actions.remove(random_action)
+                    return self.get_next_action(scenario, state, alignment_target, actions)
                 if not random_action.parameters:
-                    random_action.parameters = {"location": random.choice(available_locations), "treatment": self.get_random_supply(state)}
+                    random_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
-                    if not random_action.parameters.get('location') or random_action.parameters['location'] is None:
+                    if not random_action.parameters.get('location'):
                         random_action.parameters['location'] = random.choice(available_locations)
-                    if not random_action.parameters.get('treatment') or random_action.parameters['treatment'] is None:
-                        random_action.parameters['treatment'] = self.get_random_supply(state)
+                    random_action.parameters['treatment'] = supply
             elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
                 if not random_action.parameters:
                     random_action.parameters = {"category": self.assess_character_priority()}
@@ -191,8 +199,12 @@ class ADMScenarioRunner(ScenarioRunner):
         return random_action
 
     def get_random_supply(self, state: State):
-        supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0]
-        return random.choice(supplies)
+        supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
+        return random.choice(supplies) if supplies else None
+
+    def supply_available(state: State, supply):
+        supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
+        return supply in supplies
 
     def get_random_character_id(self, action_type):
         if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
