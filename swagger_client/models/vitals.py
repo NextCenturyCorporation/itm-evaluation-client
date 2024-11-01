@@ -33,6 +33,7 @@ class Vitals(object):
         'mental_status': 'MentalStatusEnum',
         'breathing': 'BreathingLevelEnum',
         'heart_rate': 'HeartRateEnum',
+        'triss': 'float',
         'spo2': 'BloodOxygenEnum'
     }
 
@@ -42,16 +43,18 @@ class Vitals(object):
         'mental_status': 'mental_status',
         'breathing': 'breathing',
         'heart_rate': 'heart_rate',
+        'triss': 'triss',
         'spo2': 'spo2'
     }
 
-    def __init__(self, avpu=None, ambulatory=None, mental_status=None, breathing=None, heart_rate=None, spo2=None):  # noqa: E501
+    def __init__(self, avpu=None, ambulatory=None, mental_status=None, breathing=None, heart_rate=None, triss=None, spo2=None):  # noqa: E501
         """Vitals - a model defined in Swagger"""  # noqa: E501
         self._avpu = None
         self._ambulatory = None
         self._mental_status = None
         self._breathing = None
         self._heart_rate = None
+        self._triss = None
         self._spo2 = None
         self.discriminator = None
         if avpu is not None:
@@ -64,6 +67,8 @@ class Vitals(object):
             self.breathing = breathing
         if heart_rate is not None:
             self.heart_rate = heart_rate
+        if triss is not None:
+            self.triss = triss
         if spo2 is not None:
             self.spo2 = spo2
 
@@ -173,6 +178,29 @@ class Vitals(object):
         """
 
         self._heart_rate = heart_rate
+
+    @property
+    def triss(self):
+        """Gets the triss of this Vitals.  # noqa: E501
+
+        Trauma Score and Injury Severity Score  # noqa: E501
+
+        :return: The triss of this Vitals.  # noqa: E501
+        :rtype: float
+        """
+        return self._triss
+
+    @triss.setter
+    def triss(self, triss):
+        """Sets the triss of this Vitals.
+
+        Trauma Score and Injury Severity Score  # noqa: E501
+
+        :param triss: The triss of this Vitals.  # noqa: E501
+        :type: float
+        """
+
+        self._triss = triss
 
     @property
     def spo2(self):
