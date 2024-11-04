@@ -14,7 +14,7 @@ soartech_qol_alignment_targets = ['qol-human-8022671-SplitLowMulti-ph1', 'qol-hu
 soartech_vol_alignment_targets = ['vol-human-8478698-SplitLowMulti-ph1', 'vol-human-8022671-SplitHighMulti-ph1', 'vol-synth-LowCluster-ph1']
 # SoarTech group targets
 #soartech_qol_alignment_targets = ['qol-group-target-ph1-1', 'qol-group-target-ph1-2']
-#soartech_vol_alignment_targets = ['vol-group-target-ph1-2', 'vol-group-target-ph1-2']
+#soartech_vol_alignment_targets = ['vol-group-target-ph1-1', 'vol-group-target-ph1-2']
 SOARTECH_QOL_ALIGNMENT = random.choice(soartech_qol_alignment_targets)
 SOARTECH_VOL_ALIGNMENT = random.choice(soartech_vol_alignment_targets)
 
