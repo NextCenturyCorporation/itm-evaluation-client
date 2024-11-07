@@ -183,7 +183,7 @@ class Vitals(object):
     def triss(self):
         """Gets the triss of this Vitals.  # noqa: E501
 
-        Trauma Score and Injury Severity Score  # noqa: E501
+        Trauma and Injury Severity Score, a calculation that combines patient vitals and injury severity to predict a patient's probability of survival   # noqa: E501
 
         :return: The triss of this Vitals.  # noqa: E501
         :rtype: float
@@ -194,7 +194,7 @@ class Vitals(object):
     def triss(self, triss):
         """Sets the triss of this Vitals.
 
-        Trauma Score and Injury Severity Score  # noqa: E501
+        Trauma and Injury Severity Score, a calculation that combines patient vitals and injury severity to predict a patient's probability of survival   # noqa: E501
 
         :param triss: The triss of this Vitals.  # noqa: E501
         :type: float
