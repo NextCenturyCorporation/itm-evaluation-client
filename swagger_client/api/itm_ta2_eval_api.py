@@ -659,7 +659,7 @@ class ItmTa2EvalApi(object):
         :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval`, `test`, or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
-        :param bool kdma_training: whether or not this is a training session with TA2
+        :param str kdma_training: whether this is a `full`, `solo`, or non-training session with TA2
         :param int max_scenarios: the maximum number of scenarios requested, not supported in `eval` sessions
         :return: str
                  If the method is called asynchronously,
@@ -685,7 +685,7 @@ class ItmTa2EvalApi(object):
         :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval`, `test`, or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
-        :param bool kdma_training: whether or not this is a training session with TA2
+        :param str kdma_training: whether this is a `full`, `solo`, or non-training session with TA2
         :param int max_scenarios: the maximum number of scenarios requested, not supported in `eval` sessions
         :return: str
                  If the method is called asynchronously,
