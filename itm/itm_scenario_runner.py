@@ -19,8 +19,8 @@ SOARTECH_QOL_ALIGNMENT = random.choice(soartech_qol_alignment_targets)
 SOARTECH_VOL_ALIGNMENT = random.choice(soartech_vol_alignment_targets)
 
 # Some ADEPT individual targets
-adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.1', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.9']
-adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-0.1', 'ADEPT-DryRun-Ingroup Bias-0.5', 'ADEPT-DryRun-Ingroup Bias-0.9']
+adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.2', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.8']
+adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-0.2', 'ADEPT-DryRun-Ingroup Bias-0.5', 'ADEPT-DryRun-Ingroup Bias-0.8']
 # ADEPT group targets
 #adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-Group-Low', 'ADEPT-DryRun-Moral judgement-Group-High']
 #adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-Group-Low', 'ADEPT-DryRun-Ingroup Bias-Group-High']
