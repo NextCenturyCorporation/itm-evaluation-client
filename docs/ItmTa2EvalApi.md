@@ -333,7 +333,7 @@ api_instance = swagger_client.ItmTa2EvalApi()
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.
 session_type = 'session_type_example' # str | the type of session to start (`eval`, `test`, or a TA1 name)
 adm_profile = 'adm_profile_example' # str | a profile of the ADM in terms of its alignment strategy (optional)
-kdma_training = false # bool | whether or not this is a training session with TA2 (optional) (default to false)
+kdma_training = 'kdma_training_example' # str | whether this is a `full`, `solo`, or non-training session with TA2 (optional)
 max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
@@ -351,7 +351,7 @@ Name | Type | Description  | Notes
  **adm_name** | **str**| A self-assigned ADM name. | 
  **session_type** | **str**| the type of session to start (&#x60;eval&#x60;, &#x60;test&#x60;, or a TA1 name) | 
  **adm_profile** | **str**| a profile of the ADM in terms of its alignment strategy | [optional] 
- **kdma_training** | **bool**| whether or not this is a training session with TA2 | [optional] [default to false]
+ **kdma_training** | **str**| whether this is a &#x60;full&#x60;, &#x60;solo&#x60;, or non-training session with TA2 | [optional] 
  **max_scenarios** | **int**| the maximum number of scenarios requested, not supported in &#x60;eval&#x60; sessions | [optional] 
 
 ### Return type

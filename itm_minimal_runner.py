@@ -1,8 +1,8 @@
 """
-This script is a simple example for running ITM-TA2 evaluation 
+This script is a simple example for running ITM-TA2 evaluation
 scenarios through an ItmTa2EvalApi hosted on a local server.
 
-Sessions are initiated with a specified session type and a maximum scenario limit. 
+Sessions are initiated with a specified session type and a maximum scenario limit.
 The script starts a session and then enters a loop:
 
 1. Starts a scenario in that session.
@@ -13,13 +13,14 @@ The script starts a session and then enters a loop:
    If it is, then it ends the scenario.
 
 Session types can be 'eval', 'test', 'adept', or 'soartech'. If the 'eval'
-argument is used, then an eval session type is initiated. 
+argument is used, then an eval session type is initiated.
 It uses argparse to handle command-line arguments for the
 session type, scenario count, and adm_name.
 
 The kdma_training flag, when present, will put the server in training mode
 in which it shows the kdma association for each action choice.  When this
-flag is not set, the get_session_alignment operation is disabled.  Please note
+flag is set to `full`, then session alignment can be obtained.  When this
+flag is set to `solo`, the get_session_alignment operation is disabled.  Please note
 that you will receive an error if you request session alignment before any
 TA1 probes have been answered.
 
@@ -55,7 +56,7 @@ from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from swagger_client.models.character_tag_enum import CharacterTagEnum
 
-    
+
 def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                     actions: List[Action], paths, index: int, path_index: int):
         if not actions:
@@ -129,18 +130,18 @@ def get_random_aid_id(state: State):
 
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM simulator.')
-    parser.add_argument('--name', metavar='adm_name', required=True, 
+    parser.add_argument('--name', metavar='adm_name', required=True,
                         help='Specify the ADM name')
-    parser.add_argument('--profile', metavar='adm_profile', required=False, 
-                        help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--session', required=True, metavar='session_type', help=\
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
+    parser.add_argument('--profile', metavar='adm_profile', required=False,
+                        help='Specify the ADM profile in terms of its alignment strategy')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
                         'accordance with server defaults. Not supported in `eval` sessions.')
-    parser.add_argument('--training', action='store_true', default=False,
-                        help='Put the server in training mode in which it returns the KDMA '
-                        'association for each action choice. Not supported in `eval` or `test` sessions.')
+    parser.add_argument('--training', metavar='training_mode', default=None,
+                        help='Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each '
+                        'action choice. `full` training mode also allows calls for session alignment. Not supported in `eval` or `test` sessions.')
     parser.add_argument('--scenario', type=str, metavar='scenario_id',
                         help='Specify a scenario_id to run. Incompatible with count parameter '
                         'and `eval` sessions.')
@@ -148,11 +149,13 @@ def main():
     args = parser.parse_args()
     scenario_id = args.scenario
     scenario_count = args.count
-    if args.session:
-        if args.session not in ['soartech', 'adept', 'eval', 'test']:
-            parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
-        else:
-            session_type = args.session
+    if args.session not in ['soartech', 'adept', 'eval', 'test']:
+        parser.error("Invalid session type. It must be one of 'soartech', 'adept', 'test', or 'eval'.")
+    else:
+        session_type = args.session
+
+    if args.training and args.training not in ['full', 'solo']:
+        parser.error("Invalid training mode. It must be 'full' or 'solo' (or omitted entirely).")
 
     if session_type == 'eval':
         if scenario_id:
@@ -232,7 +235,7 @@ def main():
                 if state.meta_info.scene_id != current_scene:
                     current_scene = state.meta_info.scene_id
                     print(f"Changed to scene '{current_scene}'.")
-                if args.training and session_type == 'adept':
+                if args.training == 'full' and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
@@ -240,7 +243,7 @@ def main():
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if args.training:
+            if args.training == 'full':
                 try:
                     if session_type == 'soartech':
                         target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
@@ -248,8 +251,7 @@ def main():
                 except Exception as e:
                     # An exception will occur if no probes have been answered yet, so just log this succinctly.
                     print(e)
-            else:
-                print(f'{state.unstructured}')
+            print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
         action_path_index=0

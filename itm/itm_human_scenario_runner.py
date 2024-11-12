@@ -27,7 +27,7 @@ class TagTypes(Enum):
 ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, kdma_training=False, max_scenarios=-1, scenario_id=None):
+    def __init__(self, session_type, kdma_training=None, max_scenarios=-1, scenario_id=None):
         super().__init__()
         self.username = session_type + " ITM Human"
         self.session_type = session_type
@@ -225,8 +225,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return "No active session; please start a session first."
         if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
-        if self.kdma_training == False:
-            return "Session alignment can only be requested during a training session."
+        if self.kdma_training != 'full':
+            return "Session alignment can only be requested during a full training session."
         try:
             if self.session_type == 'soartech':
                 target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in self.scenario_id else SOARTECH_VOL_ALIGNMENT
