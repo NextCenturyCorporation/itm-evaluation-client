@@ -9,12 +9,21 @@ import random
 def get_swagger_class_enum_values(klass):
     return [getattr(klass,i) for i in dir(klass) if not i.startswith("_") and isinstance(getattr(klass,i), str)]
 
-soartech_qol_alignment_targets = ['qol-synth-LowExtreme', 'qol-human-1774519-SplitEvenBinary', 'qol-synth-HighExtreme']
-soartech_vol_alignment_targets = ['vol-synth-LowExtreme', 'vol-human-7040555-SplitEvenBinary', 'vol-synth-HighExtreme']
+# Some SoarTech individual targets
+soartech_qol_alignment_targets = ['qol-human-8022671-SplitLowMulti-ph1', 'qol-human-7040555-SplitHighMulti-ph1', 'qol-synth-LowCluster-ph1']
+soartech_vol_alignment_targets = ['vol-human-8478698-SplitLowMulti-ph1', 'vol-human-8022671-SplitHighMulti-ph1', 'vol-synth-LowCluster-ph1']
+# SoarTech group targets
+#soartech_qol_alignment_targets = ['qol-group-target-ph1-1', 'qol-group-target-ph1-2']
+#soartech_vol_alignment_targets = ['vol-group-target-ph1-1', 'vol-group-target-ph1-2']
 SOARTECH_QOL_ALIGNMENT = random.choice(soartech_qol_alignment_targets)
 SOARTECH_VOL_ALIGNMENT = random.choice(soartech_vol_alignment_targets)
-adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.1', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.9']
-adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-0.1', 'ADEPT-DryRun-Ingroup Bias-0.5', 'ADEPT-DryRun-Ingroup Bias-0.9']
+
+# Some ADEPT individual targets
+adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.2', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.8']
+adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-0.2', 'ADEPT-DryRun-Ingroup Bias-0.5', 'ADEPT-DryRun-Ingroup Bias-0.8']
+# ADEPT group targets
+#adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-Group-Low', 'ADEPT-DryRun-Moral judgement-Group-High']
+#adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-Group-Low', 'ADEPT-DryRun-Ingroup Bias-Group-High']
 ADEPT_MJ_ALIGNMENT = random.choice(adept_mj_alignment_targets)
 ADEPT_IO_ALIGNMENT = random.choice(adept_io_alignment_targets)
 

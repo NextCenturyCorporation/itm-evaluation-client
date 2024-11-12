@@ -47,21 +47,21 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --name adm_name [--profile adm_profile] --session session_type [--count scenario_count]
-                             [--training] [--scenario scenario_id]
+usage: itm_minimal_runner.py [-h] --name adm_name --session session_type [--profile adm_profile] [--count scenario_count]
+                             [--training training_mode] [--scenario scenario_id]
 
 Runs ADM simulator.
 
 options:
-  -h, --help              Show this help message and exit
-  --name adm_name         Specify the ADM name
-  --profile adm_profile   Specify the ADM profile in terms of its alignment strategy
-  --session session_type  Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
-  --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
-                          supported in `eval` sessions.
-  --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
-                          in `eval` or `test` sessions.
-  --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
+  -h, --help               Show this help message and exit
+  --name adm_name          Specify the ADM name
+  --session session_type   Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
+  --profile adm_profile    Specify the ADM profile in terms of its alignment strategy
+  --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
+                           supported in `eval` sessions.
+  --training training_mode Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each
+                           action choice. `full` training mode also allows calls for session alignment. Not supported in `eval` or `test` sessions.
+  --scenario scenario_id   Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
 ### Running the Human input simulator
@@ -71,18 +71,18 @@ The Human input simulator is used for testing specific action/parameter sequence
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] --session session_type [--count scenario_count] [--training] [--scenario scenario_id]
+usage: itm_human_input.py [-h] --session session_type [--count scenario_count] [--training training_mode] [--scenario scenario_id]
 
 Runs Human input simulator.
 
 options:
-  -h, --help              Show this help message and exit
-  --session session_type  Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
-  --count scenario_count  Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
-                          supported in `eval` sessions.
-  --training              Put the server in training mode in which it returns the KDMA association for each action choice. Not supported
-                          in `eval` or `test` sessions.
-  --scenario scenario_id  Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
+  -h, --help               Show this help message and exit
+  --session session_type   Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
+  --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
+                           supported in `eval` sessions.
+  --training training_mode Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each
+                           action choice. `full` training mode also allows calls for session alignment. Not supported in `eval` or `test` sessions.
+  --scenario scenario_id   Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
 ### Available Actions
@@ -137,7 +137,7 @@ Further details can be found in the ITM Server FAQ below.
 ### ITM TA3 Server FAQ
 
 1. What are "certain basic vitals" from the action descriptions above?
-   * Basic vitals include `avpu`, `ambulatory`, `mental_status`, and `breathing`. These are revealed by `SITREP`, `APPLY_TREATMENT`, and all `CHECK_*` actions.
+   * Basic vitals include `avpu`, `ambulatory`, `mental_status`, `triss`, and `breathing`. These are revealed by `SITREP`, `APPLY_TREATMENT`, and all `CHECK_*` actions.
 2. What is a "scene" and how do I know when a scene has changed?
    * It can be confusing because a scene can mean a few different things:
      * A scene is a narrative construct, where within a scenario a human decision-maker moves between one physical area and another, each with a different set of characters.  The human in the sim literally moves (or is teleported) to a different scene, whereas the ADM gets an updated state with changes to structured and unstructured data, conveying the scene change.
