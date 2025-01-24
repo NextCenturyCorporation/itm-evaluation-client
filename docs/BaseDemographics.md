@@ -1,4 +1,4 @@
-# Demographics
+# BaseDemographics
 
 ## Properties
 Name | Type | Description | Notes

@@ -1,4 +1,4 @@
-# Conditions
+# BaseConditions
 
 ## Properties
 Name | Type | Description | Notes

@@ -1,4 +1,4 @@
-# Character
+# BaseCharacter
 
 ## Properties
 Name | Type | Description | Notes
