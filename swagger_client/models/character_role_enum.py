@@ -31,6 +31,7 @@ class CharacterRoleEnum(object):
     MEDICAL = "Medical"
     SPECIALIST = "Specialist"
     COMMUNICATIONS = "Communications"
+    UNKNOWN = "Unknown"
     """
     Attributes:
       swagger_types (dict): The key is attribute name

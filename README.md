@@ -225,6 +225,10 @@ Further details can be found in the ITM Server FAQ below.
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.
 
-The models in swagger_server/models are generated from swagger_server/swagger/swagger.yaml
-If this file is updated the models will need to be re-generated and checked in.
+The models in swagger_client/models are generated from the following file:
+* `swagger/swagger.yaml`
+
+If this file is updated it will need to be re-generated and checked in.
 Run `./gradlew` to do this.
+
+**NOTE**: When you regenerate models, this will remove the allowed enum values in `action_type_enum.py`, `character_role_enum.py`, and `threat_type_enum.py`.  If you make changes to these model objects (presumably by adding enums), you'll need to undo the generated changes and add your new enum values manually.  See [this OpenAPI issue](https://github.com/OAI/OpenAPI-Specification/issues/1552) for background info.
