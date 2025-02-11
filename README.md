@@ -47,8 +47,8 @@ pip3 install -r requirements.txt
  Run `itm_minimal_runner.py` in the root directory:
 
 ```
-usage: itm_minimal_runner.py [-h] --name adm_name --session session_type [--profile adm_profile] [--count scenario_count]
-                             [--training training_mode] [--scenario scenario_id]
+usage: itm_minimal_runner.py [-h] --name adm_name --session session_type [--profile adm_profile] [--domain domain_name]
+                             [--count scenario_count] [--training training_mode] [--scenario scenario_id]
 
 Runs ADM simulator.
 
@@ -57,6 +57,7 @@ options:
   --name adm_name          Specify the ADM name
   --session session_type   Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
   --profile adm_profile    Specify the ADM profile in terms of its alignment strategy
+  --domain domain_name     Specify the domain for the session, or use the server default
   --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
                            supported in `eval` sessions.
   --training training_mode Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each
@@ -71,13 +72,15 @@ The Human input simulator is used for testing specific action/parameter sequence
 Inside the root directory, run `itm_human_input.py`:
 
 ```
-usage: itm_human_input.py [-h] --session session_type [--count scenario_count] [--training training_mode] [--scenario scenario_id]
+usage: itm_human_input.py [-h] --session session_type [--domain domain_name] [--count scenario_count]
+                          [--training training_mode] [--scenario scenario_id]
 
 Runs Human input simulator.
 
 options:
   -h, --help               Show this help message and exit
   --session session_type   Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
+  --domain domain_name     Specify the domain for the session, or use the server default
   --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
                            supported in `eval` sessions.
   --training training_mode Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each

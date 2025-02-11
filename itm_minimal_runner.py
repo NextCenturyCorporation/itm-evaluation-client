@@ -136,6 +136,8 @@ def main():
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
     parser.add_argument('--profile', metavar='adm_profile', required=False,
                         help='Specify the ADM profile in terms of its alignment strategy')
+    parser.add_argument('--domain', metavar='domain_name', required=False,
+                        help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
                         'accordance with server defaults. Not supported in `eval` sessions.')
@@ -199,12 +201,14 @@ def main():
             session_id = itm.start_session(
                 adm_name=args.name,
                 adm_profile=args.profile,
+                domain=args.domain,
                 session_type='eval'
             )
         else:
             session_id = itm.start_session(
                 adm_name=args.name,
                 adm_profile=args.profile,
+                domain=args.domain,
                 session_type=session_type,
                 max_scenarios=scenario_count,
                 kdma_training=args.training
