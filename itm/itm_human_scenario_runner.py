@@ -27,11 +27,12 @@ class TagTypes(Enum):
 ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, kdma_training=None, max_scenarios=-1, scenario_id=None):
+    def __init__(self, session_type, domain=None, kdma_training=None, max_scenarios=-1, scenario_id=None):
         super().__init__()
         self.username = session_type + " ITM Human"
         self.session_type = session_type
         self.kdma_training = kdma_training
+        self.domain = domain
         if max_scenarios > 0:
             self.max_scenarios = max_scenarios
         else:
@@ -203,9 +204,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, username):
         if self.session_id is None:
             if self.max_scenarios is None:
-                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."

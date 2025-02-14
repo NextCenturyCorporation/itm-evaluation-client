@@ -314,7 +314,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **start_session**
-> str start_session(adm_name, session_type, adm_profile=adm_profile, kdma_training=kdma_training, max_scenarios=max_scenarios)
+> str start_session(adm_name, session_type, adm_profile=adm_profile, domain=domain, kdma_training=kdma_training, max_scenarios=max_scenarios)
 
 Start a new session
 
@@ -333,12 +333,13 @@ api_instance = swagger_client.ItmTa2EvalApi()
 adm_name = 'adm_name_example' # str | A self-assigned ADM name.
 session_type = 'session_type_example' # str | the type of session to start (`eval`, `test`, or a TA1 name)
 adm_profile = 'adm_profile_example' # str | a profile of the ADM in terms of its alignment strategy (optional)
+domain = 'domain_example' # str | A domain supported by the ITM evaluation server (optional)
 kdma_training = 'kdma_training_example' # str | whether this is a `full`, `solo`, or non-training session with TA2 (optional)
 max_scenarios = 56 # int | the maximum number of scenarios requested, not supported in `eval` sessions (optional)
 
 try:
     # Start a new session
-    api_response = api_instance.start_session(adm_name, session_type, adm_profile=adm_profile, kdma_training=kdma_training, max_scenarios=max_scenarios)
+    api_response = api_instance.start_session(adm_name, session_type, adm_profile=adm_profile, domain=domain, kdma_training=kdma_training, max_scenarios=max_scenarios)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ItmTa2EvalApi->start_session: %s\n" % e)
@@ -351,6 +352,7 @@ Name | Type | Description  | Notes
  **adm_name** | **str**| A self-assigned ADM name. | 
  **session_type** | **str**| the type of session to start (&#x60;eval&#x60;, &#x60;test&#x60;, or a TA1 name) | 
  **adm_profile** | **str**| a profile of the ADM in terms of its alignment strategy | [optional] 
+ **domain** | **str**| A domain supported by the ITM evaluation server | [optional] 
  **kdma_training** | **str**| whether this is a &#x60;full&#x60;, &#x60;solo&#x60;, or non-training session with TA2 | [optional] 
  **max_scenarios** | **int**| the maximum number of scenarios requested, not supported in &#x60;eval&#x60; sessions | [optional] 
 

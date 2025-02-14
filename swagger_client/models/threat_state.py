@@ -49,7 +49,7 @@ class ThreatState(object):
     def unstructured(self):
         """Gets the unstructured of this ThreatState.  # noqa: E501
 
-        Natural language, plain text description of environmental threats  # noqa: E501
+        Natural language, plain text description of environmental risks or threats  # noqa: E501
 
         :return: The unstructured of this ThreatState.  # noqa: E501
         :rtype: str
@@ -60,7 +60,7 @@ class ThreatState(object):
     def unstructured(self, unstructured):
         """Sets the unstructured of this ThreatState.
 
-        Natural language, plain text description of environmental threats  # noqa: E501
+        Natural language, plain text description of environmental risks or threats  # noqa: E501
 
         :param unstructured: The unstructured of this ThreatState.  # noqa: E501
         :type: str

@@ -659,6 +659,7 @@ class ItmTa2EvalApi(object):
         :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval`, `test`, or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
+        :param str domain: A domain supported by the ITM evaluation server
         :param str kdma_training: whether this is a `full`, `solo`, or non-training session with TA2
         :param int max_scenarios: the maximum number of scenarios requested, not supported in `eval` sessions
         :return: str
@@ -685,6 +686,7 @@ class ItmTa2EvalApi(object):
         :param str adm_name: A self-assigned ADM name. (required)
         :param str session_type: the type of session to start (`eval`, `test`, or a TA1 name) (required)
         :param str adm_profile: a profile of the ADM in terms of its alignment strategy
+        :param str domain: A domain supported by the ITM evaluation server
         :param str kdma_training: whether this is a `full`, `solo`, or non-training session with TA2
         :param int max_scenarios: the maximum number of scenarios requested, not supported in `eval` sessions
         :return: str
@@ -692,7 +694,7 @@ class ItmTa2EvalApi(object):
                  returns the request thread.
         """
 
-        all_params = ['adm_name', 'session_type', 'adm_profile', 'kdma_training', 'max_scenarios']  # noqa: E501
+        all_params = ['adm_name', 'session_type', 'adm_profile', 'domain', 'kdma_training', 'max_scenarios']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -727,6 +729,8 @@ class ItmTa2EvalApi(object):
             query_params.append(('adm_profile', params['adm_profile']))  # noqa: E501
         if 'session_type' in params:
             query_params.append(('session_type', params['session_type']))  # noqa: E501
+        if 'domain' in params:
+            query_params.append(('domain', params['domain']))  # noqa: E501
         if 'kdma_training' in params:
             query_params.append(('kdma_training', params['kdma_training']))  # noqa: E501
         if 'max_scenarios' in params:
