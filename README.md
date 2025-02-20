@@ -178,3 +178,20 @@ If this file is updated it will need to be re-generated and checked in.
 Run `./gradlew` to do this.
 
 **NOTE**: When you regenerate models, this will remove the allowed enum values in `action_type_enum.py`, `character_role_enum.py`, and `threat_type_enum.py`.  If you make changes to these model objects (presumably by adding enums), you'll need to undo the generated changes and add your new enum values manually.  See [this OpenAPI issue](https://github.com/OAI/OpenAPI-Specification/issues/1552) for background info.
+
+## Adding a TA1
+To add a TA1, you'll need to create or modify several files:
+1. Modify `itm/itm_scenario_runner.py`:
+   a. Add `<ta1>_<kdma>_alignment_targets` in a new section alongside the other TA1s.
+   b. Add corresponding variables like `<TA1>_<KDMA>_ALIGNMENT` to the same section.
+2. Modify `./itm_minimal_runner.py`:
+   a. Import the `<TA1>_<KDMA>_ALIGNMENT` constants defined in Step 1.
+   b. Modify `main()` to add your TA1 to the command line arguments, e.g., `parser.add_argument()` and the `args.session` test.
+   c. If your server supports session alignment for partial sessions, then add your TA1 name to the main `while` loop; otherwise add it to the `if` statement directly thereafter.
+3. Create `swagger_client/config/<ta1>_action_path.json`:
+   a. At a minimum, set `enabled`, and create `paths` with one `path` that is (nominally) a list of action IDs.
+   b. If `enabled` is false, then the action IDs can be meaningless.
+4. If you want to be able to run the Human input simulator, then:
+   a. Modify `main()` in `./itm_human_input.py` much as you updated `./itm_minimal_runner.py` in Step 2b to add your TA1 to the command line arguments.
+   b. Modify `.itm/itm_human_scenario_runner.py` to import the `<TA1>_<KDMA>_ALIGNMENT` constants much as you did in Step 2a. Also include your TA1 in the try-catch block in `get_session_alignment_operation`.
+   
