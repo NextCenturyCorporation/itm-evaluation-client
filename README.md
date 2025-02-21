@@ -6,6 +6,8 @@ This README provides a guide to set up and run the TA3 ITM sample client applica
 
 Ensure you have Python 3.10 installed on your system. If you don't have it installed, you can download it from the [official Python website](https://www.python.org/downloads/).
 
+FOOBAR!
+
 ## Setup
 
 1. First, we need to setup a Python virtual environment. Navigate to the directory where you cloned the repository and run the following command to create a new virtual environment:
