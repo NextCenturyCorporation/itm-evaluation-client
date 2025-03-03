@@ -48,6 +48,7 @@ openApiGenerate {
     generatorName = "python"
     inputSpec = "$projectDir/$apiDirectory/swagger.yaml".toString()
     outputDir = "$projectDir/$generatedApiDirectory".toString()
+    ignoreFileOverride = "$projectDir/.openapi-generator-ignore".toString()
     packageName = "$outputDirectory".toString()
     globalProperties = [
             modelDocs: "true"

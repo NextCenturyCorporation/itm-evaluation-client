@@ -177,7 +177,7 @@ The models in swagger_client/models are generated from the following file:
 If this file is updated it will need to be re-generated and checked in.
 Run `./gradlew` to do this.
 
-**NOTE**: When you regenerate models, this will remove the allowed enum values in `action_type_enum.py`, `character_role_enum.py`, and `threat_type_enum.py`.  If you make changes to these model objects (presumably by adding enums), you'll need to undo the generated changes and add your new enum values manually.  See [this OpenAPI issue](https://github.com/OAI/OpenAPI-Specification/issues/1552) for background info.
+**NOTE**: When you regenerate models, three files will not be regenerated: `action_type_enum.py`, `character_role_enum.py`, and `threat_type_enum.py`.  If you make changes to these model objects (presumably by adding enums), you'll need to add your new enum values manually.  See [this OpenAPI issue](https://github.com/OAI/OpenAPI-Specification/issues/1552) for background info.
 
 ## Adding a TA1
 To add a TA1, you'll need to create or modify several files:
