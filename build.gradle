@@ -50,7 +50,7 @@ openApiGenerate {
     outputDir = "$projectDir/$generatedApiDirectory".toString()
     packageName = "$outputDirectory".toString()
     globalProperties = [
-            modelDocs: "false"
+            modelDocs: "true"
     ]
     skipValidateSpec = true
     logToStderr = true
