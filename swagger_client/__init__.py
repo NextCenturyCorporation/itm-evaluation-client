@@ -54,7 +54,6 @@ from swagger_client.models.domain_action_type_enum import DomainActionTypeEnum
 from swagger_client.models.domain_character import DomainCharacter
 from swagger_client.models.domain_character_role_enum import DomainCharacterRoleEnum
 from swagger_client.models.domain_conditions import DomainConditions
-from swagger_client.models.domain_conditions_character_vitals import DomainConditionsCharacterVitals
 from swagger_client.models.domain_demographics import DomainDemographics
 from swagger_client.models.domain_state import DomainState
 from swagger_client.models.domain_threat_type_enum import DomainThreatTypeEnum
