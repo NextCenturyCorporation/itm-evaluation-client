@@ -26,17 +26,14 @@ task swaggerClean(type: Delete) {
 }
 
 // Define a task for validating the primary YAML
-task validateMainSpec(type: org.openapitools.generator.gradle.plugin.tasks.ValidateTask) {
-    inputSpec.set("$projectDir/$apiDirectory/swagger.yaml")
+task validate(type: org.openapitools.generator.gradle.plugin.tasks.ValidateTask) {
+    inputSpec.set("$projectDir/$apiDirectory/base_swagger.yaml")
 }
 
-// Define a task for validating the domain-specific YAML
+// Define a task for validating the domain-specific YAML in isolation
 task validateDomainSpec(type: org.openapitools.generator.gradle.plugin.tasks.ValidateTask) {
     inputSpec.set("$projectDir/$apiDirectory/domain_swagger.yaml")
 }
-
-// Define a task to validate all YAML files
-task validate(dependsOn: ['validateMainSpec', 'validateDomainSpec'])
 
 // Define a task to clean then generate
 task generate {
@@ -46,7 +43,7 @@ task generate {
 
 openApiGenerate {
     generatorName = "python"
-    inputSpec = "$projectDir/$apiDirectory/swagger.yaml".toString()
+    inputSpec = "$projectDir/$apiDirectory/base_swagger.yaml".toString()
     outputDir = "$projectDir/$generatedApiDirectory".toString()
     ignoreFileOverride = "$projectDir/.openapi-generator-ignore".toString()
     packageName = "$outputDirectory".toString()

@@ -36,7 +36,7 @@ class TestActionMapping(unittest.TestCase):
         if include_optional:
             return ActionMapping(
                 action_id = 'action_01',
-                action_type = '',
+                action_type = 'END_SCENE',
                 unstructured = '',
                 repeatable = True,
                 character_id = '',
@@ -57,7 +57,7 @@ class TestActionMapping(unittest.TestCase):
         else:
             return ActionMapping(
                 action_id = 'action_01',
-                action_type = '',
+                action_type = 'END_SCENE',
                 unstructured = '',
                 probe_id = '',
                 choice = '',

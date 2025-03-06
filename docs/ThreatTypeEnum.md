@@ -2,28 +2,30 @@
 
 the type or nature of the threat
 
-## Properties
+## Enum
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
+* `UNKNOWN` (value: `'Unknown'`)
 
-## Example
+* `CIVIL_UNREST` (value: `'Civil unrest'`)
 
-```python
-from swagger_client.models.threat_type_enum import ThreatTypeEnum
+* `DRONE_ACTIVITY` (value: `'Drone activity'`)
 
-# TODO update the JSON string below
-json = "{}"
-# create an instance of ThreatTypeEnum from a JSON string
-threat_type_enum_instance = ThreatTypeEnum.from_json(json)
-# print the JSON string representation of the object
-print(ThreatTypeEnum.to_json())
+* `EXTREME_WEATHER` (value: `'Extreme weather'`)
 
-# convert the object into a dict
-threat_type_enum_dict = threat_type_enum_instance.to_dict()
-# create an instance of ThreatTypeEnum from a dict
-threat_type_enum_from_dict = ThreatTypeEnum.from_dict(threat_type_enum_dict)
-```
+* `FIRE` (value: `'Fire'`)
+
+* `GUNFIRE` (value: `'Gunfire'`)
+
+* `IED_ACTIVITY` (value: `'IED activity'`)
+
+* `MINES` (value: `'Mines'`)
+
+* `POISONOUS_VEGETATION` (value: `'Poisonous vegetation'`)
+
+* `PREDATORS` (value: `'Predators'`)
+
+* `UNSTABLE_STRUCTURE` (value: `'Unstable structure'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

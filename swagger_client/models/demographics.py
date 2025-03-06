@@ -94,9 +94,6 @@ class Demographics(BaseModel):
                 if _item_skills:
                     _items.append(_item_skills.to_dict())
             _dict['skills'] = _items
-        # override the default output from pydantic by calling `to_dict()` of role
-        if self.role:
-            _dict['role'] = self.role.to_dict()
         return _dict
 
     @classmethod
@@ -118,7 +115,7 @@ class Demographics(BaseModel):
             "age": obj.get("age"),
             "sex": obj.get("sex"),
             "race": obj.get("race"),
-            "role": CharacterRoleEnum.from_dict(obj["role"]) if obj.get("role") is not None else None
+            "role": obj.get("role")
         })
         return _obj
 

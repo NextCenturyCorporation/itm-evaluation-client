@@ -75,9 +75,6 @@ class BaseDemographics(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of role
-        if self.role:
-            _dict['role'] = self.role.to_dict()
         return _dict
 
     @classmethod
@@ -93,7 +90,7 @@ class BaseDemographics(BaseModel):
             "age": obj.get("age"),
             "sex": obj.get("sex"),
             "race": obj.get("race"),
-            "role": CharacterRoleEnum.from_dict(obj["role"]) if obj.get("role") is not None else None
+            "role": obj.get("role")
         })
         return _obj
 

@@ -171,13 +171,11 @@ Further details about these actions can be found in the ITM Server FAQ below.  D
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.
 
-The models in swagger_client/models are generated from the following file:
-* `swagger/swagger.yaml`
+The models in swagger_server/models are generated from the following file:
+* `swagger/base_swagger.yaml`
 
-If this file is updated it will need to be re-generated and checked in.
+If this file is updated then the models will need to be re-generated from this file and checked in.
 Run `./gradlew` to do this.
-
-**NOTE**: When you regenerate models, three files will not be regenerated: `action_type_enum.py`, `character_role_enum.py`, and `threat_type_enum.py`.  If you make changes to these model objects (presumably by adding enums), you'll need to add your new enum values manually.  See [this OpenAPI issue](https://github.com/OAI/OpenAPI-Specification/issues/1552) for background info.
 
 ## Adding a TA1
 To add a TA1, you'll need to create or modify several files:
@@ -194,4 +192,3 @@ To add a TA1, you'll need to create or modify several files:
 4. If you want to be able to run the Human input simulator, then:
    a. Modify `main()` in `./itm_human_input.py` much as you updated `./itm_minimal_runner.py` in Step 2b to add your TA1 to the command line arguments.
    b. Modify `.itm/itm_human_scenario_runner.py` to import the `<TA1>_<KDMA>_ALIGNMENT` constants much as you did in Step 2a. Also include your TA1 in the try-catch block in `get_session_alignment_operation`.
-   

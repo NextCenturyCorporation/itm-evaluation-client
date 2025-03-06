@@ -79,9 +79,6 @@ class Action(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of action_type
-        if self.action_type:
-            _dict['action_type'] = self.action_type.to_dict()
         # override the default output from pydantic by calling `to_dict()` of threat_state
         if self.threat_state:
             _dict['threat_state'] = self.threat_state.to_dict()
@@ -98,7 +95,7 @@ class Action(BaseModel):
 
         _obj = cls.model_validate({
             "action_id": obj.get("action_id"),
-            "action_type": ActionTypeEnum.from_dict(obj["action_type"]) if obj.get("action_type") is not None else None,
+            "action_type": obj.get("action_type"),
             "intent_action": obj.get("intent_action") if obj.get("intent_action") is not None else False,
             "unstructured": obj.get("unstructured"),
             "character_id": obj.get("character_id"),

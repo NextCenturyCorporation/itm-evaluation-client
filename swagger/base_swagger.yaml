@@ -954,12 +954,29 @@ components:
       description: the type or nature of the threat
       enum:
         - Unknown
+# When oneOf is supported for extensible enums someday:
+#    ThreatTypeEnum:
+#      oneOf: # Combines the BaseThreatTypeEnum and the domain-level theat type enum
+#        - $ref: "#/components/schemas/BaseThreatTypeEnum"
+#        - $ref: "domain_swagger.yaml#/components/schemas/DomainThreatTypeEnum"
+#      type: string
+#      description: the type or nature of the threat; includes base and domain-specific threat types
+# Until then, expand then entries in BaseThreatTypeEnum with domain-specific action types:
     ThreatTypeEnum:
-      oneOf: # Combines the BaseThreatTypeEnum and the domain-level theat type enum
-        - $ref: "#/components/schemas/BaseThreatTypeEnum"
-        - $ref: "domain_swagger.yaml#/components/schemas/DomainThreatTypeEnum"
       type: string
       description: the type or nature of the threat
+      enum:
+        - Unknown
+        - Civil unrest
+        - Drone activity
+        - Extreme weather
+        - Fire
+        - Gunfire
+        - IED activity
+        - Mines
+        - Poisonous vegetation
+        - Predators
+        - Unstable structure
     ThreatSeverityEnum:
       type: string
       description: how dangerous and/or imminent the threat is
@@ -1011,12 +1028,26 @@ components:
       description: The primary role a character has in the scene
       enum:
         - Unknown
+# When oneOf is supported for extensible enums someday:
+#    CharacterRoleEnum:
+#      oneOf: # Combines the BaseCharacterRoleEnum and the domain-level character role enum
+#        - $ref: "#/components/schemas/BaseCharacterRoleEnum"
+#        - $ref: "domain_swagger.yaml#/components/schemas/DomainCharacterRoleEnum"
+#      type: string
+#      description: The primary role a character has in the mission, in terms of the skills they possess
+# Until then, expand then entries in BaseCharacterRoleEnum with domain-specific action types:
     CharacterRoleEnum:
-      oneOf: # Combines the BaseCharacterRoleEnum and the domain-level character role enum
-        - $ref: "#/components/schemas/BaseCharacterRoleEnum"
-        - $ref: "domain_swagger.yaml#/components/schemas/DomainCharacterRoleEnum"
       type: string
-      description: The primary role a character has in the mission, in terms of the skills they possess
+      description: The primary role a character has in the scene
+      enum:
+        - Unknown
+        - Infantry
+        - SEAL
+        - Command
+        - Intelligence
+        - Medical
+        - Specialist
+        - Communications
     RapportEnum:
       type: string
       description: A measure of closeness or affinity towards the decision-maker
@@ -1042,11 +1073,30 @@ components:
         - MOVE_TO
         - MESSAGE
         - SEARCH
+# When oneOf is supported for extensible enums someday:
+#    ActionTypeEnum:
+#      type: string
+#      description: An action type recognized by the ADM Server; includes base and domain-specific actions
+#      oneOf: # Combines the BaseActionTypeEnum and the domain-level action type enum
+#        - $ref: "#/components/schemas/BaseActionTypeEnum"
+#        - $ref: "domain_swagger.yaml#/components/schemas/DomainActionTypeEnum"
+# Until then, expand then entries in BaseActionTypeEnum with domain-specific action types:
     ActionTypeEnum:
       type: string
-      oneOf: # Combines the BaseActionTypeEnum and the domain-level action type enum
-        - $ref: "#/components/schemas/BaseActionTypeEnum"
-        - $ref: "domain_swagger.yaml#/components/schemas/DomainActionTypeEnum"
+      enum:
+        - END_SCENE
+        - MOVE_TO
+        - MESSAGE
+        - SEARCH
+        - APPLY_TREATMENT
+        - CHECK_ALL_VITALS
+        - CHECK_BLOOD_OXYGEN
+        - CHECK_PULSE
+        - CHECK_RESPIRATION
+        - DIRECT_MOBILE_CHARACTERS
+        - MOVE_TO_EVAC
+        - SITREP
+        - TAG_CHARACTER
   responses:
     server_error:
       description: An exception occurred on the server; see returned error string.

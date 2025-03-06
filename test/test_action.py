@@ -36,7 +36,7 @@ class TestAction(unittest.TestCase):
         if include_optional:
             return Action(
                 action_id = 'action_01',
-                action_type = '',
+                action_type = 'END_SCENE',
                 intent_action = True,
                 unstructured = '',
                 character_id = '',
@@ -50,7 +50,7 @@ class TestAction(unittest.TestCase):
         else:
             return Action(
                 action_id = 'action_01',
-                action_type = '',
+                action_type = 'END_SCENE',
         )
         """
 

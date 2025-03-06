@@ -71,9 +71,6 @@ class Threat(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of threat_type
-        if self.threat_type:
-            _dict['threat_type'] = self.threat_type.to_dict()
         return _dict
 
     @classmethod
@@ -86,7 +83,7 @@ class Threat(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "threat_type": ThreatTypeEnum.from_dict(obj["threat_type"]) if obj.get("threat_type") is not None else None,
+            "threat_type": obj.get("threat_type"),
             "severity": obj.get("severity")
         })
         return _obj

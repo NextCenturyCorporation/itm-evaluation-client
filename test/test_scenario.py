@@ -58,7 +58,7 @@ class TestScenario(unittest.TestCase):
                         action_mapping = [
                             swagger_client.models.action_mapping.ActionMapping(
                                 action_id = 'action_01', 
-                                action_type = '', 
+                                action_type = 'END_SCENE', 
                                 unstructured = '', 
                                 repeatable = True, 
                                 character_id = '', 

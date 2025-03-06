@@ -1,28 +1,34 @@
 # ActionTypeEnum
 
 
-## Properties
+## Enum
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
+* `END_SCENE` (value: `'END_SCENE'`)
 
-## Example
+* `MOVE_TO` (value: `'MOVE_TO'`)
 
-```python
-from swagger_client.models.action_type_enum import ActionTypeEnum
+* `MESSAGE` (value: `'MESSAGE'`)
 
-# TODO update the JSON string below
-json = "{}"
-# create an instance of ActionTypeEnum from a JSON string
-action_type_enum_instance = ActionTypeEnum.from_json(json)
-# print the JSON string representation of the object
-print(ActionTypeEnum.to_json())
+* `SEARCH` (value: `'SEARCH'`)
 
-# convert the object into a dict
-action_type_enum_dict = action_type_enum_instance.to_dict()
-# create an instance of ActionTypeEnum from a dict
-action_type_enum_from_dict = ActionTypeEnum.from_dict(action_type_enum_dict)
-```
+* `APPLY_TREATMENT` (value: `'APPLY_TREATMENT'`)
+
+* `CHECK_ALL_VITALS` (value: `'CHECK_ALL_VITALS'`)
+
+* `CHECK_BLOOD_OXYGEN` (value: `'CHECK_BLOOD_OXYGEN'`)
+
+* `CHECK_PULSE` (value: `'CHECK_PULSE'`)
+
+* `CHECK_RESPIRATION` (value: `'CHECK_RESPIRATION'`)
+
+* `DIRECT_MOBILE_CHARACTERS` (value: `'DIRECT_MOBILE_CHARACTERS'`)
+
+* `MOVE_TO_EVAC` (value: `'MOVE_TO_EVAC'`)
+
+* `SITREP` (value: `'SITREP'`)
+
+* `TAG_CHARACTER` (value: `'TAG_CHARACTER'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

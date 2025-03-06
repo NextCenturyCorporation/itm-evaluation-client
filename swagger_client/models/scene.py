@@ -101,13 +101,6 @@ class Scene(BaseModel):
                 if _item_action_mapping:
                     _items.append(_item_action_mapping.to_dict())
             _dict['action_mapping'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in restricted_actions (list)
-        _items = []
-        if self.restricted_actions:
-            for _item_restricted_actions in self.restricted_actions:
-                if _item_restricted_actions:
-                    _items.append(_item_restricted_actions.to_dict())
-            _dict['restricted_actions'] = _items
         # override the default output from pydantic by calling `to_dict()` of transitions
         if self.transitions:
             _dict['transitions'] = self.transitions.to_dict()
@@ -131,7 +124,7 @@ class Scene(BaseModel):
             "removed_characters": obj.get("removed_characters"),
             "probe_config": [ProbeConfig.from_dict(_item) for _item in obj["probe_config"]] if obj.get("probe_config") is not None else None,
             "action_mapping": [ActionMapping.from_dict(_item) for _item in obj["action_mapping"]] if obj.get("action_mapping") is not None else None,
-            "restricted_actions": [ActionTypeEnum.from_dict(_item) for _item in obj["restricted_actions"]] if obj.get("restricted_actions") is not None else None,
+            "restricted_actions": obj.get("restricted_actions"),
             "transition_semantics": obj.get("transition_semantics") if obj.get("transition_semantics") is not None else SemanticTypeEnum.AND,
             "transitions": Conditions.from_dict(obj["transitions"]) if obj.get("transitions") is not None else None
         })
