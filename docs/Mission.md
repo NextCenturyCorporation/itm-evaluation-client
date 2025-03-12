@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **unstructured** | **str** | natural language description of current mission | 
 **mission_type** | [**MissionTypeEnum**](MissionTypeEnum.md) |  | 
-**character_importance** | **List[Dict[str, MissionImportanceEnum]]** | A list of pairs of character ids with an indicator of how mission-critical the character is | [optional] 
+**character_importance** | **List[Dict[str, str]]** | A list of pairs of character ids with an indicator of how mission-critical the character is | [optional] 
 **civilian_presence** | [**CivilianPresenceEnum**](CivilianPresenceEnum.md) |  | [optional] 
 **communication_capability** | [**CommunicationCapabilityEnum**](CommunicationCapabilityEnum.md) |  | [optional] [default to CommunicationCapabilityEnum.BOTH]
 **roe** | **str** | rules of engagement to inform decision-making, but not to restrict decision space | [optional] 

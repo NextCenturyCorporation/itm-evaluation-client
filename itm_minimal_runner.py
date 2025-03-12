@@ -235,7 +235,7 @@ def main():
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
-                state = itm.take_action(session_id=session_id, body=action) if not action.intent_action else itm.intend_action(session_id=session_id, body=action)
+                state = itm.take_action(session_id=session_id, action=action) if not action.intent_action else itm.intend_action(session_id=session_id, action=action)
                 if state.meta_info.scene_id != current_scene:
                     current_scene = state.meta_info.scene_id
                     print(f"Changed to scene '{current_scene}'.")

@@ -22,7 +22,6 @@ from typing import Any, ClassVar, Dict, List, Optional
 from swagger_client.models.civilian_presence_enum import CivilianPresenceEnum
 from swagger_client.models.communication_capability_enum import CommunicationCapabilityEnum
 from swagger_client.models.medical_policies_enum import MedicalPoliciesEnum
-from swagger_client.models.mission_importance_enum import MissionImportanceEnum
 from swagger_client.models.mission_type_enum import MissionTypeEnum
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,7 +32,7 @@ class Mission(BaseModel):
     """ # noqa: E501
     unstructured: StrictStr = Field(description="natural language description of current mission")
     mission_type: MissionTypeEnum
-    character_importance: Optional[List[Dict[str, MissionImportanceEnum]]] = Field(default=None, description="A list of pairs of character ids with an indicator of how mission-critical the character is")
+    character_importance: Optional[List[Dict[str, StrictStr]]] = Field(default=None, description="A list of pairs of character ids with an indicator of how mission-critical the character is")
     civilian_presence: Optional[CivilianPresenceEnum] = None
     communication_capability: Optional[CommunicationCapabilityEnum] = CommunicationCapabilityEnum.BOTH
     roe: Optional[StrictStr] = Field(default=None, description="rules of engagement to inform decision-making, but not to restrict decision space")
@@ -80,13 +79,6 @@ class Mission(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in character_importance (list)
-        _items = []
-        if self.character_importance:
-            for _item_character_importance in self.character_importance:
-                if _item_character_importance:
-                    _items.append(_item_character_importance.to_dict())
-            _dict['character_importance'] = _items
         return _dict
 
     @classmethod
@@ -101,7 +93,7 @@ class Mission(BaseModel):
         _obj = cls.model_validate({
             "unstructured": obj.get("unstructured"),
             "mission_type": obj.get("mission_type"),
-            "character_importance": [Dict[str, MissionImportanceEnum].from_dict(_item) for _item in obj["character_importance"]] if obj.get("character_importance") is not None else None,
+            "character_importance": obj.get("character_importance"),
             "civilian_presence": obj.get("civilian_presence"),
             "communication_capability": obj.get("communication_capability") if obj.get("communication_capability") is not None else CommunicationCapabilityEnum.BOTH,
             "roe": obj.get("roe"),
