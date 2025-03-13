@@ -1,4 +1,5 @@
 from enum import Enum
+from pydantic import BaseModel
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
@@ -303,7 +304,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         print(action)
         self.actions_are_current = False
-        return self.itm.take_action(session_id=self.session_id, body=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
+        return self.itm.take_action(session_id=self.session_id, action=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
 
     def run(self):
         while not self.session_complete:
@@ -311,11 +312,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 f"Enter a Command from the following options "
                 f"{[command_option.value for command_option in CommandOption]}: "
             ).lower()
-            response = None
-            self.perform_operations(command, response)
+            self.perform_operations(command)
         print("ITM Session Ended")
 
-    def perform_operations(self, command, response):
+    def perform_operations(self, command):
         try:
             if command in self.get_full_string_and_shortcut(CommandOption.START_SESSION):
                 response = self.start_session_operation(self.username)
@@ -333,11 +333,20 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.intend_action_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.GET_SESSION_ALIGNMENT):
                 response = self.get_session_alignment_operation()
+            else:
+                response = None
         except Exception:
             traceback.print_exc()
 
-        if response != None:
-            print(response)
+        if response is not None:
+            if not isinstance(response, list):
+                response = [response]
+
+            for response_item in response:
+                if isinstance(response_item, BaseModel):
+                    print(response_item.model_dump_json(indent=2))
+                else:
+                    print(response_item)
 
         if command in self.get_full_string_and_shortcut(CommandOption.QUIT):
             self.session_complete = True # if there are no more scenarios, then the session is over
