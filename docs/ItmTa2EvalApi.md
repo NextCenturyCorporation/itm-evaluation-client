@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**start_scenario**](ItmTa2EvalApi.md#start_scenario) | **GET** /ta2/scenario | Get the next scenario
 [**start_session**](ItmTa2EvalApi.md#start_session) | **GET** /ta2/startSession | Start a new session
 [**take_action**](ItmTa2EvalApi.md#take_action) | **POST** /ta2/takeAction | Take an action within a scenario
+[**validate_action**](ItmTa2EvalApi.md#validate_action) | **POST** /ta2/validateAction | Validate an action within a scenario
 
 
 # **get_alignment_target**
@@ -603,6 +604,78 @@ No authorization required
 |-------------|-------------|------------------|
 **200** | Successful operation, scenario state returned |  -  |
 **400** | Invalid action or Session ID, or specified an intent action |  -  |
+**500** | An exception occurred on the server; see returned error string. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **validate_action**
+> str validate_action(session_id, action=action)
+
+Validate an action within a scenario
+
+Validate that the specified Action is structually and contextually valid within a scenario
+
+### Example
+
+
+```python
+import swagger_client
+from swagger_client.models.action import Action
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = swagger_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with swagger_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = swagger_client.ItmTa2EvalApi(api_client)
+    session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
+    action = swagger_client.Action() # Action | Encapsulation of an action to be validated by a DM in the context of the scenario (optional)
+
+    try:
+        # Validate an action within a scenario
+        api_response = api_instance.validate_action(session_id, action=action)
+        print("The response of ItmTa2EvalApi->validate_action:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling ItmTa2EvalApi->validate_action: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **session_id** | **str**| a unique session_id, as returned by /ta2/startSession | 
+ **action** | [**Action**](Action.md)| Encapsulation of an action to be validated by a DM in the context of the scenario | [optional] 
+
+### Return type
+
+**str**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: text/plain
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful operation, returns &#39;valid action&#39;/&#39;valid intention&#39; if the action/intention is valid, otherwise a string describing why it is invalid |  -  |
+**400** | Invalid Session ID |  -  |
 **500** | An exception occurred on the server; see returned error string. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

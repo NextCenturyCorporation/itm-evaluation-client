@@ -235,6 +235,11 @@ def main():
                 action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
+                valid_response = itm.validate_action(session_id=session_id, action=action)
+                if (action.intent_action and valid_response != 'valid intention') or \
+                    (not action.intent_action and valid_response != 'valid action'):
+                    print(f"Client error: invalid {'intention' if action.intent_action else 'action'} generated, message: \"{valid_response}\".  Exiting.")
+                    return
                 state = itm.take_action(session_id=session_id, action=action) if not action.intent_action else itm.intend_action(session_id=session_id, action=action)
                 if state.meta_info.scene_id != current_scene:
                     current_scene = state.meta_info.scene_id
