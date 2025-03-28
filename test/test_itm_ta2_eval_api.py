@@ -82,6 +82,13 @@ class TestItmTa2EvalApi(unittest.TestCase):
         """
         pass
 
+    def test_validate_action(self) -> None:
+        """Test case for validate_action
+
+        Validate an action within a scenario
+        """
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

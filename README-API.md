@@ -96,6 +96,7 @@ Class | Method | HTTP request | Description
 *ItmTa2EvalApi* | [**start_scenario**](docs/ItmTa2EvalApi.md#start_scenario) | **GET** /ta2/scenario | Get the next scenario
 *ItmTa2EvalApi* | [**start_session**](docs/ItmTa2EvalApi.md#start_session) | **GET** /ta2/startSession | Start a new session
 *ItmTa2EvalApi* | [**take_action**](docs/ItmTa2EvalApi.md#take_action) | **POST** /ta2/takeAction | Take an action within a scenario
+*ItmTa2EvalApi* | [**validate_action**](docs/ItmTa2EvalApi.md#validate_action) | **POST** /ta2/validateAction | Validate an action within a scenario
 
 
 ## Documentation For Models

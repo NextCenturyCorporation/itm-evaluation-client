@@ -17,6 +17,7 @@ def outputDirectory = "swagger_client"
 def testDirectory = "test"
 def docsDirectory = "docs"
 def readmeDest = "${projectDir}"
+def apiFilename = "itm_ta2_eval_api.py"
 
 task swaggerClean(type: Delete) {
     doFirst {
@@ -76,6 +77,11 @@ task postGeneration() {
         copy {
             from "${generatedApiDirectory}/${docsDirectory}/"
             into docsDirectory
+        }
+
+        copy {
+            from "${generatedApiDirectory}/${outputDirectory}/api/${apiFilename}"
+            into "${outputDirectory}/api"
         }
 
         copy {
