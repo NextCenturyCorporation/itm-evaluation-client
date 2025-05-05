@@ -57,8 +57,8 @@ from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from swagger_client.models.character_tag_enum import CharacterTagEnum
 
 
-def get_next_action(scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action], paths, index: int, path_index: int):
+def get_next_action(domain: str, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                    actions: List[Action], paths, index: int, path_index: int) -> Action:
         if not actions:
             raise Exception("No actions from which to choose...exiting.")
         random_action = random.choice(actions)
@@ -68,6 +68,24 @@ def get_next_action(scenario: Scenario, state: State, alignment_target: Alignmen
                 # Adding a length check, if they keep asking for action outside of index, then we will just select random ones
                 if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
                     random_action = action
+
+        if domain == 'triage':
+            return get_next_triage_action(random_action, scenario, state, alignment_target, actions, paths, index, path_index)
+        elif domain == 'wumpus':
+            return get_next_wumpus_action(random_action, scenario, state, alignment_target, actions, paths, index, path_index)
+        else:
+            print(f"Client error.  Domain {domain} not supported.")
+            return None
+
+def get_next_wumpus_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                           actions: List[Action], paths, index: int, path_index: int) -> Action:
+    random_action.justification = "ADM Default Justification"
+    if random_action.character_id is None:
+        random_action.character_id = get_random_character_id(state, random_action.action_type, 'wumpus')
+    return random_action
+
+def get_next_triage_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                           actions: List[Action], paths, index: int, path_index: int) -> Action:
 
         available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
@@ -110,8 +128,8 @@ def supply_available(state: State, supply):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
     return supply in supplies
 
-def get_random_character_id(state: State, action_type):
-    if action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
+def get_random_character_id(state: State, action_type, domain = 'triage'):
+    if domain == 'triage' and action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
         characters : List[Character] = [character for character in state.characters]
     elif action_type in [ActionTypeEnum.MOVE_TO]:
         characters : List[Character] = [character for character in state.characters if character.unseen]
@@ -136,7 +154,7 @@ def main():
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
     parser.add_argument('--profile', metavar='adm_profile', required=False,
                         help='Specify the ADM profile in terms of its alignment strategy')
-    parser.add_argument('--domain', metavar='domain_name', required=False,
+    parser.add_argument('--domain', metavar='domain_name', required=False, default='triage',
                         help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
@@ -232,7 +250,7 @@ def main():
             print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-                action = get_next_action(scenario, state, alignment_target, actions, paths, action_path_index, path_index)
+                action = get_next_action(args.domain, scenario, state, alignment_target, actions, paths, action_path_index, path_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_path_index+=1
                 valid_response = itm.validate_action(session_id=session_id, action=action)

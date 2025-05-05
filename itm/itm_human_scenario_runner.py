@@ -25,10 +25,9 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, domain=None, kdma_training=None, max_scenarios=-1, scenario_id=None):
+    def __init__(self, session_type, domain, kdma_training=None, max_scenarios=-1, scenario_id=None):
         super().__init__()
         self.username = session_type + " ITM Human"
         self.session_type = session_type
@@ -195,7 +194,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 self.scenario = response
                 state: State = response.state
                 self.characters = state.characters
-                self.medical_supplies = response.state.supplies
+                if self.domain == 'triage':
+                    self.medical_supplies = response.state.supplies
             else:
                 self.session_complete = True
         else:
@@ -247,7 +247,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         response = self.itm.get_scenario_state(self.session_id, self.scenario_id)
-        self.medical_supplies = response.supplies
+        if self.domain == 'triage':
+            self.medical_supplies = response.supplies
         return response
 
     def get_available_actions_operation(self):
@@ -274,10 +275,29 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return f"Call {self.get_full_string_and_shortcut(CommandOption.GET_AVAILABLE_ACTIONS)[0]} first."
         if not self.available_actions:
             return "Please get available actions first."
-        action:Action = self.prompt_action()
+        user_action: Action = self.prompt_action()
 
-        # Prompt to fill in any missing fields.  Note similarity with ADMScenarioRunner.get_next_action().
-        if action.action_type not in ACTIONS_WITHOUT_CHARACTERS:
+        if self.domain == 'triage':
+            self.process_triage_action(user_action)
+        elif self.domain == 'wumpus':
+            self.process_wumpus_action(user_action)
+        else:
+            print(f"Client error.  Domain {self.domain} not supported.")
+
+        # Prompt for (optional) justification
+        user_action.justification = self.prompt_justification()
+
+        print(user_action)
+        self.actions_are_current = False
+        return self.itm.take_action(session_id=self.session_id, action=user_action) if not intend_action else self.itm.intend_action(session_id=self.session_id, action=user_action)
+
+    def process_wumpus_action(self, action: Action):
+        if action.character_id is None:
+            action.character_id = self.prompt_character_id()
+
+    def process_triage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type not in ['DIRECT_MOBILE_CHARACTERS', 'END_SCENE', 'MESSAGE', 'SEARCH', 'SITREP']:
             # Most actions require a character ID
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
@@ -299,13 +319,6 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if not action.parameters:
                 action.parameters = {"aid_id": self.prompt_aid_id()}
 
-        # Prompt for (optional) justification
-        action.justification = self.prompt_justification()
-
-        print(action)
-        self.actions_are_current = False
-        return self.itm.take_action(session_id=self.session_id, action=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
-
     def run(self):
         while not self.session_complete:
             command = input(
@@ -316,6 +329,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         print("ITM Session Ended")
 
     def perform_operations(self, command):
+        response = None
         try:
             if command in self.get_full_string_and_shortcut(CommandOption.START_SESSION):
                 response = self.start_session_operation(self.username)
@@ -333,29 +347,18 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 response = self.intend_action_operation()
             elif command in self.get_full_string_and_shortcut(CommandOption.GET_SESSION_ALIGNMENT):
                 response = self.get_session_alignment_operation()
-            else:
-                response = None
         except Exception:
             traceback.print_exc()
-
-        if response is not None:
-            if not isinstance(response, list):
-                response = [response]
-
-            for response_item in response:
-                if isinstance(response_item, BaseModel):
-                    print(response_item.model_dump_json(indent=2))
-                else:
-                    print(response_item)
 
         if command in self.get_full_string_and_shortcut(CommandOption.QUIT):
             self.session_complete = True # if there are no more scenarios, then the session is over
             print("Quitting session-- server will not save history for current scenario if it was enabled.")
         elif isinstance(response, State):
-            self.medical_supplies = response.supplies
+            if self.domain == 'triage':
+                self.medical_supplies = response.supplies
+                if response.environment.decision_environment:
+                    self.aids = response.environment.decision_environment.aid
             self.characters = response.characters
-            if response.environment.decision_environment:
-                self.aids = response.environment.decision_environment.aid
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None
@@ -363,3 +366,12 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if response.session_complete == True:
                 self.session_complete = True # if there are no more scenarios, then the session is over
                 print("Session Complete: Ending Session...")
+                exit(0)
+
+        if response is not None:
+            response_list = response if isinstance(response, list) else [response]
+            for response_item in response_list:
+                if isinstance(response_item, BaseModel):
+                    print(response_item.model_dump_json(indent=2))
+                else:
+                    print(response_item)

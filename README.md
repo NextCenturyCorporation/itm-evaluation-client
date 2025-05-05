@@ -171,11 +171,16 @@ Further details about these actions can be found in the ITM Server FAQ below.  D
 ## Updating models
 This requires JDK 8 or higher to run the gradle tool.
 
-The models in swagger_server/models are generated from the following file:
+The models in swagger_server/models are generated from the following files:
 * `swagger/base_swagger.yaml`
+* `swagger/domain_swagger.yaml`
 
-If this file is updated then the models will need to be re-generated from this file and checked in.
-Run `./gradlew` to do this.
+`domain_swagger.yaml` is generated from (`<domain_name>_swagger.yaml`) as part of a Gradle task.  If `base_swagger.yaml` or `<domain_name>_swagger.yaml` is updated, then the models and combined `swagger.yaml` will need to be re-generated from these files and checked in. Run `./gradlew -Pdomain=<domain_name>` to do this.  If you are building the models for the default domain (as defined in `build.gradle`), then the `-P` option isn't required.
+
+## Adding a domain
+To add a domain, you'll need to:
+1. Copy the `<domain_name>_swagger.yaml` from the ITM Server to the `swagger` directory and update models (see above); and
+2. Update clients to handle domain-specific code (at a minimum, see `get_next_action` in `itm_minimal_runner.py` and `take_or_intend_action` in `itm_human_scenario_runner.py`).
 
 ## Adding a TA1
 To add a TA1, you'll need to create or modify several files:

@@ -1,5 +1,6 @@
 # ActionTypeEnum
 
+An action type recognized by the ADM Server, combining basic and domain-specific actions
 
 ## Enum
 

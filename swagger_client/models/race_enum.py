@@ -32,6 +32,7 @@ class RaceEnum(str, Enum):
     BLACK = 'Black'
     ASIAN = 'Asian'
     PACIFIC_ISLANDER = 'Pacific Islander'
+    UNKNOWN = 'Unknown'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
