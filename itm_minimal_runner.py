@@ -64,64 +64,77 @@ def get_next_action(domain: str, scenario: Scenario, state: State, alignment_tar
                     actions: List[Action], path_config, path_index: int, action_index: int) -> Action:
         if not actions:
             raise Exception("No actions from which to choose...exiting.")
-        random_action = random.choice(actions)
+        selected_action = random.choice(actions)
+        selected_action.justification = "ADM Default Justification"
 
+        found_action = False
         if (path_config["enabled"]):
+            # Find the configured action.  If that action isn't found, then just keep the random one.
             for action in actions:
-                if (action_index < len(path_config["paths"][path_index]["actions"]) and action.action_id == path_config["paths"][path_index]["actions"][action_index]):
-                    # If the configured action isn't found, then just keep the random one
-                    random_action = action
+                if (action_index < len(path_config["paths"][path_index]["actions"]) and action.action_id == path_config["paths"][path_index]["actions"][action_index]["action_id"]):
+                    selected_action = action
+                    selected_action.justification = "ADM Default Justification"
+                    fill_in_action_details(selected_action, path_config["paths"][path_index]["actions"][action_index])
+                    found_action = True
+                    break
+            if not found_action:
+                print(f'--> Warning: Could not find configured action with id "{path_config["paths"][path_index]["actions"][action_index]["action_id"]}". Choosing random action.')
+                path_index = -1 # Signify we are not using the configured path
 
         if domain == 'triage':
-            return get_next_triage_action(random_action, scenario, state, alignment_target, actions, path_config, path_index, action_index)
+            return get_next_triage_action(selected_action, scenario, state, alignment_target, actions, path_config, path_index, action_index)
         elif domain == 'wumpus':
-            return get_next_wumpus_action(random_action, scenario, state, alignment_target, actions, path_config, path_index, action_index)
+            return get_next_wumpus_action(selected_action, scenario, state, alignment_target, actions, path_config, path_index, action_index)
         else:
             print(f"Client error.  Domain {domain} not supported.")
             return None
 
-def get_next_wumpus_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                           actions: List[Action], path_config, path_index: int, action_index: int) -> Action:
-    random_action.justification = "ADM Default Justification"
-    if random_action.character_id is None:
-        random_action.character_id = get_random_character_id(state, random_action.action_type, 'wumpus')
-    return random_action
+# Fill in certain action details (if provided) from configuration.
+def fill_in_action_details(selected_action: Action, configured_action: dict):
+    selected_action.character_id = configured_action.get("character_id", selected_action.character_id)
+    selected_action.parameters = configured_action.get("parameters", selected_action.parameters)
+    selected_action.justification = configured_action.get("justification", selected_action.justification)
 
-def get_next_triage_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+def get_next_wumpus_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                           actions: List[Action], path_config, path_index: int, action_index: int) -> Action:
+    if selected_action.character_id is None:
+        selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'wumpus')
+    return selected_action
+
+def get_next_triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
                            actions: List[Action], path_config, path_index: int, action_index: int) -> Action:
 
         available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
+        if selected_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
-            if random_action.character_id is None:
-                random_action.character_id = get_random_character_id(state, random_action.action_type)
-            if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
-                configured_supply = random_action.parameters.get('treatment') if random_action.parameters else None
+            if selected_action.character_id is None:
+                selected_action.character_id = get_random_character_id(state, selected_action.action_type)
+            if selected_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
+                configured_supply = selected_action.parameters.get('treatment') if selected_action.parameters else None
                 supply = configured_supply if configured_supply else get_random_supply(state)
                 if not supply or (configured_supply and not supply_available(state, configured_supply)):
                     # No supplies available, so pick another action
                     print(f"Can't do APPLY_TREATMENT because no {supply}; trying something else.")
                     if (path_config["enabled"]):
                         raise Exception("Cannot perform configured path...exiting.")
-                    actions.remove(random_action)
+                    actions.remove(selected_action)
                     return get_next_action(scenario, state, alignment_target, actions, path_config, path_index, action_index)
-                if not random_action.parameters:
-                    random_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
+                if not selected_action.parameters:
+                    selected_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
-                    if not random_action.parameters.get('location'):
-                        random_action.parameters['location'] = random.choice(available_locations)
-                    random_action.parameters['treatment'] = supply
-            elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if not random_action.parameters:
-                    random_action.parameters = {"category": random.choice(tag_labels)}
-            elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if not random_action.parameters:
-                    random_action.parameters = {"aid_id": get_random_aid_id(state)}
-        random_action.justification = "ADM Default Justification"
-        return random_action
+                    if not selected_action.parameters.get('location'):
+                        selected_action.parameters['location'] = random.choice(available_locations)
+                    selected_action.parameters['treatment'] = supply
+            elif selected_action.action_type == ActionTypeEnum.TAG_CHARACTER:
+                if not selected_action.parameters:
+                    selected_action.parameters = {"category": random.choice(tag_labels)}
+            elif selected_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+                if not selected_action.parameters:
+                    selected_action.parameters = {"aid_id": get_random_aid_id(state)}
+        return selected_action
 
 def get_random_supply(state: State):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
