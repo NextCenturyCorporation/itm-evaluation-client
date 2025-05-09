@@ -68,8 +68,8 @@ def get_next_action(domain: str, scenario: Scenario, state: State, alignment_tar
 
         if (path_config["enabled"]):
             for action in actions:
-                # Adding a length check, if they keep asking for action outside of index, then we will just select random ones
-                if (action_index < len(path_config["paths"][path_index]["path"]) and action.action_id == path_config["paths"][path_index]["path"][action_index]):
+                if (action_index < len(path_config["paths"][path_index]["actions"]) and action.action_id == path_config["paths"][path_index]["actions"][action_index]):
+                    # If the configured action isn't found, then just keep the random one
                     random_action = action
 
         if domain == 'triage':
@@ -253,7 +253,7 @@ def main():
             print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-                action = get_next_action(args.domain, scenario, state, alignment_target, actions, path_config, action_index, path_index)
+                action = get_next_action(args.domain, scenario, state, alignment_target, actions, path_config, path_index, action_index)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_index+=1
                 valid_response = itm.validate_action(session_id=session_id, action=action)

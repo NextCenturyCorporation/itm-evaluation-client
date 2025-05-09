@@ -1,11 +1,13 @@
 {
-    "enabled": false,
+    "enabled": true,
     "paths":[
         {
-            "actions":["mike-vitals","intend-evac-captain","cleanup"]
+            "scenario_id": "sample-1",
+            "actions":["ask-to-treat-civ","intend-evac-captain-ground","recommend-treat-civilian","justify-vitals"]
         },
         {
-            "actions":["treat-civ","intend-evac-marine","check_blood_oxygen"]
+            "scenario_id": "sample-1",
+            "actions":["mike-vitals","delegate-to-medic","recheck-civilian-vitals","justify-military-disposition"]
         }
     ]
 }
