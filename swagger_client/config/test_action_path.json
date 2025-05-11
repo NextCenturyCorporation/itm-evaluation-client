@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "paths":[
         {
             "scenario_id": "sample-1",
