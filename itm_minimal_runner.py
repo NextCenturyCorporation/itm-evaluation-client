@@ -41,7 +41,8 @@ enough unique scenarios available, but is ignored if --session eval is specified
 
 Note: The eval session type must be supported in the command line.
 
-Note: The 'get_next_action' function chooses a random action from the list.
+Note: The 'get_next_action' function chooses a random action from the list, unless action
+path configuration is enabled.
 The implementation of this function should be replaced with decision-making logic.
 """
 
@@ -61,7 +62,7 @@ from swagger_client.models.character_tag_enum import CharacterTagEnum
 
 
 def get_next_action(domain: str, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action], path_action: dict) -> Action:
+                    actions: List[Action], path_action: dict = None) -> Action:
         if not actions:
             raise Exception("No actions from which to choose...exiting.")
         selected_action = random.choice(actions)
@@ -118,7 +119,7 @@ def get_next_triage_action(selected_action: Action, scenario: Scenario, state: S
                     if (path_action):
                         raise Exception("Cannot perform configured path...exiting.")
                     actions.remove(selected_action)
-                    return get_next_action(scenario, state, alignment_target, actions, path_action)
+                    return get_next_action('triage', scenario, state, alignment_target, actions)
                 if not selected_action.parameters:
                     selected_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
@@ -266,7 +267,7 @@ def main():
                 if path_config["enabled"] and action_index < len(path_config["paths"][path_index]["actions"]):
                     action = get_next_action(args.domain, scenario, state, alignment_target, actions, path_config["paths"][path_index]["actions"][action_index])
                 else:
-                    action = get_next_action(args.domain, scenario, state, alignment_target, actions, None)
+                    action = get_next_action(args.domain, scenario, state, alignment_target, actions)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
                 action_index+=1
                 valid_response = itm.validate_action(session_id=session_id, action=action)
