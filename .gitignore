@@ -69,3 +69,6 @@ target/
 # generated files
 generated
 swagger_server/api
+
+# VS Code
+.vscode

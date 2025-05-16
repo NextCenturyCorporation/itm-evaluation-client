@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class ActionTypeEnum(str, Enum):
     """
-    ActionTypeEnum
+    An action type recognized by the ADM Server, combining basic and domain-specific actions
     """
 
     """

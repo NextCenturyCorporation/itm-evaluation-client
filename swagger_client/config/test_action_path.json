@@ -2,10 +2,57 @@
     "enabled": false,
     "paths":[
         {
-            "path":["mike-vitals","intend-evac-captain","cleanup"]
+            "scenario_id": "sample-1",
+            "actions":[
+                {
+                    "action_id": "ask-to-treat-civ",
+                    "character_id": "Mike",
+                    "parameters": {"type": "ask", "object": "Civilian_01", "action_type": "APPLY_TREATMENT"}
+                },
+                {
+                    "action_id": "intend-evac-captain-ground",
+                    "character_id": "Captain_01",
+                    "parameters": {"aid_id": "ground_evac"}            
+                },
+                {
+                    "action_id": "recommend-treat-civilian",
+                    "parameters": {"type": "recommend", "recipient": "medic", "action_type": "APPLY_TREATMENT", "object": "Civilian_01"}
+                },
+                {
+                    "action_id": "check_respiration",
+                    "character_id": "Mike"
+                },
+                {
+                    "action_id": "check_respiration"
+                },
+                {
+                    "action_id": "check_respiration"
+                },
+                {
+                    "action_id": "check_respiration"
+                },
+                {
+                    "action_id": "justify-vitals",
+                    "parameters": {"type": "justify", "recipient": "commander", "relevant_state": "[characters[Civilian_01].vitals]"}
+                }
+            ]
         },
         {
-            "path":["treat-civ","intend-evac-marine","check_blood_oxygen"]
+            "scenario_id": "sample-1",
+            "actions":[
+                {
+                    "action_id": "mike-vitals"
+                },
+                {
+                    "action_id": "delegate-to-medic"
+                },
+                {
+                    "action_id": "recheck-civilian-vitals"
+                },
+                {
+                    "action_id": "justify-military-disposition"
+                }
+            ]
         }
     ]
 }

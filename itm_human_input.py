@@ -6,7 +6,7 @@ def main():
     parser = argparse.ArgumentParser(description='Runs Human input simulator.')
     parser.add_argument('--session', required=True, metavar='session_type', help=\
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
-    parser.add_argument('--domain', metavar='domain_name', required=False,
+    parser.add_argument('--domain', metavar='domain_name', required=False, default='triage',
                         help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '

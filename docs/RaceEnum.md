@@ -16,6 +16,8 @@ Race or ethnicity
 
 * `PACIFIC_ISLANDER` (value: `'Pacific Islander'`)
 
+* `UNKNOWN` (value: `'Unknown'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 
