@@ -7,8 +7,11 @@ The script starts a session and then enters a loop:
 
 1. Starts a scenario in that session.
 2. Checks if the scenario session_complete property is True.
-   If it is, then it ends the session.
-3. Performs one or more actions...TBD expand upon this...
+   If it is, then it ends the session and exits.
+3. Performs one or more actions:
+   3a. Get the list of available actions.
+   3b. Choose (either randomly or based on action paths) which action to take.
+   3c. Take (or intend) the action and get results.
 4. Checks if the scenario state's 'scenario_complete' property is True.
    If it is, then it ends the scenario.
 
@@ -27,18 +30,19 @@ TA1 probes have been answered.
 The config/*_action_path.json files provide sample canned responses for ADMs.
 When these files have 'enabled' set to 'true', this script will choose the
 pre-configured action. Each entry in the 'paths' array will be executed as
-a separate session.  If a 'path' specifies an actionId that is not returned
+a separate session.  If an 'action' in the path specifies an action_id that is not returned
 by get_available_actions(), then this ADM runner will choose a random action.
 This feature can be integrated into TA2 ADMs so that they may test canned
 sequences of action paths.
 
 Omitting max_scenarios or setting it to 0 will run only the available scenarios.
 Any number higher than 0 (e.g. 1000) will repeat scenarios if there are not
-enough unique scenarios available, but is ignored if --eval is specified.
+enough unique scenarios available, but is ignored if --session eval is specified.
 
-Note: The --eval arg must be supported in the command line.
+Note: The eval session type must be supported in the command line.
 
-Note: The 'get_next_action' function chooses a random action from the list.
+Note: The 'get_next_action' function chooses a random action from the list, unless action
+path configuration is enabled.
 The implementation of this function should be replaced with decision-making logic.
 """
 
@@ -58,67 +62,77 @@ from swagger_client.models.character_tag_enum import CharacterTagEnum
 
 
 def get_next_action(domain: str, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                    actions: List[Action], paths, index: int, path_index: int) -> Action:
+                    actions: List[Action], path_action: dict = None) -> Action:
         if not actions:
             raise Exception("No actions from which to choose...exiting.")
-        random_action = random.choice(actions)
+        selected_action = random.choice(actions)
+        selected_action.justification = "ADM Default Justification"
 
-        if (paths["enabled"]):
+        if path_action: # Is an action path configured and enabled?
+            # Find the configured action.  If that action isn't found, then just keep the random one.
+            found_action = False
             for action in actions:
-                # Adding a length check, if they keep asking for action outside of index, then we will just select random ones
-                if (index < len(paths["paths"][path_index]["path"]) and action.action_id == paths["paths"][path_index]["path"][index]):
-                    random_action = action
+                if (action.action_id == path_action["action_id"]):
+                    selected_action = action
+                    selected_action.justification = "ADM Default Justification"
+                    # Fill in certain action details (if provided) from configuration.
+                    selected_action.character_id = path_action.get("character_id", selected_action.character_id)
+                    selected_action.parameters = path_action.get("parameters", selected_action.parameters)
+                    selected_action.justification = path_action.get("justification", selected_action.justification)
+                    found_action = True
+                    break
+            if not found_action:
+                print(f'--> Warning: Could not find configured action with id "{path_action["action_id"]}". Choosing random action.')
+                path_action = None # Signify we are not using the configured path
 
         if domain == 'triage':
-            return get_next_triage_action(random_action, scenario, state, alignment_target, actions, paths, index, path_index)
+            return get_next_triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
         elif domain == 'wumpus':
-            return get_next_wumpus_action(random_action, scenario, state, alignment_target, actions, paths, index, path_index)
+            return get_next_wumpus_action(selected_action, scenario, state, alignment_target, actions, path_action)
         else:
             print(f"Client error.  Domain {domain} not supported.")
             return None
 
-def get_next_wumpus_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                           actions: List[Action], paths, index: int, path_index: int) -> Action:
-    random_action.justification = "ADM Default Justification"
-    if random_action.character_id is None:
-        random_action.character_id = get_random_character_id(state, random_action.action_type, 'wumpus')
-    return random_action
+def get_next_wumpus_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                           actions: List[Action], path_action: dict) -> Action:
+    if selected_action.character_id is None:
+        selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'wumpus')
+    return selected_action
 
-def get_next_triage_action(random_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
-                           actions: List[Action], paths, index: int, path_index: int) -> Action:
+def get_next_triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                           actions: List[Action], path_action: dict) -> Action:
 
         available_locations = get_swagger_class_enum_values(InjuryLocationEnum)
         tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
 
         # Fill in any missing fields with random values
-        if random_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
+        if selected_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
-            if random_action.character_id is None:
-                random_action.character_id = get_random_character_id(state, random_action.action_type)
-            if random_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
-                configured_supply = random_action.parameters.get('treatment') if random_action.parameters else None
+            if selected_action.character_id is None:
+                selected_action.character_id = get_random_character_id(state, selected_action.action_type)
+            if selected_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
+                configured_supply = selected_action.parameters.get('treatment') if selected_action.parameters else None
                 supply = configured_supply if configured_supply else get_random_supply(state)
                 if not supply or (configured_supply and not supply_available(state, configured_supply)):
                     # No supplies available, so pick another action
                     print(f"Can't do APPLY_TREATMENT because no {supply}; trying something else.")
-                    if (paths["enabled"]):
+                    if (path_action):
                         raise Exception("Cannot perform configured path...exiting.")
-                    actions.remove(random_action)
-                    return get_next_action(scenario, state, alignment_target, actions, paths, index, path_index)
-                if not random_action.parameters:
-                    random_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
+                    actions.remove(selected_action)
+                    return get_next_action('triage', scenario, state, alignment_target, actions)
+                if not selected_action.parameters:
+                    selected_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
-                    if not random_action.parameters.get('location'):
-                        random_action.parameters['location'] = random.choice(available_locations)
-                    random_action.parameters['treatment'] = supply
-            elif random_action.action_type == ActionTypeEnum.TAG_CHARACTER:
-                if not random_action.parameters:
-                    random_action.parameters = {"category": random.choice(tag_labels)}
-            elif random_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
-                if not random_action.parameters:
-                    random_action.parameters = {"aid_id": get_random_aid_id(state)}
-        random_action.justification = "ADM Default Justification"
-        return random_action
+                    if not selected_action.parameters.get('location'):
+                        selected_action.parameters['location'] = random.choice(available_locations)
+                    selected_action.parameters['treatment'] = supply
+            elif selected_action.action_type == ActionTypeEnum.TAG_CHARACTER:
+                if not selected_action.parameters:
+                    selected_action.parameters = {"category": random.choice(tag_labels)}
+            elif selected_action.action_type == ActionTypeEnum.MOVE_TO_EVAC:
+                if not selected_action.parameters:
+                    selected_action.parameters = {"aid_id": get_random_aid_id(state)}
+        return selected_action
 
 def get_random_supply(state: State):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
@@ -206,13 +220,13 @@ def main():
     config.host = HOST + ":" + PORT
     api_client = ApiClient(configuration=config)
     itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
-    action_path_index=0
-    path_index=0
+    path_index=0 # The index of the "paths" array in path_config
+    action_index=0 # The index of the "actions" array within a path
 
     with open("swagger_client/config/" + session_type + "_action_path.json", 'r') as json_file:
-        paths = json.load(json_file)
+        path_config = json.load(json_file)
 
-    for current_path in paths["paths"]:
+    for current_path in path_config["paths"]:
         session_id = None
 
         if session_type == 'eval':
@@ -250,9 +264,12 @@ def main():
             print(f"Beginning in scene '{current_scene}'.")
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
-                action = get_next_action(args.domain, scenario, state, alignment_target, actions, paths, action_path_index, path_index)
+                if path_config["enabled"] and action_index < len(path_config["paths"][path_index]["actions"]):
+                    action = get_next_action(args.domain, scenario, state, alignment_target, actions, path_config["paths"][path_index]["actions"][action_index])
+                else:
+                    action = get_next_action(args.domain, scenario, state, alignment_target, actions)
                 print(f'Action type: {action.action_type}; Character ID: {action.character_id}; parameters: {action.parameters}')
-                action_path_index+=1
+                action_index+=1
                 valid_response = itm.validate_action(session_id=session_id, action=action)
                 if (action.intent_action and valid_response != 'valid intention') or \
                     (not action.intent_action and valid_response != 'valid action'):
@@ -281,9 +298,9 @@ def main():
             print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
-        action_path_index=0
-        #If path is not enabled then we are assuming random actions and don't want to loop configs
-        if (not paths["enabled"]):
+        action_index=0
+        # If path is not enabled then we exit at end of the session and don't start a new session for each configured path.
+        if (not path_config["enabled"]):
             break
 
 

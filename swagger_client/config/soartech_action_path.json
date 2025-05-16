@@ -2,10 +2,10 @@
     "enabled": false,
     "paths":[
         {
-            "path":["action1","action2","action4","action5","action6","end_scene_action"]
+            "actions":["action1","action2","action4","action5","action6","end_scene_action"]
         },
         {
-            "path":["action1","action3","action2","action5","action6","end_scene_action"]
+            "actions":["action1","action3","action2","action5","action6","end_scene_action"]
         }
     ]
 }
