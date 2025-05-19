@@ -87,6 +87,8 @@ def get_next_action(domain: str, scenario: Scenario, state: State, alignment_tar
 
         if domain == 'triage':
             return get_next_triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
+        elif domain == 'p2triage':
+            return get_next_p2triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
         elif domain == 'wumpus':
             return get_next_wumpus_action(selected_action, scenario, state, alignment_target, actions, path_action)
         else:
@@ -97,6 +99,16 @@ def get_next_wumpus_action(selected_action: Action, scenario: Scenario, state: S
                            actions: List[Action], path_action: dict) -> Action:
     if selected_action.character_id is None:
         selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'wumpus')
+    return selected_action
+
+def get_next_p2triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                             actions: List[Action], path_action: dict) -> Action:
+
+    # Fill in any missing fields with random values
+    if selected_action.action_type in [ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.MOVE_TO]:
+        # Require a character ID
+        if selected_action.character_id is None:
+            selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'p2triage')
     return selected_action
 
 def get_next_triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,

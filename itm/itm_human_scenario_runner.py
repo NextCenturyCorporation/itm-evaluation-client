@@ -279,6 +279,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         if self.domain == 'triage':
             self.process_triage_action(user_action)
+        elif self.domain == 'p2triage':
+            self.process_p2triage_action(user_action)
         elif self.domain == 'wumpus':
             self.process_wumpus_action(user_action)
         else:
@@ -294,6 +296,13 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def process_wumpus_action(self, action: Action):
         if action.character_id is None:
             action.character_id = self.prompt_character_id()
+
+    def process_p2triage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type in ['MOVE_TO', 'TREAT_PATIENT']:
+            # Many actions require a character ID
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id()
 
     def process_triage_action(self, action: Action):
         # Prompt to fill in any missing fields.
