@@ -47,6 +47,17 @@ The implementation of this function should be replaced with decision-making logi
 """
 
 import argparse
+from itm.itm_scenario_runner import (
+    get_swagger_class_enum_values,
+    SOARTECH_QOL_ALIGNMENT,
+    SOARTECH_VOL_ALIGNMENT,
+    ADEPT_MJ_ALIGNMENT,
+    ADEPT_IO_ALIGNMENT,
+    ADEPT_MF_ALIGNMENT,
+    ADEPT_AF_ALIGNMENT,
+    ADEPT_SS_ALIGNMENT,
+    ADEPT_PS_ALIGNMENT
+)
 from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import swagger_client
 import random
@@ -294,7 +305,18 @@ def main():
                 if args.training == 'full' and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
+                        if 'MF' in scenario.id:
+                            target_id = ADEPT_MF_ALIGNMENT
+                        elif 'AF' in scenario.id:
+                            target_id = ADEPT_AF_ALIGNMENT
+                        elif 'SS' in scenario.id:
+                            target_id = ADEPT_SS_ALIGNMENT
+                        elif 'PS' in scenario.id:
+                            target_id = ADEPT_PS_ALIGNMENT
+                        elif 'MJ' in scenario.id:
+                            target_id = ADEPT_MJ_ALIGNMENT
+                        else:
+                            target_id = ADEPT_IO_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
