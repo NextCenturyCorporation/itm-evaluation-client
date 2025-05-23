@@ -56,9 +56,9 @@ from itm.itm_scenario_runner import (
     ADEPT_MF_ALIGNMENT,
     ADEPT_AF_ALIGNMENT,
     ADEPT_SS_ALIGNMENT,
-    ADEPT_PS_ALIGNMENT
+    ADEPT_PS_ALIGNMENT,
+    ADEPT_MF_AF_ALIGNMENT
 )
-from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
 import swagger_client
 import random
 from typing import List
@@ -305,7 +305,9 @@ def main():
                 if args.training == 'full' and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        if 'MF' in scenario.id:
+                        if 'MF' in scenario.id and 'AF' in scenario.id:
+                            target_id = ADEPT_MF_AF_ALIGNMENT
+                        elif 'MF' in scenario.id:
                             target_id = ADEPT_MF_ALIGNMENT
                         elif 'AF' in scenario.id:
                             target_id = ADEPT_AF_ALIGNMENT
