@@ -47,7 +47,18 @@ The implementation of this function should be replaced with decision-making logi
 """
 
 import argparse
-from itm.itm_scenario_runner import get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
+from itm.itm_scenario_runner import (
+    get_swagger_class_enum_values,
+    SOARTECH_QOL_ALIGNMENT,
+    SOARTECH_VOL_ALIGNMENT,
+    ADEPT_MJ_ALIGNMENT,
+    ADEPT_IO_ALIGNMENT,
+    ADEPT_MF_ALIGNMENT,
+    ADEPT_AF_ALIGNMENT,
+    ADEPT_SS_ALIGNMENT,
+    ADEPT_PS_ALIGNMENT,
+    ADEPT_MF_AF_ALIGNMENT
+)
 import swagger_client
 import random
 from typing import List
@@ -87,6 +98,8 @@ def get_next_action(domain: str, scenario: Scenario, state: State, alignment_tar
 
         if domain == 'triage':
             return get_next_triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
+        elif domain == 'p2triage':
+            return get_next_p2triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
         elif domain == 'wumpus':
             return get_next_wumpus_action(selected_action, scenario, state, alignment_target, actions, path_action)
         else:
@@ -97,6 +110,16 @@ def get_next_wumpus_action(selected_action: Action, scenario: Scenario, state: S
                            actions: List[Action], path_action: dict) -> Action:
     if selected_action.character_id is None:
         selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'wumpus')
+    return selected_action
+
+def get_next_p2triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                             actions: List[Action], path_action: dict) -> Action:
+
+    # Fill in any missing fields with random values
+    if selected_action.action_type in [ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.MOVE_TO]:
+        # Require a character ID
+        if selected_action.character_id is None:
+            selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'p2triage')
     return selected_action
 
 def get_next_triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -282,7 +305,20 @@ def main():
                 if args.training == 'full' and session_type == 'adept':
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in scenario.id else ADEPT_IO_ALIGNMENT
+                        if 'MF' in scenario.id and 'AF' in scenario.id:
+                            target_id = ADEPT_MF_AF_ALIGNMENT
+                        elif 'MF' in scenario.id:
+                            target_id = ADEPT_MF_ALIGNMENT
+                        elif 'AF' in scenario.id:
+                            target_id = ADEPT_AF_ALIGNMENT
+                        elif 'SS' in scenario.id:
+                            target_id = ADEPT_SS_ALIGNMENT
+                        elif 'PS' in scenario.id:
+                            target_id = ADEPT_PS_ALIGNMENT
+                        elif 'MJ' in scenario.id:
+                            target_id = ADEPT_MJ_ALIGNMENT
+                        else:
+                            target_id = ADEPT_IO_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.

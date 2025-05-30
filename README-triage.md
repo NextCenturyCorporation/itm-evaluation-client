@@ -51,7 +51,7 @@ Further details can be found in the Triage domain FAQ below.
    * Because ITM scenarios to date do not have defined safe zones, all it does is reveal the `ambulatory` vital from mobile, responsive characters: those with `ambulatory` of True and `mental_status` of `CALM`, `UPSET`, OR `AGONY`.
 4. How is `visited` determined?
    * Most characters start with `visited` set to False, meaning the medic has not approached or otherwise assessed the patient. These characters will have vitals and discoverable injuries initially hidden to the ADM (i.e., not in the `state`). When certain actions are taken (those mentioned in question #1 above), basic vitals and discoverable injuries will be revealed (setting injury `status` to `discovered`), and `visited` will be set to True.
-5. Does `elapsed_time` have any event on patient health?
+5. Does `elapsed_time` have any impact on patient health?
    * No. And note that the elapsed time for each action has not been vetted by ITM medical SMEs and should not be used in decision-making.
 6. What exactly is `unstructured_postassess` in the `character` object?  It's always `None`.
    * The `unstructured_postassess` property is for TA1 scenario designers to provide an updated unstructured text description of the character and/or his/her injuries. After the character is assessed/visited, the contents of the `unstructured_postassess` property are copied to the `unstructured` property.  It's always `None` because it is not exposed to ADMs, only copied to `unstructured`, which is exposed to ADMs.

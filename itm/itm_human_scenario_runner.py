@@ -3,7 +3,19 @@ from pydantic import BaseModel
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
-from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
+from itm.itm_scenario_runner import (
+    ScenarioRunner,
+    get_swagger_class_enum_values,
+    SOARTECH_QOL_ALIGNMENT,
+    SOARTECH_VOL_ALIGNMENT,
+    ADEPT_MJ_ALIGNMENT,
+    ADEPT_IO_ALIGNMENT,
+    ADEPT_MF_ALIGNMENT,
+    ADEPT_AF_ALIGNMENT,
+    ADEPT_SS_ALIGNMENT,
+    ADEPT_PS_ALIGNMENT,
+    ADEPT_MF_AF_ALIGNMENT
+)
 import traceback
 
 
@@ -233,7 +245,20 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if self.session_type == 'soartech':
                 target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in self.scenario_id else SOARTECH_VOL_ALIGNMENT
             else:
-                target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in self.scenario_id else ADEPT_IO_ALIGNMENT
+                if 'MF' in self.scenario_id and 'AF' in self.scenario_id:
+                    target_id = ADEPT_MF_AF_ALIGNMENT
+                elif 'MF' in self.scenario_id:
+                    target_id = ADEPT_MF_ALIGNMENT
+                elif 'AF' in self.scenario_id:
+                    target_id = ADEPT_AF_ALIGNMENT
+                elif 'SS' in self.scenario_id:
+                    target_id = ADEPT_SS_ALIGNMENT
+                elif 'PS' in self.scenario_id:
+                    target_id = ADEPT_PS_ALIGNMENT
+                elif 'MJ' in self.scenario_id:
+                    target_id = ADEPT_MJ_ALIGNMENT
+                else:
+                    target_id = ADEPT_IO_ALIGNMENT
             return self.itm.get_session_alignment(self.session_id, target_id)
         except:
             # An exception will occur if no probes have been answered yet.
@@ -279,6 +304,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         if self.domain == 'triage':
             self.process_triage_action(user_action)
+        elif self.domain == 'p2triage':
+            self.process_p2triage_action(user_action)
         elif self.domain == 'wumpus':
             self.process_wumpus_action(user_action)
         else:
@@ -294,6 +321,13 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def process_wumpus_action(self, action: Action):
         if action.character_id is None:
             action.character_id = self.prompt_character_id()
+
+    def process_p2triage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type in ['MOVE_TO', 'TREAT_PATIENT']:
+            # Many actions require a character ID
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id()
 
     def process_triage_action(self, action: Action):
         # Prompt to fill in any missing fields.
