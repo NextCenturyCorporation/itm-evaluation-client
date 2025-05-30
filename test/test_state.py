@@ -35,55 +35,6 @@ class TestState(unittest.TestCase):
         model = State()
         if include_optional:
             return State(
-                mission = swagger_client.models.mission.Mission(
-                    unstructured = 'Place sensors in and around the jungle base', 
-                    mission_type = 'Attack', 
-                    character_importance = [
-                        [{"Mike":"normal"},{"Intelligence Officer":"priority"}]
-                        ], 
-                    civilian_presence = 'none', 
-                    communication_capability = 'both', 
-                    roe = '', 
-                    political_climate = '', 
-                    medical_policies = [
-                        'Treat All Neutrally'
-                        ], ),
-                environment = swagger_client.models.environment.Environment(
-                    sim_environment = swagger_client.models.sim_environment.SimEnvironment(
-                        unstructured = 'It was a dark and stormy night.', 
-                        type = 'jungle', 
-                        weather = 'clear', 
-                        terrain = 'jungle', 
-                        flora = 'none', 
-                        fauna = 'none', 
-                        temperature = -75.0, 
-                        humidity = 0.0, 
-                        lighting = 'none', 
-                        visibility = 'none', 
-                        noise_ambient = 'none', 
-                        noise_peak = 'none', ), 
-                    decision_environment = swagger_client.models.decision_environment.DecisionEnvironment(
-                        unstructured = 'Injuries triggered by an IED detonation.  Helicopter Evac expected in one hour for up to three casualties.', 
-                        aid = [
-                            swagger_client.models.aid.Aid(
-                                id = '', 
-                                delay = 0, 
-                                role = 1, 
-                                patients_treated = [
-                                    'Allied US'
-                                    ], 
-                                max_transport = 1, )
-                            ], 
-                        movement_restriction = 'unrestricted', 
-                        sound_restriction = 'unrestricted', 
-                        oxygen_levels = 'normal', 
-                        population_density = 'none', 
-                        injury_triggers = 'explosion', 
-                        air_quality = 'green', 
-                        city_infrastructure = '', ), ),
-                supplies = [
-                    {"type":"Tourniquet","quantity":4,"reusable":false}
-                    ],
                 unstructured = '',
                 elapsed_time = 10,
                 meta_info = swagger_client.models.meta_info.MetaInfo(
@@ -113,42 +64,6 @@ class TestState(unittest.TestCase):
             )
         else:
             return State(
-                environment = swagger_client.models.environment.Environment(
-                    sim_environment = swagger_client.models.sim_environment.SimEnvironment(
-                        unstructured = 'It was a dark and stormy night.', 
-                        type = 'jungle', 
-                        weather = 'clear', 
-                        terrain = 'jungle', 
-                        flora = 'none', 
-                        fauna = 'none', 
-                        temperature = -75.0, 
-                        humidity = 0.0, 
-                        lighting = 'none', 
-                        visibility = 'none', 
-                        noise_ambient = 'none', 
-                        noise_peak = 'none', ), 
-                    decision_environment = swagger_client.models.decision_environment.DecisionEnvironment(
-                        unstructured = 'Injuries triggered by an IED detonation.  Helicopter Evac expected in one hour for up to three casualties.', 
-                        aid = [
-                            swagger_client.models.aid.Aid(
-                                id = '', 
-                                delay = 0, 
-                                role = 1, 
-                                patients_treated = [
-                                    'Allied US'
-                                    ], 
-                                max_transport = 1, )
-                            ], 
-                        movement_restriction = 'unrestricted', 
-                        sound_restriction = 'unrestricted', 
-                        oxygen_levels = 'normal', 
-                        population_density = 'none', 
-                        injury_triggers = 'explosion', 
-                        air_quality = 'green', 
-                        city_infrastructure = '', ), ),
-                supplies = [
-                    {"type":"Tourniquet","quantity":4,"reusable":false}
-                    ],
                 unstructured = '',
                 characters = [
                     swagger_client.models.character.Character()

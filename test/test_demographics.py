@@ -35,16 +35,10 @@ class TestDemographics(unittest.TestCase):
         model = Demographics()
         if include_optional:
             return Demographics(
-                military_disposition = 'Allied US',
-                military_branch = 'US Army',
-                rank = 'E-1',
-                rank_title = 'Private (Recruit)',
-                skills = [{skill_type=Combat, level=skilled}, {skill_type=Medical, level=novice}],
-                mission_importance = 'normal',
                 age = 0,
                 sex = 'M',
                 race = 'American Indian',
-                role = 'Unknown'
+                role = 'Not specified'
             )
         else:
             return Demographics(

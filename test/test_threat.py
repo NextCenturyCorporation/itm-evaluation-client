@@ -35,12 +35,12 @@ class TestThreat(unittest.TestCase):
         model = Threat()
         if include_optional:
             return Threat(
-                threat_type = 'Unknown',
+                threat_type = 'Not specified',
                 severity = 'low'
             )
         else:
             return Threat(
-                threat_type = 'Unknown',
+                threat_type = 'Not specified',
                 severity = 'low',
         )
         """
