@@ -142,7 +142,7 @@ def get_next_triage_action(selected_action: Action, scenario: Scenario, state: S
                     if (path_action):
                         raise Exception("Cannot perform configured path...exiting.")
                     actions.remove(selected_action)
-                    return get_next_action('triage', scenario, state, alignment_target, actions)
+                    return get_next_action('p2triage', scenario, state, alignment_target, actions)
                 if not selected_action.parameters:
                     selected_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
@@ -165,7 +165,7 @@ def supply_available(state: State, supply):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
     return supply in supplies
 
-def get_random_character_id(state: State, action_type, domain = 'triage'):
+def get_random_character_id(state: State, action_type, domain = 'p2triage'):
     if domain == 'triage' and action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
         characters : List[Character] = [character for character in state.characters]
     elif action_type in [ActionTypeEnum.MOVE_TO]:
@@ -191,7 +191,7 @@ def main():
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
     parser.add_argument('--profile', metavar='adm_profile', required=False,
                         help='Specify the ADM profile in terms of its alignment strategy')
-    parser.add_argument('--domain', metavar='domain_name', required=False, default='triage',
+    parser.add_argument('--domain', metavar='domain_name', required=False, default='p2triage',
                         help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
