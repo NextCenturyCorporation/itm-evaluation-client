@@ -6,9 +6,6 @@ The complete state of the scene or scenario
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**mission** | [**Mission**](Mission.md) |  | [optional] 
-**environment** | [**Environment**](Environment.md) |  | 
-**supplies** | [**List[Supplies]**](Supplies.md) | A list of supplies available to the medic | 
 **unstructured** | **str** | Natural language, plain text description of a scene&#39;s state | 
 **elapsed_time** | **int** | The simulated elapsed time (in seconds) since the scenario started | [optional] 
 **meta_info** | [**MetaInfo**](MetaInfo.md) |  | [optional] 

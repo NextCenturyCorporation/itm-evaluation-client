@@ -17,29 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from swagger_client.models.character_tag_enum import CharacterTagEnum
-from swagger_client.models.directness_enum import DirectnessEnum
-from swagger_client.models.injury import Injury
-from swagger_client.models.intent_enum import IntentEnum
-from swagger_client.models.vitals import Vitals
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
 class DomainCharacter(BaseModel):
     """
-    a character in the scene, including injured patients, civilians, medics, etc.
+    A character in the scene
     """ # noqa: E501
-    unstructured_postassess: Optional[StrictStr] = Field(default=None, description="unstructured description updated after character assessment")
-    has_blanket: Optional[StrictBool] = Field(default=False, description="whether or not this character has a blanket (either wrapped around or underneath)")
-    intent: Optional[IntentEnum] = None
-    directness_of_causality: Optional[DirectnessEnum] = None
-    injuries: Optional[List[Injury]] = Field(default=None, description="A list of Injuries for the character")
-    vitals: Optional[Vitals] = None
-    visited: Optional[StrictBool] = Field(default=False, description="whether or not this character has been visited by the ADM in the current scenario")
-    tag: Optional[CharacterTagEnum] = None
-    __properties: ClassVar[List[str]] = ["unstructured_postassess", "has_blanket", "intent", "directness_of_causality", "injuries", "vitals", "visited", "tag"]
+    medical_condition: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="The treatment priority/urgency of a patient's medical condition, 0-1 scale")
+    attribute_rating: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="A scenario-specific characteristic of the patient or situation regarding the patient, 0-1 scale:   Merit Focus (MF): degree of blame for a patient: 0.0 doesn't consider merit when deciding who to treat / always treats the medically favored patient; 1.0 always treats the higher-merit patient regardless of who is medically favored.   Affiliation Focus (AF): degree of closeness for a patient: 0.0 doesn't consider affiliation / always treats the medically favored patient; 1.0 always treats patient with closer affiliation regardless of who is medically favored.   Search vs. Stay (SS): urgency to search for/treat a patient: 0.0 always stays despite how urgent the need is to treat patient in next room; 1.0 has highest urgency to search / will always move to another patient or look for new patients regardless of how urgent the need is.   Personal Safety Focus (PS): amount of danger to reach a patient: 0.0 doesn't consider personal safety and always switches to the medically favored patient; 1.0 won't risk personal safety / always stays in safest place regardless of who is medically favored. ")
+    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,16 +70,6 @@ class DomainCharacter(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in injuries (list)
-        _items = []
-        if self.injuries:
-            for _item_injuries in self.injuries:
-                if _item_injuries:
-                    _items.append(_item_injuries.to_dict())
-            _dict['injuries'] = _items
-        # override the default output from pydantic by calling `to_dict()` of vitals
-        if self.vitals:
-            _dict['vitals'] = self.vitals.to_dict()
         return _dict
 
     @classmethod
@@ -102,14 +82,8 @@ class DomainCharacter(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "unstructured_postassess": obj.get("unstructured_postassess"),
-            "has_blanket": obj.get("has_blanket") if obj.get("has_blanket") is not None else False,
-            "intent": obj.get("intent"),
-            "directness_of_causality": obj.get("directness_of_causality"),
-            "injuries": [Injury.from_dict(_item) for _item in obj["injuries"]] if obj.get("injuries") is not None else None,
-            "vitals": Vitals.from_dict(obj["vitals"]) if obj.get("vitals") is not None else None,
-            "visited": obj.get("visited") if obj.get("visited") is not None else False,
-            "tag": obj.get("tag")
+            "medical_condition": obj.get("medical_condition"),
+            "attribute_rating": obj.get("attribute_rating")
         })
         return _obj
 

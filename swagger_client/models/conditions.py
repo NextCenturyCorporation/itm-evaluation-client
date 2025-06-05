@@ -20,8 +20,6 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from swagger_client.models.conditions_character_vitals import ConditionsCharacterVitals
-from swagger_client.models.supplies import Supplies
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,14 +27,12 @@ class Conditions(BaseModel):
     """
     Conditions that specify whether to transition to the next scene or send a probe response
     """ # noqa: E501
-    character_vitals: Optional[List[ConditionsCharacterVitals]] = Field(default=None, description="True if any of the specified collection of vital values have been met for the specified character_id")
-    supplies: Optional[List[Supplies]] = Field(default=None, description="True if any of the specified supplies reach or go below the specified quantity")
     elapsed_time_lt: Optional[Annotated[int, Field(strict=True, ge=5)]] = Field(default=None, description="True if the scenario elapsed time (in seconds) is less than the specified value")
     elapsed_time_gt: Optional[Annotated[int, Field(strict=True, ge=5)]] = Field(default=None, description="True if the scenario elapsed time (in seconds) is greater than the specified value")
     actions: Optional[List[List[StrictStr]]] = Field(default=None, description="True if any of the specified lists of actions have been taken; multiple action ID lists have \"or\" semantics; multiple action IDs within a list have \"and\" semantics")
     probes: Optional[List[StrictStr]] = Field(default=None, description="True if the specified list of probe_ids have been answered")
     probe_responses: Optional[List[StrictStr]] = Field(default=None, description="True if the specified list of probe responses (choice) have been sent")
-    __properties: ClassVar[List[str]] = ["character_vitals", "supplies", "elapsed_time_lt", "elapsed_time_gt", "actions", "probes", "probe_responses"]
+    __properties: ClassVar[List[str]] = ["elapsed_time_lt", "elapsed_time_gt", "actions", "probes", "probe_responses"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -77,20 +73,6 @@ class Conditions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in character_vitals (list)
-        _items = []
-        if self.character_vitals:
-            for _item_character_vitals in self.character_vitals:
-                if _item_character_vitals:
-                    _items.append(_item_character_vitals.to_dict())
-            _dict['character_vitals'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in supplies (list)
-        _items = []
-        if self.supplies:
-            for _item_supplies in self.supplies:
-                if _item_supplies:
-                    _items.append(_item_supplies.to_dict())
-            _dict['supplies'] = _items
         return _dict
 
     @classmethod
@@ -103,8 +85,6 @@ class Conditions(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "character_vitals": [ConditionsCharacterVitals.from_dict(_item) for _item in obj["character_vitals"]] if obj.get("character_vitals") is not None else None,
-            "supplies": [Supplies.from_dict(_item) for _item in obj["supplies"]] if obj.get("supplies") is not None else None,
             "elapsed_time_lt": obj.get("elapsed_time_lt"),
             "elapsed_time_gt": obj.get("elapsed_time_gt"),
             "actions": obj.get("actions"),

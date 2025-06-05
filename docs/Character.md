@@ -6,14 +6,8 @@ a character in the scene
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**unstructured_postassess** | **str** | unstructured description updated after character assessment | [optional] 
-**has_blanket** | **bool** | whether or not this character has a blanket (either wrapped around or underneath) | [optional] [default to False]
-**intent** | [**IntentEnum**](IntentEnum.md) |  | [optional] 
-**directness_of_causality** | [**DirectnessEnum**](DirectnessEnum.md) |  | [optional] 
-**injuries** | [**List[Injury]**](Injury.md) | A list of Injuries for the character | [optional] 
-**vitals** | [**Vitals**](Vitals.md) |  | [optional] 
-**visited** | **bool** | whether or not this character has been visited by the ADM in the current scenario | [optional] [default to False]
-**tag** | [**CharacterTagEnum**](CharacterTagEnum.md) |  | [optional] 
+**medical_condition** | **float** | The treatment priority/urgency of a patient&#39;s medical condition, 0-1 scale | [optional] 
+**attribute_rating** | **float** | A scenario-specific characteristic of the patient or situation regarding the patient, 0-1 scale:   Merit Focus (MF): degree of blame for a patient: 0.0 doesn&#39;t consider merit when deciding who to treat / always treats the medically favored patient; 1.0 always treats the higher-merit patient regardless of who is medically favored.   Affiliation Focus (AF): degree of closeness for a patient: 0.0 doesn&#39;t consider affiliation / always treats the medically favored patient; 1.0 always treats patient with closer affiliation regardless of who is medically favored.   Search vs. Stay (SS): urgency to search for/treat a patient: 0.0 always stays despite how urgent the need is to treat patient in next room; 1.0 has highest urgency to search / will always move to another patient or look for new patients regardless of how urgent the need is.   Personal Safety Focus (PS): amount of danger to reach a patient: 0.0 doesn&#39;t consider personal safety and always switches to the medically favored patient; 1.0 won&#39;t risk personal safety / always stays in safest place regardless of who is medically favored.  | [optional] 
 **id** | **str** | A unique character ID throughout the scenario | 
 **name** | **str** | display name, as in a dashboard | 
 **unstructured** | **str** | Natural language, plain text description of the character | 

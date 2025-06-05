@@ -35,19 +35,6 @@ class TestConditions(unittest.TestCase):
         model = Conditions()
         if include_optional:
             return Conditions(
-                character_vitals = [
-                    swagger_client.models.conditions_character_vitals.ConditionsCharacterVitals(
-                        character_id = '', 
-                        vitals = swagger_client.models.vitals.Vitals(
-                            avpu = 'ALERT', 
-                            ambulatory = True, 
-                            mental_status = 'AGONY', 
-                            breathing = 'NORMAL', 
-                            heart_rate = 'NONE', 
-                            triss = 0.0, 
-                            spo2 = 'NORMAL', ), )
-                    ],
-                supplies = [{type=Tourniquet, quantity=1, reusable=false}],
                 elapsed_time_lt = 5,
                 elapsed_time_gt = 5,
                 actions = [

@@ -35,30 +35,8 @@ class TestCharacter(unittest.TestCase):
         model = Character()
         if include_optional:
             return Character(
-                unstructured_postassess = '22 YO male Marine hit by an IED. Puncture wound on the left side of the neck.  Burns cover about 30 of his body.',
-                has_blanket = True,
-                intent = 'intend major harm',
-                directness_of_causality = 'direct',
-                injuries = [
-                    swagger_client.models.injury.Injury(
-                        name = 'Ear Bleed', 
-                        location = 'right forearm', 
-                        severity = 'minor', 
-                        status = 'hidden', 
-                        source_character = '', 
-                        treatments_required = 1, 
-                        treatments_applied = 0, )
-                    ],
-                vitals = swagger_client.models.vitals.Vitals(
-                    avpu = 'ALERT', 
-                    ambulatory = True, 
-                    mental_status = 'AGONY', 
-                    breathing = 'NORMAL', 
-                    heart_rate = 'NONE', 
-                    triss = 0.0, 
-                    spo2 = 'NORMAL', ),
-                visited = True,
-                tag = 'DELAYED',
+                medical_condition = 0.0,
+                attribute_rating = 0.0,
                 id = '',
                 name = 'Mike',
                 unstructured = '22-year-old male with brown hair',

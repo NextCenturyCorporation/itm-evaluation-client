@@ -38,7 +38,7 @@ class TestBaseDemographics(unittest.TestCase):
                 age = 0,
                 sex = 'M',
                 race = 'American Indian',
-                role = 'Unknown'
+                role = 'Not specified'
             )
         else:
             return BaseDemographics(

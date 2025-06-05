@@ -22,13 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from swagger_client.models.character_role_enum import CharacterRoleEnum
 from swagger_client.models.demographic_sex_enum import DemographicSexEnum
-from swagger_client.models.military_branch_enum import MilitaryBranchEnum
-from swagger_client.models.military_disposition_enum import MilitaryDispositionEnum
-from swagger_client.models.military_rank_enum import MilitaryRankEnum
-from swagger_client.models.military_rank_title_enum import MilitaryRankTitleEnum
-from swagger_client.models.mission_importance_enum import MissionImportanceEnum
 from swagger_client.models.race_enum import RaceEnum
-from swagger_client.models.skills import Skills
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -36,17 +30,11 @@ class Demographics(BaseModel):
     """
     Basic properties about the character
     """ # noqa: E501
-    military_disposition: Optional[MilitaryDispositionEnum] = None
-    military_branch: Optional[MilitaryBranchEnum] = None
-    rank: Optional[MilitaryRankEnum] = None
-    rank_title: Optional[MilitaryRankTitleEnum] = None
-    skills: Optional[List[Skills]] = Field(default=None, description="A list of pairs of skill type and descriptive skill level")
-    mission_importance: Optional[MissionImportanceEnum] = MissionImportanceEnum.NORMAL
     age: Optional[Annotated[int, Field(le=125, strict=True, ge=0)]] = Field(default=None, description="the age of the character, omit if unknown")
     sex: DemographicSexEnum
     race: RaceEnum
     role: Optional[CharacterRoleEnum] = None
-    __properties: ClassVar[List[str]] = ["military_disposition", "military_branch", "rank", "rank_title", "skills", "mission_importance", "age", "sex", "race", "role"]
+    __properties: ClassVar[List[str]] = ["age", "sex", "race", "role"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,13 +75,6 @@ class Demographics(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in skills (list)
-        _items = []
-        if self.skills:
-            for _item_skills in self.skills:
-                if _item_skills:
-                    _items.append(_item_skills.to_dict())
-            _dict['skills'] = _items
         return _dict
 
     @classmethod
@@ -106,12 +87,6 @@ class Demographics(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "military_disposition": obj.get("military_disposition"),
-            "military_branch": obj.get("military_branch"),
-            "rank": obj.get("rank"),
-            "rank_title": obj.get("rank_title"),
-            "skills": [Skills.from_dict(_item) for _item in obj["skills"]] if obj.get("skills") is not None else None,
-            "mission_importance": obj.get("mission_importance") if obj.get("mission_importance") is not None else MissionImportanceEnum.NORMAL,
             "age": obj.get("age"),
             "sex": obj.get("sex"),
             "race": obj.get("race"),

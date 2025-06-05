@@ -20,11 +20,8 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from swagger_client.models.character import Character
-from swagger_client.models.environment import Environment
 from swagger_client.models.event import Event
 from swagger_client.models.meta_info import MetaInfo
-from swagger_client.models.mission import Mission
-from swagger_client.models.supplies import Supplies
 from swagger_client.models.threat_state import ThreatState
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,9 +30,6 @@ class State(BaseModel):
     """
     The complete state of the scene or scenario
     """ # noqa: E501
-    mission: Optional[Mission] = None
-    environment: Environment
-    supplies: List[Supplies] = Field(description="A list of supplies available to the medic")
     unstructured: StrictStr = Field(description="Natural language, plain text description of a scene's state")
     elapsed_time: Optional[StrictInt] = Field(default=None, description="The simulated elapsed time (in seconds) since the scenario started")
     meta_info: Optional[MetaInfo] = None
@@ -43,7 +37,7 @@ class State(BaseModel):
     threat_state: Optional[ThreatState] = None
     characters: List[Character] = Field(description="A list of characters in the scene")
     scenario_complete: Optional[StrictBool] = Field(default=None, description="set to true if the scenario is complete; subsequent calls involving that scenario will return an error code")
-    __properties: ClassVar[List[str]] = ["mission", "environment", "supplies", "unstructured", "elapsed_time", "meta_info", "events", "threat_state", "characters", "scenario_complete"]
+    __properties: ClassVar[List[str]] = ["unstructured", "elapsed_time", "meta_info", "events", "threat_state", "characters", "scenario_complete"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,19 +78,6 @@ class State(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of mission
-        if self.mission:
-            _dict['mission'] = self.mission.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of environment
-        if self.environment:
-            _dict['environment'] = self.environment.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in supplies (list)
-        _items = []
-        if self.supplies:
-            for _item_supplies in self.supplies:
-                if _item_supplies:
-                    _items.append(_item_supplies.to_dict())
-            _dict['supplies'] = _items
         # override the default output from pydantic by calling `to_dict()` of meta_info
         if self.meta_info:
             _dict['meta_info'] = self.meta_info.to_dict()
@@ -129,9 +110,6 @@ class State(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mission": Mission.from_dict(obj["mission"]) if obj.get("mission") is not None else None,
-            "environment": Environment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
-            "supplies": [Supplies.from_dict(_item) for _item in obj["supplies"]] if obj.get("supplies") is not None else None,
             "unstructured": obj.get("unstructured"),
             "elapsed_time": obj.get("elapsed_time"),
             "meta_info": MetaInfo.from_dict(obj["meta_info"]) if obj.get("meta_info") is not None else None,

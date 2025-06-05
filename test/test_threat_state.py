@@ -38,7 +38,7 @@ class TestThreatState(unittest.TestCase):
                 unstructured = '',
                 threats = [
                     swagger_client.models.threat.Threat(
-                        threat_type = 'Unknown', 
+                        threat_type = 'Not specified', 
                         severity = 'low', )
                     ]
             )
@@ -47,7 +47,7 @@ class TestThreatState(unittest.TestCase):
                 unstructured = '',
                 threats = [
                     swagger_client.models.threat.Threat(
-                        threat_type = 'Unknown', 
+                        threat_type = 'Not specified', 
                         severity = 'low', )
                     ],
         )

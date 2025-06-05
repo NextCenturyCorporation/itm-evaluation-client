@@ -26,14 +26,7 @@ class CharacterRoleEnum(str, Enum):
     """
     allowed enum values
     """
-    UNKNOWN = 'Unknown'
-    INFANTRY = 'Infantry'
-    SEAL = 'SEAL'
-    COMMAND = 'Command'
-    INTELLIGENCE = 'Intelligence'
-    MEDICAL = 'Medical'
-    SPECIALIST = 'Specialist'
-    COMMUNICATIONS = 'Communications'
+    NOT_SPECIFIED = 'Not specified'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
