@@ -1,8 +1,21 @@
 from enum import Enum
+from pydantic import BaseModel
 from swagger_client.models import Scenario, State, Action
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
-from .itm_scenario_runner import ScenarioRunner, get_swagger_class_enum_values, SOARTECH_QOL_ALIGNMENT, SOARTECH_VOL_ALIGNMENT, ADEPT_MJ_ALIGNMENT, ADEPT_IO_ALIGNMENT
+from itm.itm_scenario_runner import (
+    ScenarioRunner,
+    get_swagger_class_enum_values,
+    SOARTECH_QOL_ALIGNMENT,
+    SOARTECH_VOL_ALIGNMENT,
+    ADEPT_MJ_ALIGNMENT,
+    ADEPT_IO_ALIGNMENT,
+    ADEPT_MF_ALIGNMENT,
+    ADEPT_AF_ALIGNMENT,
+    ADEPT_SS_ALIGNMENT,
+    ADEPT_PS_ALIGNMENT,
+    ADEPT_MF_AF_ALIGNMENT
+)
 import traceback
 
 
@@ -24,14 +37,14 @@ class TagTypes(Enum):
     IMMEDIATE = "immediate (i)"
     EXPECTANT = "expectant (e)"
 
-ACTIONS_WITHOUT_CHARACTERS = ["DIRECT_MOBILE_CHARACTERS", "END_SCENE", "MESSAGE", "SEARCH", "SITREP"]
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, kdma_training=None, max_scenarios=-1, scenario_id=None):
+    def __init__(self, session_type, domain, kdma_training=None, max_scenarios=-1, scenario_id=None):
         super().__init__()
         self.username = session_type + " ITM Human"
         self.session_type = session_type
         self.kdma_training = kdma_training
+        self.domain = domain
         if max_scenarios > 0:
             self.max_scenarios = max_scenarios
         else:
@@ -193,7 +206,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 self.scenario = response
                 state: State = response.state
                 self.characters = state.characters
-                self.medical_supplies = response.state.supplies
+                if self.domain == 'triage':
+                    self.medical_supplies = response.state.supplies
             else:
                 self.session_complete = True
         else:
@@ -203,9 +217,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, username):
         if self.session_id is None:
             if self.max_scenarios is None:
-                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(username, self.session_type, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
@@ -231,7 +245,20 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if self.session_type == 'soartech':
                 target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in self.scenario_id else SOARTECH_VOL_ALIGNMENT
             else:
-                target_id = ADEPT_MJ_ALIGNMENT if 'MJ' in self.scenario_id else ADEPT_IO_ALIGNMENT
+                if 'MF' in self.scenario_id and 'AF' in self.scenario_id:
+                    target_id = ADEPT_MF_AF_ALIGNMENT
+                elif 'MF' in self.scenario_id:
+                    target_id = ADEPT_MF_ALIGNMENT
+                elif 'AF' in self.scenario_id:
+                    target_id = ADEPT_AF_ALIGNMENT
+                elif 'SS' in self.scenario_id:
+                    target_id = ADEPT_SS_ALIGNMENT
+                elif 'PS' in self.scenario_id:
+                    target_id = ADEPT_PS_ALIGNMENT
+                elif 'MJ' in self.scenario_id:
+                    target_id = ADEPT_MJ_ALIGNMENT
+                else:
+                    target_id = ADEPT_IO_ALIGNMENT
             return self.itm.get_session_alignment(self.session_id, target_id)
         except:
             # An exception will occur if no probes have been answered yet.
@@ -245,7 +272,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         response = self.itm.get_scenario_state(self.session_id, self.scenario_id)
-        self.medical_supplies = response.supplies
+        if self.domain == 'triage':
+            self.medical_supplies = response.supplies
         return response
 
     def get_available_actions_operation(self):
@@ -272,10 +300,38 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             return f"Call {self.get_full_string_and_shortcut(CommandOption.GET_AVAILABLE_ACTIONS)[0]} first."
         if not self.available_actions:
             return "Please get available actions first."
-        action:Action = self.prompt_action()
+        user_action: Action = self.prompt_action()
 
-        # Prompt to fill in any missing fields.  Note similarity with ADMScenarioRunner.get_next_action().
-        if action.action_type not in ACTIONS_WITHOUT_CHARACTERS:
+        if self.domain == 'triage':
+            self.process_triage_action(user_action)
+        elif self.domain == 'p2triage':
+            self.process_p2triage_action(user_action)
+        elif self.domain == 'wumpus':
+            self.process_wumpus_action(user_action)
+        else:
+            print(f"Client error.  Domain {self.domain} not supported.")
+
+        # Prompt for (optional) justification
+        user_action.justification = self.prompt_justification()
+
+        print(user_action)
+        self.actions_are_current = False
+        return self.itm.take_action(session_id=self.session_id, action=user_action) if not intend_action else self.itm.intend_action(session_id=self.session_id, action=user_action)
+
+    def process_wumpus_action(self, action: Action):
+        if action.character_id is None:
+            action.character_id = self.prompt_character_id()
+
+    def process_p2triage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type in ['MOVE_TO', 'TREAT_PATIENT']:
+            # Many actions require a character ID
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id()
+
+    def process_triage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type not in ['DIRECT_MOBILE_CHARACTERS', 'END_SCENE', 'MESSAGE', 'SEARCH', 'SITREP']:
             # Most actions require a character ID
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
@@ -297,24 +353,17 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if not action.parameters:
                 action.parameters = {"aid_id": self.prompt_aid_id()}
 
-        # Prompt for (optional) justification
-        action.justification = self.prompt_justification()
-
-        print(action)
-        self.actions_are_current = False
-        return self.itm.take_action(session_id=self.session_id, body=action) if not intend_action else self.itm.intend_action(session_id=self.session_id, body=action)
-
     def run(self):
         while not self.session_complete:
             command = input(
                 f"Enter a Command from the following options "
                 f"{[command_option.value for command_option in CommandOption]}: "
             ).lower()
-            response = None
-            self.perform_operations(command, response)
+            self.perform_operations(command)
         print("ITM Session Ended")
 
-    def perform_operations(self, command, response):
+    def perform_operations(self, command):
+        response = None
         try:
             if command in self.get_full_string_and_shortcut(CommandOption.START_SESSION):
                 response = self.start_session_operation(self.username)
@@ -335,17 +384,15 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         except Exception:
             traceback.print_exc()
 
-        if response != None:
-            print(response)
-
         if command in self.get_full_string_and_shortcut(CommandOption.QUIT):
             self.session_complete = True # if there are no more scenarios, then the session is over
             print("Quitting session-- server will not save history for current scenario if it was enabled.")
         elif isinstance(response, State):
-            self.medical_supplies = response.supplies
+            if self.domain == 'triage':
+                self.medical_supplies = response.supplies
+                if response.environment.decision_environment:
+                    self.aids = response.environment.decision_environment.aid
             self.characters = response.characters
-            if response.environment.decision_environment:
-                self.aids = response.environment.decision_environment.aid
             if response.scenario_complete == True:
                 self.scenario_complete = True
                 self.scenario_id = None
@@ -353,3 +400,12 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             if response.session_complete == True:
                 self.session_complete = True # if there are no more scenarios, then the session is over
                 print("Session Complete: Ending Session...")
+                exit(0)
+
+        if response is not None:
+            response_list = response if isinstance(response, list) else [response]
+            for response_item in response_list:
+                if isinstance(response_item, BaseModel):
+                    print(response_item.model_dump_json(indent=2))
+                else:
+                    print(response_item)

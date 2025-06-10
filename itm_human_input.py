@@ -6,6 +6,8 @@ def main():
     parser = argparse.ArgumentParser(description='Runs Human input simulator.')
     parser.add_argument('--session', required=True, metavar='session_type', help=\
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
+    parser.add_argument('--domain', metavar='domain_name', required=False, default='p2triage',
+                        help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '
                         'accordance with server defaults. Not supported in `eval` sessions.')
@@ -47,9 +49,9 @@ def main():
         parser.error("--scenario is incompatible with --count.")
 
     if scenario_id:
-        runner = ITMHumanScenarioRunner(session_type, args.training, scenario_count, scenario_id)
+        runner = ITMHumanScenarioRunner(session_type, args.domain, args.training, scenario_count, scenario_id)
     else:
-        runner = ITMHumanScenarioRunner(session_type, args.training, scenario_count)
+        runner = ITMHumanScenarioRunner(session_type, args.domain, args.training, scenario_count)
     runner.run()
 
 if __name__ == "__main__":

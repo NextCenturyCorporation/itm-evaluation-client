@@ -2,10 +2,110 @@
     "enabled": false,
     "paths":[
         {
-            "path":["action1","action2","action3","action4","action7","end_scene_action"]
+            "scenario_id": "DryRunEval-MJ5-eval",
+            "actions":[
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "assess_Springer"
+                },
+                {
+                    "action_id": "treat_Springer",
+                    "parameters": {"treatment": "Hemostatic gauze", "location": "right shoulder"},
+                    "note": "Probe 2-A.1. This is indistinguishable from action_id treat_Springer_with_gauze"
+                },
+                {
+                    "action_id": "treat_Springer",
+                    "parameters": {"treatment": "Hemostatic gauze", "location": "right shoulder"},
+                    "note": "Probe 2-A.1-B.1. This is indistinguishable from action_id treat_Springer_with_gauze"
+                },
+                {
+                    "action_id": "treat_Springer",
+                    "note": "This and next two actions are Probe 3"
+                },
+                {
+                    "action_id": "treat_Upton"
+                },
+                {
+                    "action_id": "treat_Upton"
+                },
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "search_for_new_patients"
+                },
+                {
+                    "action_id": "do_not_treat_attacker"
+                },
+                {
+                    "action_id": "treat_attacker",
+                    "note": "Could also have chosen assess_attacker"
+                },
+                {
+                    "action_id": "evac_attacker"
+                },
+                {
+                    "action_id": "evac_attacker"
+                }
+            ]
         },
         {
-            "path":["action5","action6","action2","action8","end_scene_action"]
+            "scenario_id": "DryRunEval-MJ5-eval",
+            "actions":[
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "assess_Springer"
+                },
+                {
+                    "action_id": "treat_Springer_with_gauze",
+                    "parameters": {"treatment": "Hemostatic gauze", "location": "right shoulder"},
+                    "note": "Probe 2-A.1. This is indistinguishable from action_id treat_Springer"
+                },
+                {
+                    "action_id": "treat_Springer_with_gauze",
+                    "parameters": {"treatment": "Hemostatic gauze", "location": "right shoulder"},
+                    "note": "Probe 2-A.1-B.1. This is indistinguishable from action_id treat_Springer"
+                },
+                {
+                    "action_id": "treat_Springer",
+                    "note": "This and next two actions are Probe 3"
+                },
+                {
+                    "action_id": "treat_Upton"
+                },
+                {
+                    "action_id": "treat_Upton"
+                },
+                {
+                    "action_id": "evac_Springer"
+                },
+                {
+                    "action_id": "search_for_new_patients"
+                },
+                {
+                    "action_id": "do_not_treat_attacker"
+                },
+                {
+                    "action_id": "assess_attacker",
+                    "note": "Could also have chosen treat_attacker"
+                },
+                {
+                    "action_id": "evac_attacker"
+                },
+                {
+                    "action_id": "evac_attacker"
+                }
+            ]
         }
     ]
 }
