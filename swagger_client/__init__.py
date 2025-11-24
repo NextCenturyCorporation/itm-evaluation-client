@@ -14,7 +14,7 @@
 """  # noqa: E501
 
 
-__version__ = "1.0.0"
+__version__ = "0.5.0"
 
 # import apis into sdk package
 from swagger_client.api.itm_ta2_eval_api import ItmTa2EvalApi

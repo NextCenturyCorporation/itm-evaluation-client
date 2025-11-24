@@ -217,9 +217,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, username):
         if self.session_id is None:
             if self.max_scenarios is None:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
