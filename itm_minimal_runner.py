@@ -307,6 +307,10 @@ def main():
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         if 'MF' in scenario.id and 'AF' in scenario.id:
                             target_id = ADEPT_MF_AF_ALIGNMENT
+                        if 'AF' in scenario.id and 'PS' in scenario.id:
+                            target_id = ADEPT_AF_PS_ALIGNMENT
+                        if 'MF' in scenario.id and 'SS' in scenario.id:
+                            target_id = ADEPT_MF_SS_ALIGNMENT
                         elif 'MF' in scenario.id:
                             target_id = ADEPT_MF_ALIGNMENT
                         elif 'AF' in scenario.id:
