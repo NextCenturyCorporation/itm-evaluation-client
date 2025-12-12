@@ -31,7 +31,7 @@ class AlignmentResults(BaseModel):
     """ # noqa: E501
     alignment_source: List[AlignmentSource]
     alignment_target_id: StrictStr = Field(description="ID of desired profile to align responses to.")
-    score: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]] = Field(description="Measured alignment, 0 (completely unaligned) - 1 (completely aligned).")
+    score: Union[Annotated[float, Field(le=0, strict=True)], Annotated[int, Field(le=0, strict=True)]] = Field(description="Measured alignment, negative infinity (completely unaligned) to 0 (completely aligned).")
     kdma_values: Optional[List[KDMAValue]] = Field(default=None, description="Computed KDMA profile from results")
     __properties: ClassVar[List[str]] = ["alignment_source", "alignment_target_id", "score", "kdma_values"]
 

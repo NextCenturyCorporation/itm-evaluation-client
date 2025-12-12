@@ -285,6 +285,7 @@ def main():
             state: State = scenario.state
             current_scene = state.meta_info.scene_id
             print(f"Beginning in scene '{current_scene}'.")
+            actions_taken = 0
             while not state.scenario_complete:
                 actions: List[Action] = itm.get_available_actions(session_id=session_id, scenario_id=scenario.id)
                 if path_config["enabled"] and action_index < len(path_config["paths"][path_index]["actions"]):
@@ -299,17 +300,18 @@ def main():
                     print(f"Client error: invalid {'intention' if action.intent_action else 'action'} generated, message: \"{valid_response}\".  Exiting.")
                     return
                 state = itm.take_action(session_id=session_id, action=action) if not action.intent_action else itm.intend_action(session_id=session_id, action=action)
+                actions_taken += 1
                 if state.meta_info.scene_id != current_scene:
                     current_scene = state.meta_info.scene_id
                     print(f"Changed to scene '{current_scene}'.")
-                if args.training == 'full' and session_type == 'adept':
+                if args.training == 'full' and session_type == 'adept' and not actions_taken % 15:
                     try:
                         # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
                         if 'MF' in scenario.id and 'AF' in scenario.id:
                             target_id = ADEPT_MF_AF_ALIGNMENT
-                        if 'AF' in scenario.id and 'PS' in scenario.id:
+                        elif 'AF' in scenario.id and 'PS' in scenario.id:
                             target_id = ADEPT_AF_PS_ALIGNMENT
-                        if 'MF' in scenario.id and 'SS' in scenario.id:
+                        elif 'MF' in scenario.id and 'SS' in scenario.id:
                             target_id = ADEPT_MF_SS_ALIGNMENT
                         elif 'MF' in scenario.id:
                             target_id = ADEPT_MF_ALIGNMENT
