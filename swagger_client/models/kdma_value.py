@@ -27,11 +27,11 @@ from typing_extensions import Self
 
 class KDMAValue(BaseModel):
     """
-    Single KDMA value with value(s) between 0 and 1, or a kernel density estimate of the KDMA value.
+    Single KDMA value, or a kernel density estimate of the KDMA value.
     """ # noqa: E501
     kdma: StrictStr = Field(description="Name of KDMA")
-    value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Numeric score for a given KDMA, 0-1 scale")
-    scores: Optional[List[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]]] = Field(default=None, description="Ordered KDMA scores")
+    value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Numeric score for a given KDMA")
+    scores: Optional[List[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]] = Field(default=None, description="Ordered KDMA scores")
     kdes: Optional[Dict[str, KDEData]] = Field(default=None, description="KDE Objects representing a KDMA Measurement")
     parameters: Optional[Annotated[List[KDMAValueParametersInner], Field(min_length=3, max_length=3)]] = None
     __properties: ClassVar[List[str]] = ["kdma", "value", "scores", "kdes", "parameters"]
