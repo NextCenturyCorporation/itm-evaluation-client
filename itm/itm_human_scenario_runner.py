@@ -217,9 +217,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, username):
         if self.session_id is None:
             if self.max_scenarios is None:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
@@ -247,6 +247,10 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             else:
                 if 'MF' in self.scenario_id and 'AF' in self.scenario_id:
                     target_id = ADEPT_MF_AF_ALIGNMENT
+                elif 'AF' in self.scenario_id and 'PS' in self.scenario_id:
+                    target_id = ADEPT_AF_PS_ALIGNMENT
+                elif 'MF' in self.scenario_id and 'SS' in self.scenario_id:
+                    target_id = ADEPT_MF_SS_ALIGNMENT
                 elif 'MF' in self.scenario_id:
                     target_id = ADEPT_MF_ALIGNMENT
                 elif 'AF' in self.scenario_id:
