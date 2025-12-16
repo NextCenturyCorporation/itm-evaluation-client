@@ -58,10 +58,11 @@ options:
   --session session_type   Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.
   --profile adm_profile    Specify the ADM profile in terms of its alignment strategy
   --domain domain_name     Specify the domain for the session, or use the server default
-  --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults. Not
-                           supported in `eval` sessions.
-  --training training_mode Put the server in either `full` or `solo` training mode in which it returns the KDMA association for each
-                           action choice. `full` training mode also allows calls for session alignment. Not supported in `eval` or `test` sessions.
+  --count scenario_count   Run the specified number of scenarios. Otherwise, will run scenarios in accordance with server defaults.
+                           Not supported in `eval` sessions.
+  --training training_mode Put the server in training mode, in which the server returns the KDMA association for each action choice.
+                           If `value` > 0, then it also requests session alignment every `value` scenes.
+                           Not supported in `eval` or `test` sessions. Default 0.
   --scenario scenario_id   Specify a scenario_id to run. Incompatible with count parameter and `eval` sessions.
 ```
 
@@ -118,8 +119,8 @@ Further details about these actions can be found in the ITM Server FAQ below.  D
 4. How does `elapsed_time` work?
    * Whenever an action is taken, a configurable amount of time passes.  The `elapsed_time` property of the `state` object contains a running total of time passed (in seconds).
    * **NOTE**: at present, the passage of time has **no effect** on characters or anything else, and is simply a construct of the TA3 server, although scenario designers can use it as a condition for transition from one logical scene to the next.
-5. In training sessions, after the ADM takes its first action, the session alignment is usually 0.5.  Why is this?
-   * If the ADM's first action doesn't result in a probe response, alignment is undefined. The `AlignmentResults` object does not allow for a `score` of `None`, and requires a value between 0 and 1. So the TA3 server responds with 0.5.
+5. In training sessions, after the ADM takes its first action, the session alignment is usually -0.5.  Why is this?
+   * If the ADM's first action doesn't result in a probe response, alignment is undefined. The `AlignmentResults` object does not allow for a `score` of `None`, and requires a value between -infinity and 0. So the TA3 server responds with -0.5.
 6. Why do taken actions sometimes disappear from `get_available_actions`, but other times don't?
    * TA1 scenario designers configure mappings from actions to probe responses. They can configure whether a given mapping is `repeatable` or not. If an unrepeatable action is taken by the ADM, and conditions *aren't* met for a scene change, then that action will be removed from the list of available actions.  Actions that aren't part of TA1 action mappings that aren't explicitly *restricted* also appear in the list of available actions (except for certain actions, depending on the state). These actions are always repeatable.
 7. Are `action_id`s (as returned by `get_available_actions`) giving away at evaluation time what actions are important?
