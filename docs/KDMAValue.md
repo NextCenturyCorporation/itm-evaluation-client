@@ -1,15 +1,16 @@
 # KDMAValue
 
-Single KDMA value with value(s) between 0 and 1, or a kernel density estimate of the KDMA value.
+Single KDMA value with value(s), or a kernel density estimate of the KDMA value.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **kdma** | **str** | Name of KDMA | 
-**value** | **float** | Numeric score for a given KDMA, 0-1 scale | [optional] 
+**value** | **float** | Numeric score for a given KDMA | [optional] 
 **scores** | **List[float]** | Ordered KDMA scores | [optional] 
 **kdes** | [**Dict[str, KDEData]**](KDEData.md) | KDE Objects representing a KDMA Measurement | [optional] 
+**parameters** | [**List[KDMAValueParametersInner]**](KDMAValueParametersInner.md) |  | [optional] 
 
 ## Example
 

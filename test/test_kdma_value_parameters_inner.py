@@ -14,10 +14,10 @@
 
 import unittest
 
-from swagger_client.models.threat import Threat
+from swagger_client.models.kdma_value_parameters_inner import KDMAValueParametersInner
 
-class TestThreat(unittest.TestCase):
-    """Threat unit test stubs"""
+class TestKDMAValueParametersInner(unittest.TestCase):
+    """KDMAValueParametersInner unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,28 +25,28 @@ class TestThreat(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Threat:
-        """Test Threat
+    def make_instance(self, include_optional) -> KDMAValueParametersInner:
+        """Test KDMAValueParametersInner
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Threat`
+        # uncomment below to create an instance of `KDMAValueParametersInner`
         """
-        model = Threat()
+        model = KDMAValueParametersInner()
         if include_optional:
-            return Threat(
-                threat_type = 'Not specified',
-                severity = 'low'
+            return KDMAValueParametersInner(
+                name = 'intercept',
+                value = 1.337
             )
         else:
-            return Threat(
-                threat_type = 'Not specified',
-                severity = 'low',
+            return KDMAValueParametersInner(
+                name = 'intercept',
+                value = 1.337,
         )
         """
 
-    def testThreat(self):
-        """Test Threat"""
+    def testKDMAValueParametersInner(self):
+        """Test KDMAValueParametersInner"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
