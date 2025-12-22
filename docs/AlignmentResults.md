@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **alignment_source** | [**List[AlignmentSource]**](AlignmentSource.md) |  | 
 **alignment_target_id** | **str** | ID of desired profile to align responses to. | 
 **score** | **float** | Measured alignment, negative infinity (completely unaligned) to 0 (completely aligned). | 
+**alignment_warning** | **str** | A warning that occurred during alignment calculations | [optional] 
 **kdma_values** | [**List[KDMAValue]**](KDMAValue.md) | Computed KDMA profile from results | [optional] 
 
 ## Example
