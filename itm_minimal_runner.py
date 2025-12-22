@@ -181,6 +181,32 @@ def get_random_aid_id(state: State):
         aid_id = random.choice(aid_ids)
     return aid_id
 
+def get_adept_alignment(itm, session_id: str, scenario_id: str):
+    try:
+        # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
+        if 'MF' in scenario_id and 'AF' in scenario_id:
+            target_id = ADEPT_MF_AF_ALIGNMENT
+        elif 'AF' in scenario_id and 'PS' in scenario_id:
+            target_id = ADEPT_AF_PS_ALIGNMENT
+        elif 'MF' in scenario_id and 'SS' in scenario_id:
+            target_id = ADEPT_MF_SS_ALIGNMENT
+        elif 'MF' in scenario_id:
+            target_id = ADEPT_MF_ALIGNMENT
+        elif 'AF' in scenario_id:
+            target_id = ADEPT_AF_ALIGNMENT
+        elif 'SS' in scenario_id:
+            target_id = ADEPT_SS_ALIGNMENT
+        elif 'PS' in scenario_id:
+            target_id = ADEPT_PS_ALIGNMENT
+        elif 'MJ' in scenario_id:
+            target_id = ADEPT_MJ_ALIGNMENT
+        else:
+            target_id = ADEPT_IO_ALIGNMENT
+        print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
+    except Exception as e:
+        # An exception will occur if no probes have been answered yet, so just log this succinctly.
+        print(e)
+
 def main():
     parser = argparse.ArgumentParser(description='Runs ADM simulator.')
     parser.add_argument('--name', metavar='adm_name', required=True,
@@ -197,7 +223,7 @@ def main():
     parser.add_argument('--training', metavar='training_mode', type=int, default=None,
                         help='Put the server in training mode, in which the server returns the KDMA association for each '
                         'action choice. If `value` > 0, then it also requests session alignment every `value` scenes. '
-                        'Not supported in `eval` or `test` sessions.  Default 0.')
+                        'Not supported in `eval` or `test` sessions.')
     parser.add_argument('--scenario', type=str, metavar='scenario_id',
                         help='Specify a scenario_id to run. Incompatible with count parameter '
                         'and `eval` sessions.')
@@ -210,7 +236,7 @@ def main():
     else:
         session_type = args.session
 
-    kdma_training = None if not args.training else 'solo' if args.training <= 0 else 'full'
+    kdma_training = None if args.training is None else 'solo' if args.training <= 0 else 'full'
 
     if session_type == 'eval':
         if scenario_id:
@@ -303,38 +329,17 @@ def main():
                     current_scene = state.meta_info.scene_id
                     print(f"Changed to scene '{current_scene}'.")
                 if kdma_training == 'full' and session_type == 'adept' and not actions_taken % args.training:
+                    get_adept_alignment(itm=itm, session_id=session_id, scenario_id=scenario.id)
+            if kdma_training == 'full':
+                if session_type == 'adept':
+                    get_adept_alignment(itm=itm, session_id=session_id, scenario_id=scenario.id)
+                elif session_type == 'soartech':
                     try:
-                        # A TA2 performer would probably want to get alignment target ids from configuration or command-line.
-                        if 'MF' in scenario.id and 'AF' in scenario.id:
-                            target_id = ADEPT_MF_AF_ALIGNMENT
-                        elif 'AF' in scenario.id and 'PS' in scenario.id:
-                            target_id = ADEPT_AF_PS_ALIGNMENT
-                        elif 'MF' in scenario.id and 'SS' in scenario.id:
-                            target_id = ADEPT_MF_SS_ALIGNMENT
-                        elif 'MF' in scenario.id:
-                            target_id = ADEPT_MF_ALIGNMENT
-                        elif 'AF' in scenario.id:
-                            target_id = ADEPT_AF_ALIGNMENT
-                        elif 'SS' in scenario.id:
-                            target_id = ADEPT_SS_ALIGNMENT
-                        elif 'PS' in scenario.id:
-                            target_id = ADEPT_PS_ALIGNMENT
-                        elif 'MJ' in scenario.id:
-                            target_id = ADEPT_MJ_ALIGNMENT
-                        else:
-                            target_id = ADEPT_IO_ALIGNMENT
+                        target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
                         print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
                     except Exception as e:
                         # An exception will occur if no probes have been answered yet, so just log this succinctly.
                         print(e)
-            if kdma_training == 'full':
-                try:
-                    if session_type == 'soartech':
-                        target_id = SOARTECH_QOL_ALIGNMENT if 'qol' in scenario.id else SOARTECH_VOL_ALIGNMENT
-                        print(itm.get_session_alignment(session_id=session_id, target_id=target_id))
-                except Exception as e:
-                    # An exception will occur if no probes have been answered yet, so just log this succinctly.
-                    print(e)
             print(f'{state.unstructured}')
         print(f'Session {session_id} complete')
         path_index+=1
