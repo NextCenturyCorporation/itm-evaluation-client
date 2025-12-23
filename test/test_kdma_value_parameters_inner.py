@@ -14,10 +14,10 @@
 
 import unittest
 
-from swagger_client.models.probe_response import ProbeResponse
+from swagger_client.models.kdma_value_parameters_inner import KDMAValueParametersInner
 
-class TestProbeResponse(unittest.TestCase):
-    """ProbeResponse unit test stubs"""
+class TestKDMAValueParametersInner(unittest.TestCase):
+    """KDMAValueParametersInner unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,31 +25,28 @@ class TestProbeResponse(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ProbeResponse:
-        """Test ProbeResponse
+    def make_instance(self, include_optional) -> KDMAValueParametersInner:
+        """Test KDMAValueParametersInner
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `ProbeResponse`
+        # uncomment below to create an instance of `KDMAValueParametersInner`
         """
-        model = ProbeResponse()
+        model = KDMAValueParametersInner()
         if include_optional:
-            return ProbeResponse(
-                scenario_id = '',
-                probe_id = '',
-                choice = '',
-                justification = ''
+            return KDMAValueParametersInner(
+                name = 'intercept',
+                value = 1.337
             )
         else:
-            return ProbeResponse(
-                scenario_id = '',
-                probe_id = '',
-                choice = '',
+            return KDMAValueParametersInner(
+                name = 'intercept',
+                value = 1.337,
         )
         """
 
-    def testProbeResponse(self):
-        """Test ProbeResponse"""
+    def testKDMAValueParametersInner(self):
+        """Test KDMAValueParametersInner"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
