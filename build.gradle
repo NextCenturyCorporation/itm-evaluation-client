@@ -65,7 +65,8 @@ openApiGenerate {
     inputSpec = "$projectDir/$apiDirectory/base_swagger.yaml".toString()
     outputDir = "$projectDir/$generatedApiDirectory".toString()
     ignoreFileOverride = "$projectDir/.openapi-generator-ignore".toString()
-    packageName = "$outputDirectory".toString()
+    //packageName = "$outputDirectory".toString()
+    packageName = "$outputDirectory.$domain".toString()
     globalProperties = [
             modelDocs: "true"
     ]
@@ -83,8 +84,8 @@ task postGeneration() {
     doLast() {
         // Copy generated files into models folder
         copy {
-            from "${generatedApiDirectory}/${outputDirectory}/models"
-            into "${outputDirectory}/models"
+            from "${generatedApiDirectory}/${outputDirectory}/${domain}/models"
+            into "${outputDirectory}/${domain}/models"
         }
 
         copy {
@@ -98,8 +99,8 @@ task postGeneration() {
         }
 
         copy {
-            from "${generatedApiDirectory}/${outputDirectory}/api/${apiFilename}"
-            into "${outputDirectory}/api"
+            from "${generatedApiDirectory}/${outputDirectory}/${domain}/api/${apiFilename}"
+            into "${outputDirectory}/${domain}/api"
         }
 
         copy {
@@ -111,7 +112,7 @@ task postGeneration() {
         }
 
         // delete generated api directory
-        delete generatedApiDirectory
+        //delete generatedApiDirectory
         println "removed ${generatedApiDirectory}"
     }
 }

@@ -55,6 +55,8 @@ from itm.itm_scenario_runner import (
     ADEPT_AF_ALIGNMENT,
     ADEPT_SS_ALIGNMENT,
     ADEPT_PS_ALIGNMENT,
+    ADEPT_AF_PS_ALIGNMENT,
+    ADEPT_MF_SS_ALIGNMENT,
     ADEPT_MF_AF_ALIGNMENT
 )
 import swagger_client
