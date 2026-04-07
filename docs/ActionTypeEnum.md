@@ -14,6 +14,10 @@ An action type recognized by the ADM Server, combining basic and domain-specific
 
 * `TREAT_PATIENT` (value: `'TREAT_PATIENT'`)
 
+* `MOVE_TO_EVAC` (value: `'MOVE_TO_EVAC'`)
+
+* `TAG_CHARACTER` (value: `'TAG_CHARACTER'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

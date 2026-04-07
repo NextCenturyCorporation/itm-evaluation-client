@@ -14,7 +14,9 @@ from itm.itm_scenario_runner import (
     ADEPT_AF_ALIGNMENT,
     ADEPT_SS_ALIGNMENT,
     ADEPT_PS_ALIGNMENT,
-    ADEPT_MF_AF_ALIGNMENT
+    ADEPT_MF_AF_ALIGNMENT,
+    ADEPT_AF_PS_ALIGNMENT,
+    ADEPT_MF_SS_ALIGNMENT
 )
 import traceback
 
@@ -328,14 +330,17 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
     def process_p2triage_action(self, action: Action):
         # Prompt to fill in any missing fields.
-        if action.action_type in ['MOVE_TO', 'TREAT_PATIENT']:
+        if action.action_type in ['MOVE_TO', 'TREAT_PATIENT', 'TAG_CHARACTER']:
             # Many actions require a character ID
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()
+        if action.action_type == ActionTypeEnum.TAG_CHARACTER:
+            if not action.parameters:
+                action.parameters = {"category": self.prompt_tagType()}
 
     def process_triage_action(self, action: Action):
         # Prompt to fill in any missing fields.
-        if action.action_type not in ['DIRECT_MOBILE_CHARACTERS', 'END_SCENE', 'MESSAGE', 'SEARCH', 'SITREP']:
+        if action.action_type not in ['DIRECT_MOBILE_CHARACTERS', 'END_SCENE', 'MESSAGE', 'SEARCH', 'SITREP', 'TAG_CHARACTER']:
             # Most actions require a character ID
             if action.character_id is None:
                 action.character_id = self.prompt_character_id()

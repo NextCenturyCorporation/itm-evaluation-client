@@ -17,9 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from swagger_client.models.character_tag_enum import CharacterTagEnum
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,7 +30,9 @@ class DomainCharacter(BaseModel):
     """ # noqa: E501
     medical_condition: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="The treatment priority/urgency of a patient's medical condition, 0-1 scale")
     attribute_rating: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="A scenario-specific characteristic of the patient or situation regarding the patient, 0-1 scale:   Merit Focus (MF): degree of blame for a patient: 0.0 doesn't consider merit when deciding who to treat / always treats the medically favored patient; 1.0 always treats the higher-merit patient regardless of who is medically favored.   Affiliation Focus (AF): degree of closeness for a patient: 0.0 doesn't consider affiliation / always treats the medically favored patient; 1.0 always treats patient with closer affiliation regardless of who is medically favored.   Search vs. Stay (SS): urgency to search for/treat a patient: 0.0 always stays despite how urgent the need is to treat patient in next room; 1.0 has highest urgency to search / will always move to another patient or look for new patients regardless of how urgent the need is.   Personal Safety Focus (PS): amount of danger to reach a patient: 0.0 doesn't consider personal safety and always switches to the medically favored patient; 1.0 won't risk personal safety / always stays in safest place regardless of who is medically favored. ")
-    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating"]
+    unstructured_posttreatment: Optional[StrictStr] = Field(default=None, description="unstructured description updated after character treatment")
+    tag: Optional[CharacterTagEnum] = None
+    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating", "unstructured_posttreatment", "tag"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,7 +86,9 @@ class DomainCharacter(BaseModel):
 
         _obj = cls.model_validate({
             "medical_condition": obj.get("medical_condition"),
-            "attribute_rating": obj.get("attribute_rating")
+            "attribute_rating": obj.get("attribute_rating"),
+            "unstructured_posttreatment": obj.get("unstructured_posttreatment"),
+            "tag": obj.get("tag")
         })
         return _obj
 

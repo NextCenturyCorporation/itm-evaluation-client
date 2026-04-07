@@ -8,6 +8,13 @@ Further details can be found in the P2triage domain FAQ below.
 * `TREAT_PATIENT`
   * Attempts to treat the specified `character_id` in the current scene.
     * requires `character_id`
+* `MOVE_TO_EVAC`
+  * Chooses to transfer the specified `character_id` to an incoming medevac. It is assumed that others can perform the actual transfer so the medic can return to triage. The character becomes `unseen` after evacuation.
+    * requires `character_id`
+* `TAG_CHARACTER`
+  * Apply the specified triage tag to the specified `character`
+    * requires `character_id`
+    * requires parameter `category` with a value taken from the `CharacterTagEnum` object.
 
 ### P2triage Domain FAQ
 

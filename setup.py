@@ -20,7 +20,7 @@ from setuptools import setup, find_packages  # noqa: H301
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 NAME = "swagger-client"
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 PYTHON_REQUIRES = ">= 3.8"
 REQUIRES = [
     "urllib3 >= 1.25.3, < 3.0.0",
@@ -42,7 +42,7 @@ setup(
     include_package_data=True,
     long_description_content_type='text/markdown',
     long_description="""\
-    This is the specification of the TA3 API for In The Moment (ITM).  Currently, the Evaluation API for TA2 supports functionality for the Phase 1 Evaluation.  The API is based on the OpenAPI 3.0.3 specification.
+    This is the specification of the TA3 API for In The Moment (ITM).  Currently, the Evaluation API for TA2 supports functionality for the Phase 2 Evaluations.  The API is based on the OpenAPI 3.0.3 specification.
     """,  # noqa: E501
     package_data={"swagger_client": ["py.typed"]},
 )
