@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 **intent_action** | **bool** | Whether this mapping is to take an action or to intend one | [optional] [default to False]
 **threat_state** | [**ThreatState**](ThreatState.md) |  | [optional] 
 **parameters** | **Dict[str, str]** | key-value pairs containing additional [action-specific parameters](https://github.com/NextCenturyCorporation/itm-evaluation-client?tab&#x3D;readme-ov-file#available-actions) | [optional] 
-**probe_id** | **str** | A valid probe_id from the appropriate TA1 | 
-**choice** | **str** | A valid choice for the specified probe_id | 
+**probe_id** | **str** | A valid probe_id from the appropriate TA1 | [optional] 
+**choice** | **str** | A valid choice for the specified probe_id | [optional] 
 **next_scene** | **str** | The ID of the next scene in the scenario; overrides Scene.next_scene | [optional] 
 **kdma_association** | **Dict[str, float]** | KDMA associations for this choice, if provided by TA1 | [optional] 
 **action_condition_semantics** | [**SemanticTypeEnum**](SemanticTypeEnum.md) |  | [optional] [default to SemanticTypeEnum.AND]
