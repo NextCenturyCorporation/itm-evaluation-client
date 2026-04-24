@@ -733,7 +733,6 @@ components:
         - id
         - name
         - unstructured
-        - demographics
       type: object
       description: a character in the scene
       properties:

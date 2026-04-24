@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **id** | **str** | A unique character ID throughout the scenario | 
 **name** | **str** | display name, as in a dashboard | 
 **unstructured** | **str** | Natural language, plain text description of the character | 
-**demographics** | [**Demographics**](Demographics.md) |  | 
+**demographics** | [**Demographics**](Demographics.md) |  | [optional] 
 **rapport** | [**RapportEnum**](RapportEnum.md) |  | [optional] 
 **unseen** | **bool** | whether or not this character is visible in the scene or merely heard or reported about from a nearby location | [optional] [default to False]
 
