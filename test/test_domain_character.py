@@ -36,7 +36,9 @@ class TestDomainCharacter(unittest.TestCase):
         if include_optional:
             return DomainCharacter(
                 medical_condition = 0.0,
-                attribute_rating = 0.0
+                attribute_rating = 0.0,
+                unstructured_posttreatment = 'Military member of your unit with a treated torso injury.',
+                tag = 'DELAYED'
             )
         else:
             return DomainCharacter(

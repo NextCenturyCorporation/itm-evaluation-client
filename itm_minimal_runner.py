@@ -55,7 +55,9 @@ from itm.itm_scenario_runner import (
     ADEPT_AF_ALIGNMENT,
     ADEPT_SS_ALIGNMENT,
     ADEPT_PS_ALIGNMENT,
-    ADEPT_MF_AF_ALIGNMENT
+    ADEPT_MF_AF_ALIGNMENT,
+    ADEPT_AF_PS_ALIGNMENT,
+    ADEPT_MF_SS_ALIGNMENT
 )
 import swagger_client
 import random
@@ -114,10 +116,14 @@ def get_next_p2triage_action(selected_action: Action, scenario: Scenario, state:
                              actions: List[Action], path_action: dict) -> Action:
 
     # Fill in any missing fields with random values
-    if selected_action.action_type in [ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.MOVE_TO]:
+    if selected_action.action_type in [ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.MOVE_TO, ActionTypeEnum.TAG_CHARACTER, ActionTypeEnum.MOVE_TO_EVAC]:
         # Require a character ID
         if selected_action.character_id is None:
             selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'p2triage')
+        if selected_action.action_type == ActionTypeEnum.TAG_CHARACTER:
+            if not selected_action.parameters:
+                tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
+                selected_action.parameters = {"category": random.choice(tag_labels)}
     return selected_action
 
 def get_next_triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,

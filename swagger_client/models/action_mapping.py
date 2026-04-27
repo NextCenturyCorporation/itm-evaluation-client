@@ -39,8 +39,8 @@ class ActionMapping(BaseModel):
     intent_action: Optional[StrictBool] = Field(default=False, description="Whether this mapping is to take an action or to intend one")
     threat_state: Optional[ThreatState] = None
     parameters: Optional[Dict[str, StrictStr]] = Field(default=None, description="key-value pairs containing additional [action-specific parameters](https://github.com/NextCenturyCorporation/itm-evaluation-client?tab=readme-ov-file#available-actions)")
-    probe_id: StrictStr = Field(description="A valid probe_id from the appropriate TA1")
-    choice: StrictStr = Field(description="A valid choice for the specified probe_id")
+    probe_id: Optional[StrictStr] = Field(default=None, description="A valid probe_id from the appropriate TA1")
+    choice: Optional[StrictStr] = Field(default=None, description="A valid choice for the specified probe_id")
     next_scene: Optional[StrictStr] = Field(default=None, description="The ID of the next scene in the scenario; overrides Scene.next_scene")
     kdma_association: Optional[Dict[str, Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]]] = Field(default=None, description="KDMA associations for this choice, if provided by TA1")
     action_condition_semantics: Optional[SemanticTypeEnum] = SemanticTypeEnum.AND

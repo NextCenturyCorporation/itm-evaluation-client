@@ -31,7 +31,7 @@ class BaseCharacter(BaseModel):
     id: StrictStr = Field(description="A unique character ID throughout the scenario")
     name: StrictStr = Field(description="display name, as in a dashboard")
     unstructured: StrictStr = Field(description="Natural language, plain text description of the character")
-    demographics: Demographics
+    demographics: Optional[Demographics] = None
     rapport: Optional[RapportEnum] = None
     unseen: Optional[StrictBool] = Field(default=False, description="whether or not this character is visible in the scene or merely heard or reported about from a nearby location")
     __properties: ClassVar[List[str]] = ["id", "name", "unstructured", "demographics", "rapport", "unseen"]
