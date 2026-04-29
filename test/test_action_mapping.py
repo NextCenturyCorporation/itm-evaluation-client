@@ -59,8 +59,6 @@ class TestActionMapping(unittest.TestCase):
                 action_id = 'action_01',
                 action_type = 'END_SCENE',
                 unstructured = '',
-                probe_id = '',
-                choice = '',
         )
         """
 

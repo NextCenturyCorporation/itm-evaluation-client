@@ -37,6 +37,8 @@ class TestCharacter(unittest.TestCase):
             return Character(
                 medical_condition = 0.0,
                 attribute_rating = 0.0,
+                unstructured_posttreatment = 'Military member of your unit with a treated torso injury.',
+                tag = 'DELAYED',
                 id = '',
                 name = 'Mike',
                 unstructured = '22-year-old male with brown hair',
@@ -49,7 +51,6 @@ class TestCharacter(unittest.TestCase):
                 id = '',
                 name = 'Mike',
                 unstructured = '22-year-old male with brown hair',
-                demographics = swagger_client.models.demographics.Demographics(),
         )
         """
 

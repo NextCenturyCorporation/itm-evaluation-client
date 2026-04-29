@@ -31,6 +31,8 @@ class ActionTypeEnum(str, Enum):
     MESSAGE = 'MESSAGE'
     SEARCH = 'SEARCH'
     TREAT_PATIENT = 'TREAT_PATIENT'
+    MOVE_TO_EVAC = 'MOVE_TO_EVAC'
+    TAG_CHARACTER = 'TAG_CHARACTER'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

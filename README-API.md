@@ -116,6 +116,7 @@ Class | Method | HTTP request | Description
  - [BaseThreatTypeEnum](docs/BaseThreatTypeEnum.md)
  - [Character](docs/Character.md)
  - [CharacterRoleEnum](docs/CharacterRoleEnum.md)
+ - [CharacterTagEnum](docs/CharacterTagEnum.md)
  - [Conditions](docs/Conditions.md)
  - [DemographicSexEnum](docs/DemographicSexEnum.md)
  - [Demographics](docs/Demographics.md)
