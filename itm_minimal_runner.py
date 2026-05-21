@@ -57,6 +57,7 @@ from itm.itm_scenario_runner import (
     ADEPT_PS_ALIGNMENT,
     ADEPT_MF_AF_ALIGNMENT,
     ADEPT_AF_PS_ALIGNMENT,
+    ADEPT_AF_SS_ALIGNMENT,
     ADEPT_MF_SS_ALIGNMENT
 )
 import swagger_client
@@ -194,6 +195,8 @@ def get_adept_alignment(itm, session_id: str, scenario_id: str):
             target_id = ADEPT_MF_AF_ALIGNMENT
         elif 'AF' in scenario_id and 'PS' in scenario_id:
             target_id = ADEPT_AF_PS_ALIGNMENT
+        elif 'AF' in scenario_id and 'SS' in scenario_id:
+            target_id = ADEPT_AF_SS_ALIGNMENT
         elif 'MF' in scenario_id and 'SS' in scenario_id:
             target_id = ADEPT_MF_SS_ALIGNMENT
         elif 'MF' in scenario_id:

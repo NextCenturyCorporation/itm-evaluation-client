@@ -16,6 +16,7 @@ from itm.itm_scenario_runner import (
     ADEPT_PS_ALIGNMENT,
     ADEPT_MF_AF_ALIGNMENT,
     ADEPT_AF_PS_ALIGNMENT,
+    ADEPT_AF_SS_ALIGNMENT,
     ADEPT_MF_SS_ALIGNMENT
 )
 import traceback
@@ -251,6 +252,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                     target_id = ADEPT_MF_AF_ALIGNMENT
                 elif 'AF' in self.scenario_id and 'PS' in self.scenario_id:
                     target_id = ADEPT_AF_PS_ALIGNMENT
+                elif 'AF' in self.scenario_id and 'SS' in self.scenario_id:
+                    target_id = ADEPT_AF_SS_ALIGNMENT
                 elif 'MF' in self.scenario_id and 'SS' in self.scenario_id:
                     target_id = ADEPT_MF_SS_ALIGNMENT
                 elif 'MF' in self.scenario_id:
