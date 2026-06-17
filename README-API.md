@@ -1,4 +1,4 @@
-# swagger-client
+# swagger-client.p2triage
 This is the specification of the TA3 API for In The Moment (ITM).  Currently, the Evaluation API for TA2 supports functionality for the Phase 2 Evaluations.
 
 The API is based on the OpenAPI 3.0.3 specification.
@@ -26,7 +26,7 @@ pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 
 Then import the package:
 ```python
-import swagger_client
+import swagger_client.p2triage
 ```
 
 ### Setuptools
@@ -40,7 +40,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import swagger_client
+import swagger_client.p2triage
 ```
 
 ### Tests
@@ -53,22 +53,22 @@ Please follow the [installation procedure](#installation--usage) and then run th
 
 ```python
 
-import swagger_client
-from swagger_client.rest import ApiException
+import swagger_client.p2triage
+from swagger_client.p2triage.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = swagger_client.Configuration(
+configuration = swagger_client.p2triage.Configuration(
     host = "http://localhost"
 )
 
 
 
 # Enter a context with an instance of the API client
-with swagger_client.ApiClient(configuration) as api_client:
+with swagger_client.p2triage.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = swagger_client.ItmTa2EvalApi(api_client)
+    api_instance = swagger_client.p2triage.ItmTa2EvalApi(api_client)
     session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
     scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve alignment target
 
