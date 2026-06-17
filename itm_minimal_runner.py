@@ -65,12 +65,12 @@ import random
 from typing import List
 import json
 import os
-from swagger_client.configuration import Configuration
-from swagger_client.api_client import ApiClient
-from swagger_client.models import Scenario, State, AlignmentTarget, Action, Character
-from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location_enum import InjuryLocationEnum
-from swagger_client.models.character_tag_enum import CharacterTagEnum
+from swagger_client.p2triage.configuration import Configuration
+from swagger_client.p2triage.api_client import ApiClient
+from swagger_client.p2triage.models import Scenario, State, AlignmentTarget, Action, Character
+from swagger_client.p2triage.models.action_type_enum import ActionTypeEnum
+from swagger_client.triage.models.injury_location_enum import InjuryLocationEnum
+from swagger_client.p2triage.models.character_tag_enum import CharacterTagEnum
 
 
 def get_next_action(domain: str, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -275,7 +275,7 @@ def main():
         HOST = "127.0.0.1"
     config.host = HOST + ":" + PORT
     api_client = ApiClient(configuration=config)
-    itm = swagger_client.ItmTa2EvalApi(api_client=api_client)
+    itm = swagger_client.p2triage.ItmTa2EvalApi(api_client=api_client)
     path_index=0 # The index of the "paths" array in path_config
     action_index=0 # The index of the "actions" array within a path
 

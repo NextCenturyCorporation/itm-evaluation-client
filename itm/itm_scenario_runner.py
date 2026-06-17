@@ -1,7 +1,7 @@
 import swagger_client
-from swagger_client.configuration import Configuration
-from swagger_client.api_client import ApiClient
-from swagger_client.models import Scenario
+from swagger_client.p2triage.configuration import Configuration
+from swagger_client.p2triage.api_client import ApiClient
+from swagger_client.p2triage.models import Scenario
 from abc import ABC, abstractmethod
 import os
 import random
@@ -59,7 +59,7 @@ class ScenarioRunner(ABC):
             PORT = "8080"
         config.host = f"{HOST}:{PORT}"
         api_client = ApiClient(configuration=config)
-        return swagger_client.ItmTa2EvalApi(api_client=api_client)
+        return swagger_client.p2triage.ItmTa2EvalApi(api_client=api_client)
 
 
     @abstractmethod
