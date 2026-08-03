@@ -21,10 +21,10 @@ SOARTECH_VOL_ALIGNMENT = random.choice(soartech_vol_alignment_targets)
 # Some ADEPT individual targets
 adept_mj_alignment_targets = ['ADEPT-DryRun-Moral judgement-0.2', 'ADEPT-DryRun-Moral judgement-0.5', 'ADEPT-DryRun-Moral judgement-0.8']
 adept_io_alignment_targets = ['ADEPT-DryRun-Ingroup Bias-0.2', 'ADEPT-DryRun-Ingroup Bias-0.5', 'ADEPT-DryRun-Ingroup Bias-0.8']
-adept_mf_alignment_targets = ['ADEPT-June2025-merit-0.1', 'ADEPT-June2025-merit-0.8']
-adept_af_alignment_targets = ['ADEPT-June2025-affiliation-0.5', 'ADEPT-June2025-affiliation-0.2']
+adept_mf_alignment_targets = ['ADEPT-June2025-merit-0.2', 'ADEPT-June2025-merit-0.8']
+adept_af_alignment_targets = ['ADEPT-June2025-affiliation-0.8', 'ADEPT-June2025-affiliation-0.0']
 adept_ss_alignment_targets = ['ADEPT-June2025-search-0.4', 'ADEPT-June2025-search-0.6']
-adept_ps_alignment_targets = ['ADEPT-June2025-personal_safety-0.7', 'ADEPT-June2025-personal_safety-0.3']
+adept_ps_alignment_targets = ['ADEPT-June2025-personal_safety-1.0', 'ADEPT-June2025-personal_safety-0.2']
 adept_mf_af_alignment_targets = ['ADEPT-June2025-affiliation_merit-0.0_1.0', 'ADEPT-June2025-affiliation_merit-1.0_0.0']
 adept_af_ps_alignment_targets = ['Feb2026-AF4-PS2', 'Feb2026-AF7-PS6']
 adept_af_ss_alignment_targets = ['Jun2026-AF4-SS1', 'Jun2026-AF6-SS7']
