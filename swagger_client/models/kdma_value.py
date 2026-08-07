@@ -27,7 +27,7 @@ from typing_extensions import Self
 
 class KDMAValue(BaseModel):
     """
-    Single KDMA value with value(s), or a kernel density estimate of the KDMA value.
+    Single KDMA value, or a kernel density estimate of the KDMA value.
     """ # noqa: E501
     kdma: StrictStr = Field(description="Name of KDMA")
     value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Numeric score for a given KDMA")

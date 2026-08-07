@@ -18,26 +18,22 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class ActionTypeEnum(str, Enum):
+class AvpuLevelEnum(str, Enum):
     """
-    An action type recognized by the ADM Server, combining basic and domain-specific actions
+    Character level of response; anything but ALERT is considered unconscious.  See [Levels of Response](https://www.firstresponse.org.uk/first-aid-az/3-general/first-aid/79-levels-of-response) for details
     """
 
     """
     allowed enum values
     """
-    END_SCENE = 'END_SCENE'
-    MOVE_TO = 'MOVE_TO'
-    MESSAGE = 'MESSAGE'
-    SEARCH = 'SEARCH'
-    CHECK_VITALS = 'CHECK_VITALS'
-    TREAT_PATIENT = 'TREAT_PATIENT'
-    MOVE_TO_EVAC = 'MOVE_TO_EVAC'
-    TAG_CHARACTER = 'TAG_CHARACTER'
+    ALERT = 'ALERT'
+    VOICE = 'VOICE'
+    PAIN = 'PAIN'
+    UNRESPONSIVE = 'UNRESPONSIVE'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of ActionTypeEnum from a JSON string"""
+        """Create an instance of AvpuLevelEnum from a JSON string"""
         return cls(json.loads(json_str))
 
 

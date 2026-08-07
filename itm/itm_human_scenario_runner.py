@@ -42,12 +42,13 @@ class TagTypes(Enum):
 
 
 class ITMHumanScenarioRunner(ScenarioRunner):
-    def __init__(self, session_type, domain, kdma_training=None, max_scenarios=-1, scenario_id=None):
+    def __init__(self, session_type, domain, profile=None, kdma_training=None, max_scenarios=-1, scenario_id=None):
         super().__init__()
-        self.username = session_type + " ITM Human"
+        self.username = session_type + " ITM Human Testrun"
         self.session_type = session_type
         self.kdma_training = kdma_training
         self.domain = domain
+        self.profile = profile
         if max_scenarios > 0:
             self.max_scenarios = max_scenarios
         else:
@@ -209,7 +210,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
                 self.scenario = response
                 state: State = response.state
                 self.characters = state.characters
-                if self.domain == 'triage':
+                if self.domain in ['triage', 'owtriage']:
                     self.medical_supplies = response.state.supplies
             else:
                 self.session_complete = True
@@ -220,9 +221,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
     def start_session_operation(self, username):
         if self.session_id is None:
             if self.max_scenarios is None:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile=self.profile, kdma_training=self.kdma_training)
             else:
-                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile='test', kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
+                self.session_id = self.itm.start_session(username, self.session_type, domain=self.domain, adm_profile=self.profile, kdma_training=self.kdma_training, max_scenarios=self.max_scenarios)
             response = self.session_id
         else:
             response = "Session is already started."
@@ -281,7 +282,7 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if self.scenario_id is None:
             return "No active scenario; please start a scenario first."
         response = self.itm.get_scenario_state(self.session_id, self.scenario_id)
-        if self.domain == 'triage':
+        if self.domain in ['triage', 'owtriage']:
             self.medical_supplies = response.supplies
         return response
 
@@ -313,6 +314,8 @@ class ITMHumanScenarioRunner(ScenarioRunner):
 
         if self.domain == 'triage':
             self.process_triage_action(user_action)
+        elif self.domain == 'owtriage':
+            self.process_owtriage_action(user_action)
         elif self.domain == 'p2triage':
             self.process_p2triage_action(user_action)
         elif self.domain == 'wumpus':
@@ -340,6 +343,19 @@ class ITMHumanScenarioRunner(ScenarioRunner):
         if action.action_type == ActionTypeEnum.TAG_CHARACTER:
             if not action.parameters:
                 action.parameters = {"category": self.prompt_tagType()}
+
+    def process_owtriage_action(self, action: Action):
+        # Prompt to fill in any missing fields.
+        if action.action_type in ['MOVE_TO', 'CHECK_VITALS', 'TREAT_PATIENT', 'TAG_CHARACTER', 'MOVE_TO_EVAC']:
+            # Many actions require a character ID
+            if action.character_id is None:
+                action.character_id = self.prompt_character_id()
+        if action.action_type == ActionTypeEnum.TAG_CHARACTER:
+            if not action.parameters:
+                action.parameters = {"category": self.prompt_tagType()}
+        elif action.action_type == ActionTypeEnum.TREAT_PATIENT:
+            if not action.parameters:
+                action.parameters = {"treatment": self.prompt_treatment()}
 
     def process_triage_action(self, action: Action):
         # Prompt to fill in any missing fields.
@@ -400,9 +416,9 @@ class ITMHumanScenarioRunner(ScenarioRunner):
             self.session_complete = True # if there are no more scenarios, then the session is over
             print("Quitting session-- server will not save history for current scenario if it was enabled.")
         elif isinstance(response, State):
-            if self.domain == 'triage':
+            if self.domain in ['triage', 'owtriage']:
                 self.medical_supplies = response.supplies
-                if response.environment.decision_environment:
+                if self.domain == 'triage' and response.environment.decision_environment:
                     self.aids = response.environment.decision_environment.aid
             self.characters = response.characters
             if response.scenario_complete == True:

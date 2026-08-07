@@ -23,6 +23,7 @@ from typing_extensions import Annotated
 from swagger_client.models.character_tag_enum import CharacterTagEnum
 from swagger_client.models.demographics import Demographics
 from swagger_client.models.rapport_enum import RapportEnum
+from swagger_client.models.vitals import Vitals
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,15 +33,22 @@ class Character(BaseModel):
     """ # noqa: E501
     medical_condition: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="The treatment priority/urgency of a patient's medical condition, 0-1 scale")
     attribute_rating: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="A scenario-specific characteristic of the patient or situation regarding the patient, 0-1 scale:   Merit Focus (MF): degree of blame for a patient: 0.0 doesn't consider merit when deciding who to treat / always treats the medically favored patient; 1.0 always treats the higher-merit patient regardless of who is medically favored.   Affiliation Focus (AF): degree of closeness for a patient: 0.0 doesn't consider affiliation / always treats the medically favored patient; 1.0 always treats patient with closer affiliation regardless of who is medically favored.   Search vs. Stay (SS): urgency to search for/treat a patient: 0.0 always stays despite how urgent the need is to treat patient in next room; 1.0 has highest urgency to search / will always move to another patient or look for new patients regardless of how urgent the need is.   Personal Safety Focus (PS): amount of danger to reach a patient: 0.0 doesn't consider personal safety and always switches to the medically favored patient; 1.0 won't risk personal safety / always stays in safest place regardless of who is medically favored. ")
-    unstructured_posttreatment: Optional[StrictStr] = Field(default=None, description="unstructured description updated after character treatment")
+    unstructured_near: Optional[StrictStr] = Field(default=None, description="unstructured description of a nearby character prior to treatment")
+    unstructured_treated_near: Optional[StrictStr] = Field(default=None, description="unstructured description updated after character treatment")
+    unstructured_far: Optional[StrictStr] = Field(default=None, description="unstructured description of a distant character prior to treatment")
+    unstructured_treated_far: Optional[StrictStr] = Field(default=None, description="unstructured description of a distant character prior to treatment")
+    distance: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="distance in feet from the medic to the character")
+    unseen: Optional[StrictBool] = Field(default=False, description="whether or not this character is visible in the scene or merely heard or reported about from a nearby location")
+    nearby: Optional[StrictBool] = Field(default=None, description="whether or not the medic is near the character")
+    treated: Optional[StrictBool] = Field(default=None, description="whether or not the patient is treated")
+    vitals: Optional[Vitals] = None
     tag: Optional[CharacterTagEnum] = None
     id: StrictStr = Field(description="A unique character ID throughout the scenario")
     name: StrictStr = Field(description="display name, as in a dashboard")
     unstructured: StrictStr = Field(description="Natural language, plain text description of the character")
     demographics: Optional[Demographics] = None
     rapport: Optional[RapportEnum] = None
-    unseen: Optional[StrictBool] = Field(default=False, description="whether or not this character is visible in the scene or merely heard or reported about from a nearby location")
-    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating", "unstructured_posttreatment", "tag", "id", "name", "unstructured", "demographics", "rapport", "unseen"]
+    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating", "unstructured_near", "unstructured_treated_near", "unstructured_far", "unstructured_treated_far", "distance", "unseen", "nearby", "treated", "vitals", "tag", "id", "name", "unstructured", "demographics", "rapport"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -81,6 +89,9 @@ class Character(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of vitals
+        if self.vitals:
+            _dict['vitals'] = self.vitals.to_dict()
         # override the default output from pydantic by calling `to_dict()` of demographics
         if self.demographics:
             _dict['demographics'] = self.demographics.to_dict()
@@ -98,14 +109,21 @@ class Character(BaseModel):
         _obj = cls.model_validate({
             "medical_condition": obj.get("medical_condition"),
             "attribute_rating": obj.get("attribute_rating"),
-            "unstructured_posttreatment": obj.get("unstructured_posttreatment"),
+            "unstructured_near": obj.get("unstructured_near"),
+            "unstructured_treated_near": obj.get("unstructured_treated_near"),
+            "unstructured_far": obj.get("unstructured_far"),
+            "unstructured_treated_far": obj.get("unstructured_treated_far"),
+            "distance": obj.get("distance"),
+            "unseen": obj.get("unseen") if obj.get("unseen") is not None else False,
+            "nearby": obj.get("nearby"),
+            "treated": obj.get("treated"),
+            "vitals": Vitals.from_dict(obj["vitals"]) if obj.get("vitals") is not None else None,
             "tag": obj.get("tag"),
             "id": obj.get("id"),
             "name": obj.get("name"),
             "unstructured": obj.get("unstructured"),
             "demographics": Demographics.from_dict(obj["demographics"]) if obj.get("demographics") is not None else None,
-            "rapport": obj.get("rapport"),
-            "unseen": obj.get("unseen") if obj.get("unseen") is not None else False
+            "rapport": obj.get("rapport")
         })
         return _obj
 
