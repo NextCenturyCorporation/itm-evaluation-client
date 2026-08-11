@@ -35,6 +35,9 @@ class TestState(unittest.TestCase):
         model = State()
         if include_optional:
             return State(
+                supplies = [
+                    {"type":"Tourniquet","quantity":4}
+                    ],
                 unstructured = '',
                 elapsed_time = 10,
                 meta_info = swagger_client.models.meta_info.MetaInfo(

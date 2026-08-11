@@ -17,10 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from swagger_client.models.character_tag_enum import CharacterTagEnum
+from swagger_client.models.vitals import Vitals
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,9 +31,17 @@ class DomainCharacter(BaseModel):
     """ # noqa: E501
     medical_condition: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="The treatment priority/urgency of a patient's medical condition, 0-1 scale")
     attribute_rating: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="A scenario-specific characteristic of the patient or situation regarding the patient, 0-1 scale:   Merit Focus (MF): degree of blame for a patient: 0.0 doesn't consider merit when deciding who to treat / always treats the medically favored patient; 1.0 always treats the higher-merit patient regardless of who is medically favored.   Affiliation Focus (AF): degree of closeness for a patient: 0.0 doesn't consider affiliation / always treats the medically favored patient; 1.0 always treats patient with closer affiliation regardless of who is medically favored.   Search vs. Stay (SS): urgency to search for/treat a patient: 0.0 always stays despite how urgent the need is to treat patient in next room; 1.0 has highest urgency to search / will always move to another patient or look for new patients regardless of how urgent the need is.   Personal Safety Focus (PS): amount of danger to reach a patient: 0.0 doesn't consider personal safety and always switches to the medically favored patient; 1.0 won't risk personal safety / always stays in safest place regardless of who is medically favored. ")
-    unstructured_posttreatment: Optional[StrictStr] = Field(default=None, description="unstructured description updated after character treatment")
+    unstructured_near: Optional[StrictStr] = Field(default=None, description="unstructured description of a nearby character prior to treatment")
+    unstructured_treated_near: Optional[StrictStr] = Field(default=None, description="unstructured description of a nearby character after treatment")
+    unstructured_far: Optional[StrictStr] = Field(default=None, description="unstructured description of a distant character prior to treatment")
+    unstructured_treated_far: Optional[StrictStr] = Field(default=None, description="unstructured description of a distant character after treatment")
+    distance: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="distance in feet from the medic to the character")
+    unseen: Optional[StrictBool] = Field(default=None, description="whether or not the medic can see the character")
+    nearby: Optional[StrictBool] = Field(default=None, description="whether or not the medic is near the character")
+    treated: Optional[StrictBool] = Field(default=None, description="whether or not the patient is treated")
+    vitals: Optional[Vitals] = None
     tag: Optional[CharacterTagEnum] = None
-    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating", "unstructured_posttreatment", "tag"]
+    __properties: ClassVar[List[str]] = ["medical_condition", "attribute_rating", "unstructured_near", "unstructured_treated_near", "unstructured_far", "unstructured_treated_far", "distance", "unseen", "nearby", "treated", "vitals", "tag"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,6 +82,9 @@ class DomainCharacter(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of vitals
+        if self.vitals:
+            _dict['vitals'] = self.vitals.to_dict()
         return _dict
 
     @classmethod
@@ -87,7 +99,15 @@ class DomainCharacter(BaseModel):
         _obj = cls.model_validate({
             "medical_condition": obj.get("medical_condition"),
             "attribute_rating": obj.get("attribute_rating"),
-            "unstructured_posttreatment": obj.get("unstructured_posttreatment"),
+            "unstructured_near": obj.get("unstructured_near"),
+            "unstructured_treated_near": obj.get("unstructured_treated_near"),
+            "unstructured_far": obj.get("unstructured_far"),
+            "unstructured_treated_far": obj.get("unstructured_treated_far"),
+            "distance": obj.get("distance"),
+            "unseen": obj.get("unseen"),
+            "nearby": obj.get("nearby"),
+            "treated": obj.get("treated"),
+            "vitals": Vitals.from_dict(obj["vitals"]) if obj.get("vitals") is not None else None,
             "tag": obj.get("tag")
         })
         return _obj

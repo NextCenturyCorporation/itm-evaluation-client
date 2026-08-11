@@ -12,6 +12,8 @@ An action type recognized by the ADM Server, combining basic and domain-specific
 
 * `SEARCH` (value: `'SEARCH'`)
 
+* `CHECK_VITALS` (value: `'CHECK_VITALS'`)
+
 * `TREAT_PATIENT` (value: `'TREAT_PATIENT'`)
 
 * `MOVE_TO_EVAC` (value: `'MOVE_TO_EVAC'`)

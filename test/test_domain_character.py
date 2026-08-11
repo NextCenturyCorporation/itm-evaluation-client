@@ -37,7 +37,18 @@ class TestDomainCharacter(unittest.TestCase):
             return DomainCharacter(
                 medical_condition = 0.0,
                 attribute_rating = 0.0,
-                unstructured_posttreatment = 'Military member of your unit with a treated torso injury.',
+                unstructured_near = 'Military member of your unit lying down with a broken wrist. They are acting and moving normally.',
+                unstructured_treated_near = 'Military member of your unit lying down with a treated wrist injury. They are acting and moving normally.',
+                unstructured_far = 'Military service member lying down with a wounded arm.',
+                unstructured_treated_far = 'Military service member lying down with a treated arm injury.',
+                distance = 5.2,
+                unseen = True,
+                nearby = True,
+                treated = True,
+                vitals = swagger_client.models.vitals.Vitals(
+                    avpu = 'ALERT', 
+                    breathing = 'NORMAL', 
+                    heart_rate = 'NONE', ),
                 tag = 'DELAYED'
             )
         else:
