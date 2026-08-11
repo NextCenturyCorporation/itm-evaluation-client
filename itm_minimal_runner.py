@@ -131,9 +131,7 @@ def get_next_owtriage_action(selected_action: Action, scenario: Scenario, state:
                 selected_action.parameters = {"category": random.choice(tag_labels)}
         if selected_action.action_type == ActionTypeEnum.TREAT_PATIENT:
             if not selected_action.parameters:
-                treatments = get_swagger_class_enum_values(SupplyTypeEnum)
-                selected_action.parameters = {"treatment": random.choice(treatments)}
-            # Could check for empty supply, but don't bother...
+                selected_action.parameters = {"treatment": get_random_supply(state)}
     return selected_action
 
 def get_next_p2triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
