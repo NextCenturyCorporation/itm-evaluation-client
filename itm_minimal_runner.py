@@ -71,6 +71,7 @@ from swagger_client.models import Scenario, State, AlignmentTarget, Action, Char
 from swagger_client.models.action_type_enum import ActionTypeEnum
 from swagger_client.models.injury_location_enum import InjuryLocationEnum
 from swagger_client.models.character_tag_enum import CharacterTagEnum
+from swagger_client.models.supply_type_enum import SupplyTypeEnum
 
 
 def get_next_action(domain: str, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -99,6 +100,8 @@ def get_next_action(domain: str, scenario: Scenario, state: State, alignment_tar
 
         if domain == 'triage':
             return get_next_triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
+        elif domain == 'owtriage':
+            return get_next_owtriage_action(selected_action, scenario, state, alignment_target, actions, path_action)
         elif domain == 'p2triage':
             return get_next_p2triage_action(selected_action, scenario, state, alignment_target, actions, path_action)
         elif domain == 'wumpus':
@@ -111,6 +114,24 @@ def get_next_wumpus_action(selected_action: Action, scenario: Scenario, state: S
                            actions: List[Action], path_action: dict) -> Action:
     if selected_action.character_id is None:
         selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'wumpus')
+    return selected_action
+
+def get_next_owtriage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
+                             actions: List[Action], path_action: dict) -> Action:
+
+    # Fill in any missing fields with random values
+    if selected_action.action_type in [ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.CHECK_VITALS, ActionTypeEnum.MOVE_TO,
+                                       ActionTypeEnum.TAG_CHARACTER, ActionTypeEnum.MOVE_TO_EVAC]:
+        # Require a character ID
+        if selected_action.character_id is None:
+            selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'owtriage')
+        if selected_action.action_type == ActionTypeEnum.TAG_CHARACTER:
+            if not selected_action.parameters:
+                tag_labels = get_swagger_class_enum_values(CharacterTagEnum)
+                selected_action.parameters = {"category": random.choice(tag_labels)}
+        if selected_action.action_type == ActionTypeEnum.TREAT_PATIENT:
+            if not selected_action.parameters:
+                selected_action.parameters = {"treatment": get_random_supply(state)}
     return selected_action
 
 def get_next_p2triage_action(selected_action: Action, scenario: Scenario, state: State, alignment_target: AlignmentTarget,
@@ -137,7 +158,7 @@ def get_next_triage_action(selected_action: Action, scenario: Scenario, state: S
         if selected_action.action_type not in [ActionTypeEnum.DIRECT_MOBILE_CHARACTERS, ActionTypeEnum.END_SCENE, ActionTypeEnum.MESSAGE, ActionTypeEnum.SITREP, ActionTypeEnum.SEARCH]:
             # Most actions require a character ID
             if selected_action.character_id is None:
-                selected_action.character_id = get_random_character_id(state, selected_action.action_type)
+                selected_action.character_id = get_random_character_id(state, selected_action.action_type, 'triage')
             if selected_action.action_type == ActionTypeEnum.APPLY_TREATMENT:
                 configured_supply = selected_action.parameters.get('treatment') if selected_action.parameters else None
                 supply = configured_supply if configured_supply else get_random_supply(state)
@@ -147,7 +168,7 @@ def get_next_triage_action(selected_action: Action, scenario: Scenario, state: S
                     if (path_action):
                         raise Exception("Cannot perform configured path...exiting.")
                     actions.remove(selected_action)
-                    return get_next_action('p2triage', scenario, state, alignment_target, actions)
+                    return get_next_action('triage', scenario, state, alignment_target, actions)
                 if not selected_action.parameters:
                     selected_action.parameters = {'location': random.choice(available_locations), 'treatment': supply}
                 else:
@@ -170,13 +191,16 @@ def supply_available(state: State, supply):
     supplies = [new_supply.type for new_supply in state.supplies if new_supply.quantity > 0 and new_supply.type != 'Pulse Oximeter']
     return supply in supplies
 
-def get_random_character_id(state: State, action_type, domain = 'p2triage'):
-    if domain == 'triage' and action_type in [ActionTypeEnum.MOVE_TO_EVAC]:
-        characters : List[Character] = [character for character in state.characters]
+def get_random_character_id(state: State, action_type, domain):
+    if (domain == 'triage' and action_type == ActionTypeEnum.MOVE_TO_EVAC) or \
+        (domain == 'owtriage' and action_type in [ActionTypeEnum.MOVE_TO, ActionTypeEnum.MOVE_TO_EVAC]):
+        characters : List[Character] = [character for character in state.characters] # All character valid
     elif action_type in [ActionTypeEnum.MOVE_TO]:
-        characters : List[Character] = [character for character in state.characters if character.unseen]
+        characters : List[Character] = [character for character in state.characters if character.unseen] # Only unseen characters
+    elif domain == 'owtriage' and action_type in [ActionTypeEnum.CHECK_VITALS, ActionTypeEnum.TREAT_PATIENT, ActionTypeEnum.TAG_CHARACTER]:
+        characters : List[Character] = [character for character in state.characters if character.nearby] # All nearby/seen characters
     else:
-        characters : List[Character] = [character for character in state.characters if not character.unseen]
+        characters : List[Character] = [character for character in state.characters if not character.unseen] # Only seen characters
     index = random.randint(0, len(characters) - 1) if len(characters) > 1 else 0
     return characters[index].id
 
@@ -223,8 +247,8 @@ def main():
     parser.add_argument('--session', required=True, metavar='session_type', help=\
                         'Specify session type. Session type must be `test`, `eval`, `adept`, or `soartech`.')
     parser.add_argument('--profile', metavar='adm_profile', required=False,
-                        help='Specify the ADM profile in terms of its alignment strategy')
-    parser.add_argument('--domain', metavar='domain_name', required=False, default='p2triage',
+                        help='Specify the server configuration profile to load')
+    parser.add_argument('--domain', metavar='domain_name', required=False, default='owtriage',
                         help='Specify the domain for the session, or use the server default')
     parser.add_argument('--count', type=int, metavar='scenario_count', help=\
                         'Run the specified number of scenarios. Otherwise, will run scenarios in '

@@ -18,26 +18,32 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class ActionTypeEnum(str, Enum):
+class SupplyTypeEnum(str, Enum):
     """
-    An action type recognized by the ADM Server, combining basic and domain-specific actions
+    an enumeration of available supply types
     """
 
     """
     allowed enum values
     """
-    END_SCENE = 'END_SCENE'
-    MOVE_TO = 'MOVE_TO'
-    MESSAGE = 'MESSAGE'
-    SEARCH = 'SEARCH'
-    CHECK_VITALS = 'CHECK_VITALS'
-    TREAT_PATIENT = 'TREAT_PATIENT'
-    MOVE_TO_EVAC = 'MOVE_TO_EVAC'
-    TAG_CHARACTER = 'TAG_CHARACTER'
+    TOURNIQUET = 'Tourniquet'
+    PRESSURE_BANDAGE = 'Pressure bandage'
+    HEMOSTATIC_GAUZE = 'Hemostatic gauze'
+    DECOMPRESSION_NEEDLE = 'Decompression Needle'
+    NASOPHARYNGEAL_AIRWAY = 'Nasopharyngeal airway'
+    BLANKET = 'Blanket'
+    VENTED_CHEST_SEAL = 'Vented Chest Seal'
+    FENTANYL_LOLLIPOP = 'Fentanyl Lollipop'
+    SPLINT = 'Splint'
+    BLOOD = 'Blood'
+    BURN_DRESSING = 'Burn Dressing'
+    ANTIBIOTICS = 'Antibiotics'
+    FOX_SHIELD = 'Fox Shield'
+    ISRAELI_WRAP = 'Israeli Wrap'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of ActionTypeEnum from a JSON string"""
+        """Create an instance of SupplyTypeEnum from a JSON string"""
         return cls(json.loads(json_str))
 
 

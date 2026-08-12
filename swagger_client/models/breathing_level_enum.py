@@ -18,26 +18,23 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class ActionTypeEnum(str, Enum):
+class BreathingLevelEnum(str, Enum):
     """
-    An action type recognized by the ADM Server, combining basic and domain-specific actions
+    Descriptive breathing level
     """
 
     """
     allowed enum values
     """
-    END_SCENE = 'END_SCENE'
-    MOVE_TO = 'MOVE_TO'
-    MESSAGE = 'MESSAGE'
-    SEARCH = 'SEARCH'
-    CHECK_VITALS = 'CHECK_VITALS'
-    TREAT_PATIENT = 'TREAT_PATIENT'
-    MOVE_TO_EVAC = 'MOVE_TO_EVAC'
-    TAG_CHARACTER = 'TAG_CHARACTER'
+    NORMAL = 'NORMAL'
+    FAST = 'FAST'
+    SLOW = 'SLOW'
+    RESTRICTED = 'RESTRICTED'
+    NONE = 'NONE'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of ActionTypeEnum from a JSON string"""
+        """Create an instance of BreathingLevelEnum from a JSON string"""
         return cls(json.loads(json_str))
 
 
