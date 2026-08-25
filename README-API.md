@@ -1,4 +1,4 @@
-# swagger-client.p2triage
+# swagger-client.owtriage
 This is the specification of the TA3 API for In The Moment (ITM).  Currently, the Evaluation API for TA2 supports functionality for the Phase 2 Evaluations.
 
 The API is based on the OpenAPI 3.0.3 specification.
@@ -26,7 +26,7 @@ pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 
 Then import the package:
 ```python
-import swagger_client.p2triage
+import swagger_client.owtriage
 ```
 
 ### Setuptools
@@ -40,7 +40,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import swagger_client.p2triage
+import swagger_client.owtriage
 ```
 
 ### Tests
@@ -53,22 +53,22 @@ Please follow the [installation procedure](#installation--usage) and then run th
 
 ```python
 
-import swagger_client.p2triage
-from swagger_client.p2triage.rest import ApiException
+import swagger_client.owtriage
+from swagger_client.owtriage.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = swagger_client.p2triage.Configuration(
+configuration = swagger_client.owtriage.Configuration(
     host = "http://localhost"
 )
 
 
 
 # Enter a context with an instance of the API client
-with swagger_client.p2triage.ApiClient(configuration) as api_client:
+with swagger_client.owtriage.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = swagger_client.p2triage.ItmTa2EvalApi(api_client)
+    api_instance = swagger_client.owtriage.ItmTa2EvalApi(api_client)
     session_id = 'session_id_example' # str | a unique session_id, as returned by /ta2/startSession
     scenario_id = 'scenario_id_example' # str | The ID of the scenario for which to retrieve alignment target
 
@@ -107,6 +107,7 @@ Class | Method | HTTP request | Description
  - [AlignmentResults](docs/AlignmentResults.md)
  - [AlignmentSource](docs/AlignmentSource.md)
  - [AlignmentTarget](docs/AlignmentTarget.md)
+ - [AvpuLevelEnum](docs/AvpuLevelEnum.md)
  - [BaseActionTypeEnum](docs/BaseActionTypeEnum.md)
  - [BaseCharacter](docs/BaseCharacter.md)
  - [BaseCharacterRoleEnum](docs/BaseCharacterRoleEnum.md)
@@ -114,6 +115,7 @@ Class | Method | HTTP request | Description
  - [BaseDemographics](docs/BaseDemographics.md)
  - [BaseState](docs/BaseState.md)
  - [BaseThreatTypeEnum](docs/BaseThreatTypeEnum.md)
+ - [BreathingLevelEnum](docs/BreathingLevelEnum.md)
  - [Character](docs/Character.md)
  - [CharacterRoleEnum](docs/CharacterRoleEnum.md)
  - [CharacterTagEnum](docs/CharacterTagEnum.md)
@@ -121,8 +123,10 @@ Class | Method | HTTP request | Description
  - [DemographicSexEnum](docs/DemographicSexEnum.md)
  - [Demographics](docs/Demographics.md)
  - [DomainCharacter](docs/DomainCharacter.md)
+ - [DomainState](docs/DomainState.md)
  - [Event](docs/Event.md)
  - [EventTypeEnum](docs/EventTypeEnum.md)
+ - [HeartRateEnum](docs/HeartRateEnum.md)
  - [KDEData](docs/KDEData.md)
  - [KDMAProfile](docs/KDMAProfile.md)
  - [KDMAValue](docs/KDMAValue.md)
@@ -137,10 +141,13 @@ Class | Method | HTTP request | Description
  - [Scene](docs/Scene.md)
  - [SemanticTypeEnum](docs/SemanticTypeEnum.md)
  - [State](docs/State.md)
+ - [Supplies](docs/Supplies.md)
+ - [SupplyTypeEnum](docs/SupplyTypeEnum.md)
  - [Threat](docs/Threat.md)
  - [ThreatSeverityEnum](docs/ThreatSeverityEnum.md)
  - [ThreatState](docs/ThreatState.md)
  - [ThreatTypeEnum](docs/ThreatTypeEnum.md)
+ - [Vitals](docs/Vitals.md)
 
 
 <a id="documentation-for-authorization"></a>
