@@ -309,7 +309,7 @@ def main():
                 scenario = itm.start_scenario(session_id=session_id)
             if scenario.session_complete:
                 break
-            print(f'Scenario name: {scenario.name}')
+            print(f'Scenario id: {scenario.id}; Scenario name: {scenario.name}')
             if session_type != 'test':
                 alignment_target: AlignmentTarget = itm.get_alignment_target(session_id, scenario.id) if not kdma_training else None
                 print(f'Alignment target ID: {alignment_target.id if alignment_target else None}')
