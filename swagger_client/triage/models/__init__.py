@@ -1,0 +1,1 @@
+from swagger_client.triage.models.injury_location_enum import InjuryLocationEnum

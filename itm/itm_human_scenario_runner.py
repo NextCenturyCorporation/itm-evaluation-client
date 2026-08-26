@@ -1,8 +1,8 @@
 from enum import Enum
 from pydantic import BaseModel
-from swagger_client.models import Scenario, State, Action
-from swagger_client.models.action_type_enum import ActionTypeEnum
-from swagger_client.models.injury_location_enum import InjuryLocationEnum
+from swagger_client.owtriage.models import Scenario, State, Action
+from swagger_client.owtriage.models.action_type_enum import ActionTypeEnum
+from swagger_client.triage.models.injury_location_enum import InjuryLocationEnum
 from itm.itm_scenario_runner import (
     ScenarioRunner,
     get_swagger_class_enum_values,
