@@ -1,6 +1,6 @@
 # KDMAValue
 
-Single KDMA value with value(s), or a kernel density estimate of the KDMA value.
+Single KDMA value, or a kernel density estimate of the KDMA value.
 
 ## Properties
 
