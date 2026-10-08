@@ -14,10 +14,10 @@
 
 import unittest
 
-from swagger_client.p2triage.models.kdma_value_parameters_inner import KDMAValueParametersInner
+from swagger_client.p2triage.models.kdma_value_parameters import KDMAValueParameters
 
-class TestKDMAValueParametersInner(unittest.TestCase):
-    """KDMAValueParametersInner unit test stubs"""
+class TestKDMAValueParameters(unittest.TestCase):
+    """KDMAValueParameters unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,29 +25,29 @@ class TestKDMAValueParametersInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> KDMAValueParametersInner:
-        """Test KDMAValueParametersInner
+    def make_instance(self, include_optional) -> KDMAValueParameters:
+        """Test KDMAValueParameters
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `KDMAValueParametersInner`
+        # uncomment below to create an instance of `KDMAValueParameters`
         """
-        model = KDMAValueParametersInner()
+        model = KDMAValueParameters()
         if include_optional:
-            return KDMAValueParametersInner(
+            return KDMAValueParameters(
                 name = 'intercept',
                 type = 'single',
                 value = 1.337
             )
         else:
-            return KDMAValueParametersInner(
+            return KDMAValueParameters(
                 name = 'intercept',
                 value = 1.337,
         )
         """
 
-    def testKDMAValueParametersInner(self):
-        """Test KDMAValueParametersInner"""
+    def testKDMAValueParameters(self):
+        """Test KDMAValueParameters"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

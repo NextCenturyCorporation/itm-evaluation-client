@@ -58,7 +58,7 @@ class TestState(unittest.TestCase):
                     ],
                 threat_state = {"unstructured":"Gunshots have been reported in the surrounding area","threats":[{"type":"gunfire","severity":"moderate"}]},
                 characters = [
-                    swagger_client.p2triage.models.character.Character()
+                    null
                     ],
                 scenario_complete = True
             )
@@ -66,7 +66,7 @@ class TestState(unittest.TestCase):
             return State(
                 unstructured = '',
                 characters = [
-                    swagger_client.p2triage.models.character.Character()
+                    null
                     ],
         )
         """

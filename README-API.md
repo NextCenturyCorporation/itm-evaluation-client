@@ -130,7 +130,7 @@ Class | Method | HTTP request | Description
  - [KDEData](docs/KDEData.md)
  - [KDMAProfile](docs/KDMAProfile.md)
  - [KDMAValue](docs/KDMAValue.md)
- - [KDMAValueParametersInner](docs/KDMAValueParametersInner.md)
+ - [KDMAValueParameters](docs/KDMAValueParameters.md)
  - [MessageTypeEnum](docs/MessageTypeEnum.md)
  - [MetaInfo](docs/MetaInfo.md)
  - [ProbeConfig](docs/ProbeConfig.md)

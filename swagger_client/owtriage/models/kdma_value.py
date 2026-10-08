@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, Stric
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from swagger_client.owtriage.models.kde_data import KDEData
-from swagger_client.owtriage.models.kdma_value_parameters_inner import KDMAValueParametersInner
+from swagger_client.owtriage.models.kdma_value_parameters import KDMAValueParameters
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +33,7 @@ class KDMAValue(BaseModel):
     value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Numeric score for a given KDMA")
     scores: Optional[List[Union[StrictFloat, StrictInt]]] = Field(default=None, description="Ordered KDMA scores")
     kdes: Optional[Dict[str, KDEData]] = Field(default=None, description="KDE Objects representing a KDMA Measurement")
-    parameters: Optional[Annotated[List[KDMAValueParametersInner], Field(min_length=3, max_length=4)]] = None
+    parameters: Optional[Annotated[List[KDMAValueParameters], Field(min_length=3, max_length=4)]] = None
     __properties: ClassVar[List[str]] = ["kdma", "value", "scores", "kdes", "parameters"]
 
     model_config = ConfigDict(
@@ -110,7 +110,7 @@ class KDMAValue(BaseModel):
             )
             if obj.get("kdes") is not None
             else None,
-            "parameters": [KDMAValueParametersInner.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None
+            "parameters": [KDMAValueParameters.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None
         })
         return _obj
 
