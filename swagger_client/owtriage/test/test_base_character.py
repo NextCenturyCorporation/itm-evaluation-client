@@ -38,7 +38,7 @@ class TestBaseCharacter(unittest.TestCase):
                 id = '',
                 name = 'Mike',
                 unstructured = '22-year-old male with brown hair',
-                demographics = swagger_client.owtriage.models.demographics.Demographics(),
+                demographics = None,
                 rapport = 'loathing',
                 unseen = True
             )

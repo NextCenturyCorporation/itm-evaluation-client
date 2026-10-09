@@ -36,7 +36,7 @@ class TestScene(unittest.TestCase):
         if include_optional:
             return Scene(
                 id = '',
-                state = swagger_client.owtriage.models.state.State(),
+                state = None,
                 next_scene = '',
                 end_scene_allowed = True,
                 persist_characters = True,
@@ -65,13 +65,13 @@ class TestScene(unittest.TestCase):
                             'key' : 0.0
                             }, 
                         action_condition_semantics = 'and', 
-                        action_conditions = swagger_client.owtriage.models.conditions.Conditions(), 
+                        action_conditions = null, 
                         probe_condition_semantics = 'and', 
-                        probe_conditions = swagger_client.owtriage.models.conditions.Conditions(), )
+                        probe_conditions = null, )
                     ],
                 restricted_actions = ["SEARCH"],
                 transition_semantics = 'and',
-                transitions = swagger_client.owtriage.models.conditions.Conditions()
+                transitions = None
             )
         else:
             return Scene(
@@ -94,9 +94,9 @@ class TestScene(unittest.TestCase):
                             'key' : 0.0
                             }, 
                         action_condition_semantics = 'and', 
-                        action_conditions = swagger_client.owtriage.models.conditions.Conditions(), 
+                        action_conditions = null, 
                         probe_condition_semantics = 'and', 
-                        probe_conditions = swagger_client.owtriage.models.conditions.Conditions(), )
+                        probe_conditions = null, )
                     ],
         )
         """
