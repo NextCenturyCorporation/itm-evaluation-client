@@ -58,7 +58,7 @@ class TestBaseState(unittest.TestCase):
                     ],
                 threat_state = {"unstructured":"Gunshots have been reported in the surrounding area","threats":[{"type":"gunfire","severity":"moderate"}]},
                 characters = [
-                    swagger_client.owtriage.models.character.Character()
+                    null
                     ],
                 scenario_complete = True
             )
@@ -66,7 +66,7 @@ class TestBaseState(unittest.TestCase):
             return BaseState(
                 unstructured = '',
                 characters = [
-                    swagger_client.owtriage.models.character.Character()
+                    null
                     ],
         )
         """

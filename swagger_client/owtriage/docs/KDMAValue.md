@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **value** | **float** | Numeric score for a given KDMA | [optional] 
 **scores** | **List[float]** | Ordered KDMA scores | [optional] 
 **kdes** | [**Dict[str, KDEData]**](KDEData.md) | KDE Objects representing a KDMA Measurement | [optional] 
-**parameters** | [**List[KDMAValueParametersInner]**](KDMAValueParametersInner.md) |  | [optional] 
+**parameters** | [**List[KDMAValueParameters]**](KDMAValueParameters.md) |  | [optional] 
 
 ## Example
 

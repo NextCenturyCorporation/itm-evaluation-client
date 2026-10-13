@@ -50,9 +50,9 @@ class TestActionMapping(unittest.TestCase):
                     'key' : 0.0
                     },
                 action_condition_semantics = 'and',
-                action_conditions = swagger_client.owtriage.models.conditions.Conditions(),
+                action_conditions = None,
                 probe_condition_semantics = 'and',
-                probe_conditions = swagger_client.owtriage.models.conditions.Conditions()
+                probe_conditions = None
             )
         else:
             return ActionMapping(

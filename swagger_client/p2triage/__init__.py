@@ -56,7 +56,7 @@ from swagger_client.p2triage.models.event_type_enum import EventTypeEnum
 from swagger_client.p2triage.models.kde_data import KDEData
 from swagger_client.p2triage.models.kdma_profile import KDMAProfile
 from swagger_client.p2triage.models.kdma_value import KDMAValue
-from swagger_client.p2triage.models.kdma_value_parameters_inner import KDMAValueParametersInner
+from swagger_client.p2triage.models.kdma_value_parameters import KDMAValueParameters
 from swagger_client.p2triage.models.message_type_enum import MessageTypeEnum
 from swagger_client.p2triage.models.meta_info import MetaInfo
 from swagger_client.p2triage.models.probe_config import ProbeConfig

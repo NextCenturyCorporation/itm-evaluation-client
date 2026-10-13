@@ -22,9 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class KDMAValueParametersInner(BaseModel):
+class KDMAValueParameters(BaseModel):
     """
-    KDMAValueParametersInner
+    KDMAValueParameters
     """ # noqa: E501
     name: StrictStr
     type: Optional[StrictStr] = None
@@ -66,7 +66,7 @@ class KDMAValueParametersInner(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of KDMAValueParametersInner from a JSON string"""
+        """Create an instance of KDMAValueParameters from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -91,7 +91,7 @@ class KDMAValueParametersInner(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of KDMAValueParametersInner from a dict"""
+        """Create an instance of KDMAValueParameters from a dict"""
         if obj is None:
             return None
 

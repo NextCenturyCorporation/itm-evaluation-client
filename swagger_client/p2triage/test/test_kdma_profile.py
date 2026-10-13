@@ -48,7 +48,7 @@ class TestKDMAProfile(unittest.TestCase):
                                 label = '', )
                             }, 
                         parameters = [
-                            swagger_client.p2triage.models.kdma_value_parameters_inner.KDMA_Value_parameters_inner(
+                            swagger_client.p2triage.models.kdma_value_parameters.KDMA_Value_Parameters(
                                 name = 'intercept', 
                                 type = 'single', 
                                 value = 1.337, )
@@ -70,7 +70,7 @@ class TestKDMAProfile(unittest.TestCase):
                                 label = '', )
                             }, 
                         parameters = [
-                            swagger_client.p2triage.models.kdma_value_parameters_inner.KDMA_Value_parameters_inner(
+                            swagger_client.p2triage.models.kdma_value_parameters.KDMA_Value_Parameters(
                                 name = 'intercept', 
                                 type = 'single', 
                                 value = 1.337, )

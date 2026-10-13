@@ -60,7 +60,7 @@ from swagger_client.owtriage.models.heart_rate_enum import HeartRateEnum
 from swagger_client.owtriage.models.kde_data import KDEData
 from swagger_client.owtriage.models.kdma_profile import KDMAProfile
 from swagger_client.owtriage.models.kdma_value import KDMAValue
-from swagger_client.owtriage.models.kdma_value_parameters_inner import KDMAValueParametersInner
+from swagger_client.owtriage.models.kdma_value_parameters import KDMAValueParameters
 from swagger_client.owtriage.models.message_type_enum import MessageTypeEnum
 from swagger_client.owtriage.models.meta_info import MetaInfo
 from swagger_client.owtriage.models.probe_config import ProbeConfig
